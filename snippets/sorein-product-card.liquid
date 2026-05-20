@@ -1,0 +1,86 @@
+{%- comment -%}
+  Sorein Product Card Snippet
+  Usage: render 'sorein-product-card', product: p, show_compare: true
+{%- endcomment -%}
+
+{%- liquid
+  assign card_product = product
+  assign show_compare_price = show_compare | default: true
+  assign first_variant = card_product.selected_or_first_available_variant
+  assign is_on_sale = false
+  if first_variant.compare_at_price > first_variant.price
+    assign is_on_sale = true
+  endif
+  assign capacity_tag = ''
+  assign output_tag = ''
+  for tag in card_product.tags
+    if tag contains 'kWh'
+      assign capacity_tag = tag
+    endif
+    if tag contains 'W' and tag contains 'kWh' == false
+      assign output_tag = tag
+    endif
+  endfor
+  assign capacity = card_product.metafields.specs.capacity | default: capacity_tag
+  assign output = card_product.metafields.specs.ac_output | default: output_tag
+-%}
+
+<article class="sorein-product-card" role="listitem" aria-label="{{ card_product.title | escape }}">
+  {%- if is_on_sale -%}
+    <div class="sorein-product-card__badge sorein-product-card__badge--sale" aria-label="On sale">
+      {%- assign savings = first_variant.compare_at_price | minus: first_variant.price -%}
+      Save {{ savings | money_without_trailing_zeros }}
+    </div>
+  {%- elsif card_product.tags contains 'new' or card_product.tags contains 'New' -%}
+    <div class="sorein-product-card__badge">New</div>
+  {%- endif -%}
+
+  <a href="{{ card_product.url }}" class="sorein-product-card__img-wrap" tabindex="-1" aria-hidden="true">
+    {%- if card_product.featured_image -%}
+      <img
+        class="sorein-product-card__img"
+        src="{{ card_product.featured_image | image_url: width: 600 }}"
+        srcset="{{ card_product.featured_image | image_url: width: 300 }} 300w,
+                {{ card_product.featured_image | image_url: width: 600 }} 600w,
+                {{ card_product.featured_image | image_url: width: 900 }} 900w"
+        sizes="(max-width: 640px) 300px, 600px"
+        alt="{{ card_product.featured_image.alt | default: card_product.title | escape }}"
+        width="600"
+        height="450"
+        loading="lazy">
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'sorein-product-card__img' }}
+    {%- endif -%}
+  </a>
+
+  <div class="sorein-product-card__body">
+    {%- if capacity != blank or output != blank -%}
+      <div class="sorein-product-card__specs">
+        {%- if capacity != blank -%}
+          <span class="sorein-product-card__spec">{{ capacity }}</span>
+        {%- endif -%}
+        {%- if output != blank -%}
+          <span class="sorein-product-card__spec">{{ output }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <h3 class="sorein-product-card__name">
+      <a href="{{ card_product.url }}" style="color:inherit;text-decoration:none;">{{ card_product.title }}</a>
+    </h3>
+
+    {%- if card_product.metafields.specs.tagline != blank -%}
+      <p class="sorein-product-card__desc">{{ card_product.metafields.specs.tagline }}</p>
+    {%- elsif card_product.description != blank -%}
+      <p class="sorein-product-card__desc">{{ card_product.description | strip_html | truncate: 80 }}</p>
+    {%- endif -%}
+
+    <div class="sorein-product-card__footer">
+      {%- render 'sorein-price', product: card_product, show_compare: show_compare_price -%}
+      <a href="{{ card_product.url }}" class="sorein-product-card__cta" aria-label="View {{ card_product.title | escape }}">
+        View
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,122 @@
+{%- liquid
+  assign comp_collection = collections[section.settings.collection_handle]
+-%}
+
+<div class="sorein-section sorein-compare" data-section-id="{{ section.id }}" data-section-type="sorein-comparison-matrix">
+  <div class="sorein-container">
+
+    <div class="sorein-compare__header sorein-reveal">
+      <span class="sorein-eyebrow">Side by Side</span>
+      <h2 class="sorein-compare__title">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p style="font-size:16px;color:var(--s-text-muted);max-width:520px;margin:0 auto;">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="sorein-compare__table-wrap sorein-reveal sorein-reveal--delay-1">
+      <table class="sorein-compare__table" role="table">
+        <thead>
+          <tr role="row">
+            <th scope="col" role="columnheader">System</th>
+            <th scope="col" role="columnheader">Capacity</th>
+            <th scope="col" role="columnheader">AC Output</th>
+            <th scope="col" role="columnheader">Solar Input</th>
+            <th scope="col" role="columnheader">Modular</th>
+            <th scope="col" role="columnheader">Best For</th>
+            <th scope="col" role="columnheader">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {%- if comp_collection != blank and comp_collection.products.size > 0 -%}
+            {%- for p in comp_collection.products limit: 12 -%}
+              <tr role="row">
+                <td>
+                  <a href="{{ p.url }}" style="color:inherit;text-decoration:none;">{{ p.title }}</a>
+                </td>
+                <td>
+                  {%- assign cap = p.metafields.specs.capacity -%}
+                  {{ cap | default: '—' }}
+                </td>
+                <td>
+                  {%- assign output = p.metafields.specs.ac_output -%}
+                  {{ output | default: '—' }}
+                </td>
+                <td>
+                  {%- assign solar = p.metafields.specs.solar_input -%}
+                  {{ solar | default: '—' }}
+                </td>
+                <td>
+                  {%- assign modular = p.metafields.specs.modular -%}
+                  {%- if modular == 'true' or p.tags contains 'modular' -%}
+                    <span class="sorein-compare__check" aria-label="Yes">✓</span>
+                  {%- elsif modular == 'false' -%}
+                    <span class="sorein-compare__dash" aria-label="No">—</span>
+                  {%- else -%}
+                    <span class="sorein-compare__dash">—</span>
+                  {%- endif -%}
+                </td>
+                <td>
+                  {%- assign best_for = p.metafields.specs.best_for -%}
+                  {{ best_for | default: 'All uses' }}
+                </td>
+                <td class="sorein-compare__price-cell">
+                  {{ p.price | money }}
+                </td>
+              </tr>
+            {%- endfor -%}
+
+          {%- else -%}
+            {%- comment -%} Fallback seed data {%- endcomment -%}
+            {%- assign seed_names  = 'A2 Lite||A3 Lite||A4 Lite||A4 Backup||A6 Ultra||P1200||P2400||P3000' | split: '||' -%}
+            {%- assign seed_caps   = '2.2kWh||3.2kWh||4.2kWh||5.4kWh||6.4kWh||1.2kWh||2.1kWh||2.1kWh' | split: '||' -%}
+            {%- assign seed_out    = '2200W||3000W||3000W||3000W||6000W||1200W||2400W||3000W' | split: '||' -%}
+            {%- assign seed_solar  = '900W||900W||1200W||1200W||2400W||400W||600W||800W' | split: '||' -%}
+            {%- assign seed_mod    = 'false||false||false||true||true||false||false||false' | split: '||' -%}
+            {%- assign seed_use    = 'Camping / Van||Cabin / Van||Cabin / Backup||Home backup||Whole home||Camping||Travel||Worksite' | split: '||' -%}
+            {%- assign seed_price  = '16,995 kr||29,995 kr||29,995 kr||37,995 kr||49,995 kr||9,499 kr||16,490 kr||19,990 kr' | split: '||' -%}
+            {%- for i in (0..7) -%}
+              <tr role="row">
+                <td>Sorein {{ seed_names[i] }}</td>
+                <td>{{ seed_caps[i] }}</td>
+                <td>{{ seed_out[i] }}</td>
+                <td>{{ seed_solar[i] }}</td>
+                <td>
+                  {%- if seed_mod[i] == 'true' -%}
+                    <span class="sorein-compare__check" aria-label="Yes">✓</span>
+                    <span class="sorein-compare__badge">A-Series</span>
+                  {%- else -%}
+                    <span class="sorein-compare__dash" aria-label="No">—</span>
+                  {%- endif -%}
+                </td>
+                <td>{{ seed_use[i] }}</td>
+                <td class="sorein-compare__price-cell">{{ seed_price[i] }}</td>
+              </tr>
+            {%- endfor -%}
+          {%- endif -%}
+
+        </tbody>
+      </table>
+    </div><!-- /.sorein-compare__table-wrap -->
+
+    {%- if section.settings.footnote != blank -%}
+      <p style="font-size:12px;color:var(--s-text-light);text-align:center;margin-top:20px;">{{ section.settings.footnote | escape }}</p>
+    {%- endif -%}
+
+  </div><!-- /.sorein-container -->
+</div>
+
+{% schema %}
+{
+  "name": "Sorein Comparison Matrix",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Compare All Systems" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    { "type": "collection", "id": "collection_handle", "label": "Collection to compare" },
+    { "type": "text", "id": "footnote", "label": "Footnote text" }
+  ],
+  "presets": [
+    { "name": "Sorein Comparison Matrix" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,106 @@
+{%- liquid
+  if section.settings.collection_page_mode
+    assign display_collection = collection
+  else
+    assign display_collection = collections[section.settings.collection_handle]
+  endif
+  assign products_per_page = section.settings.products_per_page | default: 12
+-%}
+
+<div class="sorein-section sorein-featured" data-section-id="{{ section.id }}" data-section-type="sorein-featured-systems">
+  <div class="sorein-container">
+
+    {%- if section.settings.collection_page_mode -%}
+      <div class="sorein-collection__header">
+        <div>
+          <h1 class="sorein-collection__title sorein-reveal">{{ display_collection.title | default: 'Products' }}</h1>
+          {%- if display_collection.description != blank -%}
+            <p class="sorein-collection__count sorein-reveal sorein-reveal--delay-1">{{ display_collection.description | strip_html | truncate: 140 }}</p>
+          {%- endif -%}
+        </div>
+        <span class="sorein-collection__count">{{ display_collection.products_count | default: 0 }} products</span>
+      </div>
+      <div class="sorein-collection__grid" role="list">
+        {%- paginate display_collection.products by products_per_page -%}
+          {%- for p in display_collection.products -%}
+            <div role="listitem">
+              {%- render 'sorein-product-card', product: p, show_compare: true -%}
+            </div>
+          {%- endfor -%}
+          {%- if paginate.pages > 1 -%}
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px 0;">
+              {{ paginate | default_pagination | replace: '<span', '<span class="sorein-pagination-item"' }}
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+
+    {%- else -%}
+      <div class="sorein-featured__header">
+        <span class="sorein-eyebrow sorein-reveal">{{ section.settings.eyebrow | default: 'All Systems' }}</span>
+        <h2 class="sorein-featured__title sorein-reveal sorein-reveal--delay-1">
+          {{ section.settings.heading | default: 'Complete Power Systems' | escape }}
+        </h2>
+        {%- if section.settings.subheading != blank -%}
+          <p style="font-size:17px;color:var(--s-text-muted);max-width:520px;margin:0 auto;" class="sorein-reveal sorein-reveal--delay-2">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="sorein-featured__grid" role="list">
+        {%- if display_collection != blank -%}
+          {%- for p in display_collection.products limit: products_per_page -%}
+            <div role="listitem" class="sorein-reveal" style="transition-delay: {{ forloop.index0 | times: 0.08 }}s;">
+              {%- render 'sorein-product-card', product: p, show_compare: true -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'featured_product' and block.settings.product != blank -%}
+              <div role="listitem" class="sorein-reveal" {{ block.shopify_attributes }}>
+                {%- render 'sorein-product-card', product: block.settings.product, show_compare: true -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.cta_url != blank and section.settings.cta_text != blank -%}
+        <div style="text-align:center;margin-top:48px;">
+          <a href="{{ section.settings.cta_url }}" class="sorein-btn sorein-btn--ghost">
+            {{ section.settings.cta_text | escape }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div><!-- /.sorein-container -->
+</div>
+
+{% schema %}
+{
+  "name": "Sorein Featured Systems",
+  "settings": [
+    { "type": "checkbox", "id": "collection_page_mode", "label": "Collection page mode", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Complete Power Systems" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    { "type": "collection", "id": "collection_handle", "label": "Collection" },
+    { "type": "range", "id": "products_per_page", "label": "Products to show", "min": 3, "max": 24, "step": 3, "default": 9 },
+    { "type": "text", "id": "cta_text", "label": "CTA text" },
+    { "type": "url", "id": "cta_url", "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "featured_product",
+      "name": "Featured Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Sorein Featured Systems" }
+  ]
+}
+{% endschema %}

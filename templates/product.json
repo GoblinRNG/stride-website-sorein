@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "sorein-product-main": {
+      "type": "sorein-product-orbit",
+      "settings": {
+        "product_page_mode": true
+      }
+    }
+  },
+  "order": [
+    "sorein-product-main"
+  ]
+}

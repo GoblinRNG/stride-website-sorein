@@ -1,0 +1,88 @@
+<div class="sorein-section sorein-use-cases" data-section-id="{{ section.id }}" data-section-type="sorein-use-cases">
+  <div class="sorein-container">
+
+    <div class="sorein-use-cases__header sorein-reveal">
+      <span class="sorein-eyebrow sorein-eyebrow--light">Where Sorein Works</span>
+      <h2 class="sorein-use-cases__title">{{ section.settings.heading | escape }}</h2>
+    </div>
+
+    <div class="sorein-use-cases__grid">
+
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="sorein-use-case-card sorein-reveal" style="transition-delay:{{ forloop.index0 | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+            <div class="sorein-use-case-card__icon" aria-hidden="true">{{ block.settings.icon | default: '⚡' }}</div>
+            <h3 class="sorein-use-case-card__title">{{ block.settings.title | escape }}</h3>
+            <p class="sorein-use-case-card__desc">{{ block.settings.description | escape }}</p>
+            {%- if block.settings.tags != blank -%}
+              <div class="sorein-use-case-card__tags">
+                {%- assign tags = block.settings.tags | split: ',' -%}
+                {%- for tag in tags -%}
+                  <span class="sorein-use-case-card__tag">{{ tag | strip }}</span>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+
+      {%- else -%}
+        {%- comment -%} Default use-case seed data {%- endcomment -%}
+        {%- assign uc_icons  = '🏠||🏕️||🚐||⛺||🔧||🆘' | split: '||' -%}
+        {%- assign uc_titles = 'Home Backup||Cabin & Off-Grid||Vanlife||Camping||Worksite||Emergency Power' | split: '||' -%}
+        {%- assign uc_descs  = "Silent backup power for the moments that matter. Keep your fridge, lights, and devices running when the grid goes down.||Scale from weekend trips to whole-system independence. Run lighting, appliances, and charging for extended off-grid stays.||Built for Nordic weather, vans, and constant movement. Compact enough to fit, powerful enough to run everything you need.||Reliable solar-charged power wherever the trail ends. From phone charging to coffee makers — no generator noise required.||Silent, clean power for job sites and remote locations. Power tools, lights, and communications all day from a portable station.||Power when you need it most. LFP batteries with 3,500+ cycle life ensure your backup is ready every time." | split: '||' -%}
+        {%- assign uc_tags   = 'Home,Backup,Grid-down||Cabin,Off-grid,Solar||Van,Mobile,12V||Camping,Portable,Outdoor||Worksite,Tools,Remote||Emergency,Backup,Safety' | split: '||' -%}
+        {%- for i in (0..5) -%}
+          <div class="sorein-use-case-card sorein-reveal" style="transition-delay:{{ i | times: 0.1 }}s;">
+            <div class="sorein-use-case-card__icon" aria-hidden="true">{{ uc_icons[i] }}</div>
+            <h3 class="sorein-use-case-card__title">{{ uc_titles[i] }}</h3>
+            <p class="sorein-use-case-card__desc">{{ uc_descs[i] }}</p>
+            <div class="sorein-use-case-card__tags">
+              {%- assign tags = uc_tags[i] | split: ',' -%}
+              {%- for tag in tags -%}
+                <span class="sorein-use-case-card__tag">{{ tag }}</span>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+
+    </div><!-- /.sorein-use-cases__grid -->
+
+    {%- if section.settings.cta_text != blank -%}
+      <div style="text-align:center;margin-top:56px;" class="sorein-reveal">
+        <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="sorein-btn sorein-btn--ghost-light">
+          {{ section.settings.cta_text | escape }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div><!-- /.sorein-container -->
+</div>
+
+{% schema %}
+{
+  "name": "Sorein Use Cases",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Power For Every Situation" },
+    { "type": "text", "id": "cta_text", "label": "CTA text" },
+    { "type": "url", "id": "cta_url", "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "use_case",
+      "name": "Use Case",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Emoji icon", "default": "⚡" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Home Backup" },
+        { "type": "textarea", "id": "description", "label": "Description" },
+        { "type": "text", "id": "tags", "label": "Tags (comma-separated)", "info": "e.g. Home,Backup,Grid-down" }
+      ]
+    }
+  ],
+  "max_blocks": 9,
+  "presets": [
+    { "name": "Sorein Use Cases" }
+  ]
+}
+{% endschema %}
