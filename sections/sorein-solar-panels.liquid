@@ -30,7 +30,6 @@
               {%- endif -%}
             </div>
             <div class="sorein-solar-panel-card__body">
-              {%- assign watt_tag = p.tags | where: 'W' | first -%}
               {%- assign watt_num = p.metafields.specs.wattage | default: '' -%}
               {%- if watt_num != blank -%}
                 <div class="sorein-solar-panel-card__watt">{{ watt_num }}<span>W</span></div>

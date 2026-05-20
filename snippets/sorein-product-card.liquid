@@ -17,7 +17,8 @@
     if tag contains 'kWh'
       assign capacity_tag = tag
     endif
-    if tag contains 'W' and tag contains 'kWh' == false
+    # Match tags that end with W and are purely numeric+W (e.g. 3000W), not kWh or words
+    if tag matches '^\d+W$'
       assign output_tag = tag
     endif
   endfor

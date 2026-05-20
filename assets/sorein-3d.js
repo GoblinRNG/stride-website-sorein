@@ -18,10 +18,6 @@
       return kr.toLocaleString('sv-SE', { style: 'currency', currency: 'SEK', minimumFractionDigits: 0, maximumFractionDigits: 0 });
     },
 
-    formatSEKFromCents(cents) {
-      return S.formatSEK(cents);
-    },
-
     qs(sel, ctx = document) { return ctx.querySelector(sel); },
     qsa(sel, ctx = document) { return Array.from(ctx.querySelectorAll(sel)); },
 
@@ -77,7 +73,8 @@
     if (btn && mobile) {
       S.on(btn, 'click', () => {
         const open = mobile.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', open);
+        btn.setAttribute('aria-expanded', String(open));
+        mobile.setAttribute('aria-hidden', String(!open));
         document.body.style.overflow = open ? 'hidden' : '';
       });
     }
@@ -216,11 +213,10 @@
     }, 200);
     S.on(window, 'resize', onResize);
 
-    // Cleanup when section removed
-    const mutObs = new MutationObserver(() => {
-      if (!document.contains(canvas)) { alive = false; renderer.dispose(); mutObs.disconnect(); }
-    });
-    mutObs.observe(document.body, { childList: true, subtree: true });
+    // Cleanup when section is removed by the theme editor
+    document.addEventListener('shopify:section:unload', (e) => {
+      if (e.target.contains(canvas)) { alive = false; renderer.dispose(); }
+    }, { once: true });
 
     // Hide CSS fallback stack
     const cssStack = S.qs('.sorein-stack-3d', section);
@@ -258,7 +254,7 @@
     const nextBtn = S.qs('[data-orbit-next]', section);
     if (!track) return;
     const scroll = (dir) => {
-      const cardW = 320;
+      const cardW = track.querySelector('.sorein-product-card')?.offsetWidth || 320;
       track.scrollBy({ left: cardW * 2 * dir, behavior: 'smooth' });
     };
     S.on(prevBtn, 'click', () => scroll(-1));
@@ -299,7 +295,6 @@
       const panelW = parseFloat(panelSelect.value) || 200;
       const effectiveW = panelW * NET_EFF;
       const target80 = battWh * 0.8;
-      const target20 = battWh * 0.2;
       const h0to80 = target80 / effectiveW;
       const h80to100 = (battWh * 0.2) / (effectiveW * 0.5); // taper speed at top-off
       const pct0to80 = Math.min(100, (1 / (1 + h0to80 / 3)) * 100);
@@ -343,10 +338,8 @@
     };
 
     // DOM refs
-    const battQtyVal = S.qs('[data-builder-qty="battery"]', section);
     const battPriceLine = S.qs('[data-builder-price="battery"]', section);
     const battStepPrice = S.qs('[data-step-price="battery"]', section);
-    const invQtyVal = S.qs('[data-builder-qty="inverter"]', section);
     const invPriceLine = S.qs('[data-builder-price="inverter"]', section);
     const invStepPrice = S.qs('[data-step-price="inverter"]', section);
     const chassisOptions = S.qsa('[data-chassis-option]', section);
@@ -414,8 +407,9 @@
       const chassisTotal = chassisPrice;
 
       const lineSum = baseTotal + battTotal + invTotal + chassisTotal;
-      const vat = Math.round(lineSum * VAT);
-      const total = lineSum; // prices include VAT in Sweden
+      // Prices include VAT in Sweden — extract the VAT component from the inclusive total
+      const vat = Math.round(lineSum * (VAT / (1 + VAT)));
+      const total = lineSum;
 
       // Update line prices
       if (battPriceLine) battPriceLine.textContent = state.batteryQty > 0 ? S.formatSEK(battTotal) : '—';
@@ -429,8 +423,9 @@
       if (totalEl) totalEl.textContent = S.formatSEK(total);
       if (topPriceEl) topPriceEl.textContent = S.formatSEK(total);
       if (klarnaPerMonth) {
-        const monthly = Math.round(total / 3600); // rough 36 month / 100 per cent
-        klarnaPerMonth.textContent = S.formatSEK(monthly);
+        // total is in cents; divide by 100 to get SEK, then by 36 months
+        const monthlyCents = Math.round(total / 36);
+        klarnaPerMonth.textContent = S.formatSEK(monthlyCents);
       }
 
       // Weight (stored in grams, display in kg)
@@ -443,6 +438,25 @@
       if (weightEl) weightEl.textContent = totalKg;
 
       updateStack();
+    }
+
+    function makeModuleEl(stackType, modClass, labelText, nameText) {
+      const el = document.createElement('div');
+      el.className = `sorein-builder-module ${modClass}`;
+      el.dataset.stackModule = stackType;
+      const label = document.createElement('div');
+      label.className = 'sorein-builder-module__label';
+      label.textContent = labelText;
+      const name = document.createElement('div');
+      name.className = 'sorein-builder-module__name';
+      name.textContent = nameText;
+      const qty = document.createElement('span');
+      qty.className = 'sorein-builder-module__qty';
+      qty.textContent = '×1';
+      const glow = document.createElement('div');
+      glow.className = 'sorein-builder-module__glow';
+      el.append(label, name, qty, glow);
+      return el;
     }
 
     function updateStack() {
@@ -469,29 +483,19 @@
       const baseModule = S.qs('[data-stack-module="base"]', stackContainer);
 
       for (let i = existingBatts.length; i < state.batteryQty; i++) {
-        const el = document.createElement('div');
-        el.className = 'sorein-builder-module sorein-builder-module--battery';
-        el.dataset.stackModule = 'battery';
-        el.innerHTML = `
-          <div class="sorein-builder-module__label">Expansion Battery</div>
-          <div class="sorein-builder-module__name">${products[battHandle]?.title || 'EB210 Battery Module'}</div>
-          <span class="sorein-builder-module__qty">×1</span>
-          <div class="sorein-builder-module__glow"></div>`;
+        const el = makeModuleEl('battery', 'sorein-builder-module--battery',
+          'Expansion Battery', products[battHandle]?.title || 'EB210 Battery Module');
         if (baseModule) { stackContainer.insertBefore(el, baseModule); }
         else { stackContainer.appendChild(el); }
       }
 
-      // Add missing inverters
+      // Add missing inverters — inserted below batteries (closer to base)
       for (let i = existingInvs.length; i < state.inverterQty; i++) {
-        const el = document.createElement('div');
-        el.className = 'sorein-builder-module sorein-builder-module--inverter';
-        el.dataset.stackModule = 'inverter';
-        el.innerHTML = `
-          <div class="sorein-builder-module__label">Inverter</div>
-          <div class="sorein-builder-module__name">${products[invHandle]?.title || 'Extra Inverter'}</div>
-          <span class="sorein-builder-module__qty">×1</span>
-          <div class="sorein-builder-module__glow"></div>`;
-        if (baseModule) { stackContainer.insertBefore(el, baseModule); }
+        const firstBatt = S.qs('[data-stack-module="battery"]', stackContainer);
+        const anchor = firstBatt || baseModule;
+        const el = makeModuleEl('inverter', 'sorein-builder-module--inverter',
+          'Inverter', products[invHandle]?.title || 'Extra Inverter');
+        if (anchor) { stackContainer.insertBefore(el, anchor); }
         else { stackContainer.appendChild(el); }
       }
     }
@@ -607,9 +611,9 @@
         variantBtns.forEach(b => b.classList.remove('is-active'));
         btn.classList.add('is-active');
         selectedVariantId = parseInt(btn.dataset.variantId, 10);
-        if (priceEl) priceEl.textContent = S.formatSEKFromCents(parseInt(btn.dataset.variantPrice, 10));
+        if (priceEl) priceEl.textContent = S.formatSEK(parseInt(btn.dataset.variantPrice, 10));
         if (comparePriceEl && btn.dataset.variantCompare) {
-          comparePriceEl.textContent = S.formatSEKFromCents(parseInt(btn.dataset.variantCompare, 10));
+          comparePriceEl.textContent = S.formatSEK(parseInt(btn.dataset.variantCompare, 10));
           comparePriceEl.hidden = false;
         } else if (comparePriceEl) {
           comparePriceEl.hidden = true;

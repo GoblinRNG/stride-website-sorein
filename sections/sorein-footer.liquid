@@ -19,12 +19,12 @@
         </p>
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
           {%- if section.settings.instagram_url != blank -%}
-            <a href="{{ section.settings.instagram_url }}" style="color:rgba(255,255,255,0.4);transition:color 200ms;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'" aria-label="Instagram">
+            <a href="{{ section.settings.instagram_url }}" class="sorein-footer__social-link" aria-label="Instagram">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
             </a>
           {%- endif -%}
           {%- if section.settings.facebook_url != blank -%}
-            <a href="{{ section.settings.facebook_url }}" style="color:rgba(255,255,255,0.4);transition:color 200ms;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'" aria-label="Facebook">
+            <a href="{{ section.settings.facebook_url }}" class="sorein-footer__social-link" aria-label="Facebook">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           {%- endif -%}

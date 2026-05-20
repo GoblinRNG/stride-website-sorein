@@ -1607,6 +1607,14 @@
 }
 .sorein-footer__copy { font-size: 13px; color: rgba(255,255,255,0.3); }
 .sorein-footer__payment-icons { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.sorein-footer__social-link {
+  color: rgba(255,255,255,0.4);
+  transition: color var(--s-transition);
+  display: flex;
+  align-items: center;
+}
+.sorein-footer__social-link:hover { color: var(--s-white); }
+
 .sorein-footer__payment-icon {
   height: 24px;
   width: auto;
