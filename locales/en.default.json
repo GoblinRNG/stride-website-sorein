@@ -1,0 +1,25 @@
+{
+  "general": {
+    "meta": {
+      "page": "Page {{ page }}"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Cart"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "from": "From"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No products found."
+    }
+  }
+}

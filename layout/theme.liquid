@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" type="image/png">
+  {%- endif -%}
+
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  {{ 'sorein-3d.css' | asset_url | stylesheet_tag }}
+
+  {{ content_for_header }}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    window.Sorein = window.Sorein || {};
+    window.Sorein.routes = {
+      cart_add_url: {{ routes.cart_add_url | json }},
+      cart_url: {{ routes.cart_url | json }},
+      cart_change_url: {{ routes.cart_change_url | json }},
+      cart_update_url: {{ routes.cart_update_url | json }}
+    };
+    window.Sorein.shop = {
+      currency: {{ shop.currency | json }},
+      locale: {{ request.locale.iso_code | json }}
+    };
+  </script>
+</head>
+
+<body class="sorein-theme template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}--{{ template.suffix }}{% endif %}">
+
+  {%- section 'sorein-announcement-bar' -%}
+  {%- section 'sorein-header' -%}
+
+  <main id="MainContent" class="sorein-main" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {%- section 'sorein-footer' -%}
+
+  <div id="sorein-cart-overlay" class="sorein-cart-overlay" aria-hidden="true" role="dialog" aria-label="{{ 'cart.general.title' | t }}">
+    <div class="sorein-cart-overlay__inner">
+      <button class="sorein-cart-overlay__close" aria-label="Close cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="sorein-cart-overlay__content"></div>
+    </div>
+  </div>
+
+  {{ 'sorein-3d.js' | asset_url | script_tag }}
+</body>
+</html>

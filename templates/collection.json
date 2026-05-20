@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "sorein-collection-main": {
+      "type": "sorein-featured-systems",
+      "settings": {
+        "collection_page_mode": true,
+        "show_filters": true,
+        "products_per_page": 12
+      }
+    }
+  },
+  "order": [
+    "sorein-collection-main"
+  ]
+}

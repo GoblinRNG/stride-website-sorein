@@ -1,0 +1,146 @@
+{%- comment -%}
+  Reviews section.
+  Uses review app metafields if present (e.g. Okendo, Judge.me, Loox).
+  Falls back to section-defined fallback reviews when show_fallback_reviews is enabled.
+  Never marks reviews as "verified" unless source is confirmed.
+{%- endcomment -%}
+
+<div class="sorein-section sorein-reviews" data-section-id="{{ section.id }}" data-section-type="sorein-reviews-cinematic">
+  <div class="sorein-container">
+
+    <div class="sorein-reviews__header sorein-reveal">
+      <span class="sorein-eyebrow">Customer Reviews</span>
+      <h2 class="sorein-reviews__title">{{ section.settings.heading | escape }}</h2>
+
+      {%- if section.settings.overall_rating != blank -%}
+        <div class="sorein-reviews__summary">
+          <div class="sorein-reviews__rating-num" aria-label="Rating: {{ section.settings.overall_rating }} out of 5">
+            {{ section.settings.overall_rating }}
+          </div>
+          {%- assign rating_float = section.settings.overall_rating | times: 1.0 -%}
+          {%- assign full_stars = rating_float | floor -%}
+          <div class="sorein-reviews__stars" aria-hidden="true">
+            {%- for i in (1..5) -%}
+              {%- if i <= full_stars -%}★{%- else -%}☆{%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if section.settings.review_count != blank -%}
+            <p class="sorein-reviews__count">{{ section.settings.review_count }} reviews</p>
+          {%- endif -%}
+          <p class="sorein-reviews__disclaimer">
+            {%- if section.settings.review_source != blank -%}
+              Reviews sourced from {{ section.settings.review_source | escape }}.
+            {%- else -%}
+              Review data is illustrative. Source to be confirmed by merchant before publishing.
+            {%- endif -%}
+          </p>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%}
+      Review app embed hook — if your app (Judge.me, Okendo, Loox, etc.)
+      supports a "reviews widget" placement, it will inject here.
+      Leave this comment for the app to target.
+    {%- endcomment -%}
+    {%- if section.settings.app_widget_placeholder -%}
+      <div id="sorein-reviews-app-widget" style="margin-top:40px;">
+        {%- comment -%} Review app widget — rendered by your review app {%- endcomment -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_fallback_reviews -%}
+      <div class="sorein-reviews__track-wrap">
+        <div class="sorein-reviews__track" role="list" aria-label="Customer reviews">
+
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <article class="sorein-review-card sorein-reveal" role="listitem" {{ block.shopify_attributes }}>
+                <div class="sorein-review-card__stars" aria-label="{{ block.settings.rating }} stars">
+                  {%- assign r = block.settings.rating | default: 5 -%}
+                  {%- for i in (1..r) -%}★{%- endfor -%}
+                </div>
+                <p class="sorein-review-card__text">"{{ block.settings.review_text | escape }}"</p>
+                <div class="sorein-review-card__author">
+                  <div class="sorein-review-card__avatar" aria-hidden="true">
+                    {{ block.settings.author_name | slice: 0, 1 | upcase }}
+                  </div>
+                  <div>
+                    <div class="sorein-review-card__name">{{ block.settings.author_name | escape }}</div>
+                    <div class="sorein-review-card__meta">{{ block.settings.author_location | escape }}</div>
+                    {%- if block.settings.product_name != blank -%}
+                      <div class="sorein-review-card__product">{{ block.settings.product_name | escape }}</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </article>
+            {%- endfor -%}
+
+          {%- else -%}
+            {%- comment -%} Seed reviews — replace with real reviews from your app {%- endcomment -%}
+            {%- assign rv_texts = '"We use the A6 Ultra at our cabin — runs the fridge, TV, lights, and router for days without solar input. Genuinely changed how we use the place."||"The A4 Backup has been running as our home backup for 8 months. Grid went down during a storm for 12 hours. We barely noticed."||"P3000 in the van. Silent, powerful, charges fast from the roof panels. No more generator noise on worksites."||"Ordered the A3 Lite for camping trips. Build quality is excellent — feels genuinely premium. Setup was straightforward."||"The modular system is a game-changer. Started with the base, added two EB210s last winter. Total flexibility."' | split: '||' -%}
+            {%- assign rv_authors = 'Marcus L.||Anna K.||Tobias H.||Sofia B.||Erik N.' | split: '||' -%}
+            {%- assign rv_locations = 'Stockholm, Sweden||Oslo, Norway||Gothenburg, Sweden||Helsinki, Finland||Bergen, Norway' | split: '||' -%}
+            {%- assign rv_products = 'Sorein A6 Ultra||Sorein A4 Backup||Sorein P3000||Sorein A3 Lite||Sorein A6 Builder System' | split: '||' -%}
+            {%- for i in (0..4) -%}
+              <article class="sorein-review-card sorein-reveal" role="listitem" style="transition-delay:{{ i | times: 0.1 }}s;">
+                <div class="sorein-review-card__stars" aria-label="5 stars">★★★★★</div>
+                <p class="sorein-review-card__text">{{ rv_texts[i] }}</p>
+                <div class="sorein-review-card__author">
+                  <div class="sorein-review-card__avatar" aria-hidden="true">{{ rv_authors[i] | slice: 0, 1 }}</div>
+                  <div>
+                    <div class="sorein-review-card__name">{{ rv_authors[i] }}</div>
+                    <div class="sorein-review-card__meta">{{ rv_locations[i] }}</div>
+                    <div class="sorein-review-card__product">{{ rv_products[i] }}</div>
+                  </div>
+                </div>
+              </article>
+            {%- endfor -%}
+          {%- endif -%}
+
+        </div><!-- /.sorein-reviews__track -->
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.cta_text != blank -%}
+      <div style="text-align:center;margin-top:40px;" class="sorein-reveal">
+        <a href="{{ section.settings.cta_url | default: '/products' }}" class="sorein-btn sorein-btn--ghost">
+          {{ section.settings.cta_text | escape }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div><!-- /.sorein-container -->
+</div>
+
+{% schema %}
+{
+  "name": "Sorein Reviews",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What Our Customers Say" },
+    { "type": "text", "id": "overall_rating", "label": "Overall rating (e.g. 4.8)", "info": "Leave blank to hide the rating summary." },
+    { "type": "text", "id": "review_count", "label": "Number of reviews", "info": "Only show confirmed counts. Do not publish unconfirmed numbers." },
+    { "type": "text", "id": "review_source", "label": "Review source (e.g. Judge.me, Okendo)", "info": "Name the source so customers know where reviews come from." },
+    { "type": "checkbox", "id": "show_fallback_reviews", "label": "Show review cards", "default": true },
+    { "type": "checkbox", "id": "app_widget_placeholder", "label": "Reserve space for review app widget", "default": false },
+    { "type": "text", "id": "cta_text", "label": "CTA text" },
+    { "type": "url", "id": "cta_url", "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Star rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "review_text", "label": "Review text" },
+        { "type": "text", "id": "author_name", "label": "Author name" },
+        { "type": "text", "id": "author_location", "label": "Author location" },
+        { "type": "text", "id": "product_name", "label": "Product reviewed" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Sorein Reviews" }
+  ]
+}
+{% endschema %}

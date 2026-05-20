@@ -1,0 +1,166 @@
+{%- liquid
+  assign solar_collection = collections[section.settings.collection_handle]
+-%}
+
+<div class="sorein-section sorein-solar" data-section-id="{{ section.id }}" data-section-type="sorein-solar-panels">
+  <div class="sorein-container">
+
+    <div class="sorein-solar__header sorein-reveal">
+      <span class="sorein-eyebrow">High-Efficiency Solar</span>
+      <h2 class="sorein-solar__title">{{ section.settings.heading | escape }}</h2>
+      <p style="font-size:17px;color:var(--s-text-muted);max-width:560px;margin:0 auto;">{{ section.settings.subheading | escape }}</p>
+    </div>
+
+    <div class="sorein-solar__panels-grid">
+      {%- if solar_collection != blank -%}
+        {%- for p in solar_collection.products limit: 4 -%}
+          <div class="sorein-solar-panel-card sorein-reveal" style="transition-delay:{{ forloop.index0 | times: 0.15 }}s;">
+            <div class="sorein-solar-panel-card__img-wrap">
+              {%- if p.featured_image -%}
+                <img src="{{ p.featured_image | image_url: width: 600 }}"
+                  alt="{{ p.featured_image.alt | default: p.title | escape }}"
+                  width="600" height="337" loading="lazy"
+                  style="width:100%;height:100%;object-fit:contain;padding:20px;">
+              {%- else -%}
+                <div class="sorein-panel-fold" aria-hidden="true">
+                  <div class="sorein-panel-fold__leaf"></div>
+                  <div class="sorein-panel-fold__leaf sorein-panel-fold__leaf--wide"></div>
+                  <div class="sorein-panel-fold__leaf"></div>
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="sorein-solar-panel-card__body">
+              {%- assign watt_tag = p.tags | where: 'W' | first -%}
+              {%- assign watt_num = p.metafields.specs.wattage | default: '' -%}
+              {%- if watt_num != blank -%}
+                <div class="sorein-solar-panel-card__watt">{{ watt_num }}<span>W</span></div>
+              {%- endif -%}
+              <h3 class="sorein-solar-panel-card__name">{{ p.title }}</h3>
+              <div class="sorein-solar-panel-card__specs">
+                {%- for tag in p.tags limit: 4 -%}
+                  <span class="sorein-product-card__spec">{{ tag }}</span>
+                {%- endfor -%}
+              </div>
+              <div class="sorein-solar-panel-card__footer">
+                {%- render 'sorein-price', product: p -%}
+                <a href="{{ p.url }}" class="sorein-btn sorein-btn--primary sorein-btn--sm">View Panel</a>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Fallback seed cards {%- endcomment -%}
+        {%- assign solar_names = '200W Portable IP67 Monocrystalline||Foldable 400W Monocrystalline' | split: '||' -%}
+        {%- assign solar_prices = '3,890 kr||6,990 kr' | split: '||' -%}
+        {%- assign solar_watts = '200||400' | split: '||' -%}
+        {%- assign solar_tags = 'IP67|Portable|Monocrystalline||IP65|Foldable|Monocrystalline' | split: '||' -%}
+        {%- for i in (0..1) -%}
+          <div class="sorein-solar-panel-card sorein-reveal" style="transition-delay:{{ i | times: 0.15 }}s;">
+            <div class="sorein-solar-panel-card__img-wrap">
+              <div class="sorein-panel-fold" aria-hidden="true">
+                <div class="sorein-panel-fold__leaf"></div>
+                <div class="sorein-panel-fold__leaf sorein-panel-fold__leaf--wide"></div>
+                <div class="sorein-panel-fold__leaf"></div>
+              </div>
+            </div>
+            <div class="sorein-solar-panel-card__body">
+              <div class="sorein-solar-panel-card__watt">{{ solar_watts[i] }}<span>W</span></div>
+              <h3 class="sorein-solar-panel-card__name">Sorein {{ solar_names[i] }} Solar Panel</h3>
+              <div class="sorein-solar-panel-card__specs">
+                {%- assign stags = solar_tags[i] | split: '|' -%}
+                {%- for stag in stags -%}
+                  <span class="sorein-product-card__spec">{{ stag }}</span>
+                {%- endfor -%}
+              </div>
+              <div class="sorein-solar-panel-card__footer">
+                <div class="sorein-price">
+                  <span class="sorein-price__current">{{ solar_prices[i] }}</span>
+                </div>
+                <a href="/collections/solar-panels" class="sorein-btn sorein-btn--primary sorein-btn--sm">View Panel</a>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div><!-- /.sorein-solar__panels-grid -->
+
+    {%- if section.settings.show_estimator -%}
+      {%- comment -%} Charging Estimator {%- endcomment -%}
+      <div class="sorein-estimator sorein-reveal">
+        <h3 class="sorein-estimator__title">Solar Charging Estimator</h3>
+        <p class="sorein-estimator__subtitle">
+          Estimate recharge time based on your battery size and panel wattage.
+          Assumes 63% real-world net output from rated wattage (weather, angle, cable losses).
+        </p>
+
+        <div class="sorein-estimator__grid">
+          <div class="sorein-estimator__controls">
+            <div style="margin-bottom:20px;">
+              <label for="sorein-est-battery-{{ section.id }}">Battery capacity</label>
+              <select id="sorein-est-battery-{{ section.id }}" data-estimator-battery>
+                <option value="1152">1,152 Wh — P1200</option>
+                <option value="2160">2,160 Wh — P2400 / P3000 / A2 Lite</option>
+                <option value="3200" selected>3,200 Wh — A3 Lite</option>
+                <option value="4200">4,200 Wh — A4 Lite</option>
+                <option value="5400">5,400 Wh — A4 Backup</option>
+                <option value="6400">6,400 Wh — A6 Ultra</option>
+              </select>
+            </div>
+            <div>
+              <label for="sorein-est-panel-{{ section.id }}">Solar panel</label>
+              <select id="sorein-est-panel-{{ section.id }}" data-estimator-panel>
+                <option value="200">200W Portable Panel</option>
+                <option value="400" selected>400W Foldable Panel</option>
+                <option value="600">2× 200W (stacked)</option>
+                <option value="800">2× 400W (stacked)</option>
+              </select>
+            </div>
+            <p style="font-size:12px;color:var(--s-text-light);margin-top:16px;line-height:1.6;">
+              Times are estimates under good conditions. Charging slows above 80% due to battery management system.
+            </p>
+          </div>
+
+          <div class="sorein-estimator__result">
+            <p class="sorein-estimator__result-title">Estimated charging times</p>
+            <div class="sorein-estimator__bars">
+              <div class="sorein-estimator__bar-wrap">
+                <div class="sorein-estimator__bar-label">
+                  <span>0% → 80%</span>
+                </div>
+                <div class="sorein-estimator__bar-track">
+                  <div class="sorein-estimator__bar-fill" data-bar-0to80 style="width:0%"></div>
+                </div>
+                <p class="sorein-estimator__bar-time" data-time-0to80></p>
+              </div>
+              <div class="sorein-estimator__bar-wrap">
+                <div class="sorein-estimator__bar-label">
+                  <span>80% → 100% top-off</span>
+                </div>
+                <div class="sorein-estimator__bar-track">
+                  <div class="sorein-estimator__bar-fill sorein-estimator__bar-fill--secondary" data-bar-80to100 style="width:0%"></div>
+                </div>
+                <p class="sorein-estimator__bar-time" data-time-80to100></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.sorein-estimator -->
+    {%- endif -%}
+
+  </div><!-- /.sorein-container -->
+</div>
+
+{% schema %}
+{
+  "name": "Sorein Solar Panels",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Recharge From The Sun" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "IP67 monocrystalline panels engineered for Nordic weather and portable charging." },
+    { "type": "collection", "id": "collection_handle", "label": "Solar panels collection" },
+    { "type": "checkbox", "id": "show_estimator", "label": "Show charging estimator", "default": true }
+  ],
+  "presets": [
+    { "name": "Sorein Solar Panels" }
+  ]
+}
+{% endschema %}

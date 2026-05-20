@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "sorein-builder-page": {
+      "type": "sorein-a6-builder-3d",
+      "settings": {
+        "heading": "Build Your Infinite Power Eco-System",
+        "subheading": "Combine base, batteries, and inverters to match your exact power needs.",
+        "product_handle_base": "sorein-portable-power-station-main-base",
+        "product_handle_battery": "sorein-eb210-expansion-battery-module",
+        "product_handle_inverter": "sorein-extra-inverter",
+        "product_handle_chassis": "sorein-mobile-battery-chassis",
+        "max_batteries": 4,
+        "max_inverters": 3,
+        "vat_rate": 25
+      }
+    }
+  },
+  "order": [
+    "sorein-builder-page"
+  ]
+}
