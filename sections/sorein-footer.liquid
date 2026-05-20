@@ -18,18 +18,18 @@
           <p class="sorein-footer__tagline">{{ section.settings.tagline }}</p>
         {%- endif -%}
         <div class="sorein-footer__social">
-          {%- if settings.social_instagram != blank -%}
-            <a href="{{ settings.social_instagram }}" class="sorein-footer__social-link" aria-label="Instagram" rel="noopener" target="_blank">
+          {%- if settings.instagram_url != blank -%}
+            <a href="{{ settings.instagram_url }}" class="sorein-footer__social-link" aria-label="Instagram" rel="noopener" target="_blank">
               {% render 'sorein-icon', icon: 'instagram', width: 20, height: 20 %}
             </a>
           {%- endif -%}
-          {%- if settings.social_facebook != blank -%}
-            <a href="{{ settings.social_facebook }}" class="sorein-footer__social-link" aria-label="Facebook" rel="noopener" target="_blank">
+          {%- if settings.facebook_url != blank -%}
+            <a href="{{ settings.facebook_url }}" class="sorein-footer__social-link" aria-label="Facebook" rel="noopener" target="_blank">
               {% render 'sorein-icon', icon: 'facebook', width: 20, height: 20 %}
             </a>
           {%- endif -%}
-          {%- if settings.social_youtube != blank -%}
-            <a href="{{ settings.social_youtube }}" class="sorein-footer__social-link" aria-label="YouTube" rel="noopener" target="_blank">
+          {%- if settings.youtube_url != blank -%}
+            <a href="{{ settings.youtube_url }}" class="sorein-footer__social-link" aria-label="YouTube" rel="noopener" target="_blank">
               {% render 'sorein-icon', icon: 'youtube', width: 20, height: 20 %}
             </a>
           {%- endif -%}

@@ -1,9 +1,5 @@
 {
   "sections": {
-    "announcement": {
-      "type": "sorein-announcement-bar",
-      "settings": {}
-    },
     "hero": {
       "type": "sorein-energy-grid-hero",
       "blocks": {
@@ -12,7 +8,14 @@
         "stat3": { "type": "stat", "settings": { "value": "30 days", "label": "Return policy" } }
       },
       "block_order": ["stat1", "stat2", "stat3"],
-      "settings": {}
+      "settings": {
+        "eyebrow": "Premium Modular Power",
+        "heading": "Power Rebuilt for a New World.",
+        "title_highlight": "New World",
+        "subheading": "Modular power stations and solar systems for home backup, off-grid living, travel, and emergency independence.",
+        "cta1_label": "Shop Power Stations",
+        "cta2_label": "Build Your System"
+      }
     },
     "routes": {
       "type": "sorein-energy-routes",
@@ -58,18 +61,6 @@
       "block_order": ["tech1", "tech2", "tech3", "tech4", "tech5", "tech6"],
       "settings": {}
     },
-    "comparison": {
-      "type": "sorein-comparison",
-      "blocks": {
-        "row1": { "type": "row", "settings": { "feature": "Expandable capacity", "sorein_check": true, "fixed_check": false, "gen_check": false } },
-        "row2": { "type": "row", "settings": { "feature": "Silent operation", "sorein_check": true, "fixed_check": true, "gen_check": false } },
-        "row3": { "type": "row", "settings": { "feature": "Indoor safe", "sorein_check": true, "fixed_check": true, "gen_check": false } },
-        "row4": { "type": "row", "settings": { "feature": "Solar compatible", "sorein_check": true, "fixed_check": true, "gen_check": false } },
-        "row5": { "type": "row", "settings": { "feature": "Zero fuel cost", "sorein_check": true, "fixed_check": true, "gen_check": false } }
-      },
-      "block_order": ["row1", "row2", "row3", "row4", "row5"],
-      "settings": {}
-    },
     "trust": {
       "type": "sorein-trust",
       "blocks": {
@@ -79,16 +70,6 @@
         "t4": { "type": "trust_item", "settings": { "icon": "phone", "color": "teal", "title": "Expert Support", "description": "Energy specialists ready to help you build the right system." } }
       },
       "block_order": ["t1", "t2", "t3", "t4"],
-      "settings": {}
-    },
-    "testimonials": {
-      "type": "sorein-testimonials",
-      "blocks": {
-        "q1": { "type": "testimonial", "settings": { "stars": 5, "quote": "Powered our entire cabin for a full winter weekend. Silent, clean, and easy to set up.", "name": "Erik L.", "context": "Cabin owner, Dalarna" } },
-        "q2": { "type": "testimonial", "settings": { "stars": 5, "quote": "Took it van camping for two weeks. Ran the fridge, lights, and laptop with zero issues.", "name": "Sofia M.", "context": "Van traveller" } },
-        "q3": { "type": "testimonial", "settings": { "stars": 5, "quote": "The modular design is the killer feature. I started with the base and added a battery module six months later.", "name": "Jens H.", "context": "Home backup user" } }
-      },
-      "block_order": ["q1", "q2", "q3"],
       "settings": {}
     },
     "faq": {
@@ -103,5 +84,5 @@
       "settings": {}
     }
   },
-  "order": ["announcement", "hero", "routes", "products", "builder", "solar", "technology", "comparison", "trust", "testimonials", "faq"]
+  "order": ["hero", "routes", "products", "builder", "solar", "technology", "trust", "faq"]
 }
