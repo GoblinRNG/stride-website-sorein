@@ -1,0 +1,90 @@
+{
+  "sections": {
+    "sorein-hero": {
+      "type": "sorein-hero-3d",
+      "settings": {
+        "headline": "Power Anything,\nAnywhere.",
+        "headline_accent": "Anywhere.",
+        "subheadline": "Modular power systems built for Nordic conditions, off-grid living, and reliable home backup.",
+        "cta_primary_text": "Build Your System",
+        "cta_primary_url": "/pages/build-your-system",
+        "cta_secondary_text": "Shop Power Stations",
+        "cta_secondary_url": "/collections/power-stations",
+        "trust_1": "Klarna Available",
+        "trust_2": "Secure Payments",
+        "trust_3": "Free & Fast Delivery",
+        "trust_4": "5 Year Warranty"
+      }
+    },
+    "sorein-orbit": {
+      "type": "sorein-product-orbit",
+      "settings": {
+        "heading": "The Sorein System Range",
+        "subheading": "From portable day-trip power to whole-home independence.",
+        "collection_handle": "power-stations",
+        "show_compare_price": true
+      }
+    },
+    "sorein-builder": {
+      "type": "sorein-a6-builder-3d",
+      "settings": {
+        "heading": "Build Your Infinite Power Eco-System",
+        "subheading": "Combine base, batteries, and inverters to match your exact power needs.",
+        "product_handle_base": "sorein-portable-power-station-main-base",
+        "product_handle_battery": "sorein-eb210-expansion-battery-module",
+        "product_handle_inverter": "sorein-extra-inverter",
+        "product_handle_chassis": "sorein-mobile-battery-chassis",
+        "max_batteries": 4,
+        "max_inverters": 3,
+        "vat_rate": 25
+      }
+    },
+    "sorein-solar": {
+      "type": "sorein-solar-panels",
+      "settings": {
+        "heading": "Recharge From The Sun",
+        "subheading": "IP67 monocrystalline panels engineered for Nordic weather and portable charging.",
+        "collection_handle": "solar-panels",
+        "show_estimator": true
+      }
+    },
+    "sorein-use-cases": {
+      "type": "sorein-use-cases",
+      "settings": {
+        "heading": "Power For Every Situation"
+      }
+    },
+    "sorein-compare": {
+      "type": "sorein-comparison-matrix",
+      "settings": {
+        "heading": "Compare All Systems",
+        "collection_handle": "power-stations"
+      }
+    },
+    "sorein-trust": {
+      "type": "sorein-trust-compliance",
+      "settings": {
+        "heading": "Built to a Higher Standard",
+        "show_environmental": true
+      }
+    },
+    "sorein-reviews": {
+      "type": "sorein-reviews-cinematic",
+      "settings": {
+        "heading": "What Our Customers Say",
+        "overall_rating": "4.8",
+        "show_fallback_reviews": true
+      }
+    }
+  },
+  "order": [
+    "sorein-hero",
+    "sorein-orbit",
+    "sorein-builder",
+    "sorein-solar",
+    "sorein-use-cases",
+    "sorein-compare",
+    "sorein-trust",
+    "sorein-reviews"
+  ]
+}

@@ -1,0 +1,118 @@
+<div class="sorein-section sorein-trust" data-section-id="{{ section.id }}" data-section-type="sorein-trust-compliance">
+  <div class="sorein-container">
+
+    <div class="sorein-trust__header sorein-reveal">
+      <span class="sorein-eyebrow">Quality & Safety</span>
+      <h2 class="sorein-trust__title">{{ section.settings.heading | escape }}</h2>
+      <p style="font-size:17px;color:var(--s-text-muted);max-width:560px;margin:0 auto;">
+        {{ section.settings.subheading | default: "Every Sorein system meets rigorous safety and environmental standards." | escape }}
+      </p>
+    </div>
+
+    {%- comment -%} Certification badges {%- endcomment -%}
+    <div class="sorein-trust__badges-grid sorein-reveal sorein-reveal--delay-1">
+
+      {%- assign cert_names = 'CE||RoHS||UN38.3||MSDS||ISO 9001||LFP Safe' | split: '||' -%}
+      {%- assign cert_icons = '🇪🇺||♻️||🔋||📋||⚙️||🛡️' | split: '||' -%}
+      {%- assign cert_notes = 'European Conformity||Hazardous substances restricted||Battery transport certification||Safety data sheets available||Quality management system||LiFePO4 — no thermal runaway' | split: '||' -%}
+
+      {%- for i in (0..5) -%}
+        <div class="sorein-trust-badge">
+          <div class="sorein-trust-badge__icon" aria-hidden="true">{{ cert_icons[i] }}</div>
+          <span class="sorein-trust-badge__name">{{ cert_names[i] }}</span>
+          <span class="sorein-trust-badge__note">{{ cert_notes[i] }}</span>
+        </div>
+      {%- endfor -%}
+
+    </div>
+
+    <p class="sorein-trust__disclamer">
+      All certifications are manufacturer-declared by Sorein Innovation Co., Limited and have not been independently verified by this retailer.
+      CE, RoHS, UN38.3, and MSDS documentation available upon request.
+    </p>
+
+    {%- if section.settings.show_environmental -%}
+      <div class="sorein-trust__grid sorein-reveal">
+
+        <div class="sorein-trust-block">
+          <h3 class="sorein-trust-block__title">Product Information</h3>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Manufacturer</span>
+            <span class="sorein-trust-block__val">Sorein Innovation Co., Limited</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Country of manufacture</span>
+            <span class="sorein-trust-block__val">China</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Battery chemistry</span>
+            <span class="sorein-trust-block__val">LiFePO4 (Lithium Iron Phosphate)</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Cycle life (to 80% capacity)</span>
+            <span class="sorein-trust-block__val">~3,500 cycles (manufacturer-declared)</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Spare parts available</span>
+            <span class="sorein-trust-block__val">Batteries, cables, connectors, modules</span>
+          </div>
+          <p class="sorein-trust-block__note">Spare parts and documentation available for at least 5 years from purchase. Contact support for availability.</p>
+        </div>
+
+        <div class="sorein-trust-block">
+          <h3 class="sorein-trust-block__title">Why LiFePO4?</h3>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Thermal stability</span>
+            <span class="sorein-trust-block__val">No thermal runaway risk</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Operating temperature</span>
+            <span class="sorein-trust-block__val">−20°C to +60°C (discharge)</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Self-discharge rate</span>
+            <span class="sorein-trust-block__val">~3% per month</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Depth of discharge</span>
+            <span class="sorein-trust-block__val">80–95% usable capacity</span>
+          </div>
+          <div class="sorein-trust-block__row">
+            <span class="sorein-trust-block__key">Indoor use</span>
+            <span class="sorein-trust-block__val">Safe — no off-gassing</span>
+          </div>
+          <p class="sorein-trust-block__note">LiFePO4 chemistry is inherently safer and longer-lasting than NMC alternatives — chosen specifically for Scandinavian climate use.</p>
+        </div>
+
+      </div><!-- /.sorein-trust__grid -->
+    {%- endif -%}
+
+    {%- if section.settings.show_warranty -%}
+      <div style="margin-top:40px;padding:36px;background:var(--s-off-white);border-radius:var(--s-radius-lg);border:1px solid var(--s-border);text-align:center;" class="sorein-reveal">
+        <div style="font-size:48px;margin-bottom:12px;" aria-hidden="true">🛡️</div>
+        <h3 style="font-size:24px;font-weight:800;margin:0 0 8px;">{{ section.settings.warranty_title | default: '5 Year Warranty' }}</h3>
+        <p style="font-size:15px;color:var(--s-text-muted);max-width:480px;margin:0 auto;">
+          {{ section.settings.warranty_text | default: 'All Sorein power stations include a 5-year manufacturer warranty covering defects in materials and workmanship. Battery capacity warranted to 70% for 3 years.' | escape }}
+        </p>
+      </div>
+    {%- endif -%}
+
+  </div><!-- /.sorein-container -->
+</div>
+
+{% schema %}
+{
+  "name": "Sorein Trust & Compliance",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Built to a Higher Standard" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "checkbox", "id": "show_environmental", "label": "Show product/environmental info", "default": true },
+    { "type": "checkbox", "id": "show_warranty", "label": "Show warranty block", "default": true },
+    { "type": "text", "id": "warranty_title", "label": "Warranty title", "default": "5 Year Warranty" },
+    { "type": "textarea", "id": "warranty_text", "label": "Warranty description" }
+  ],
+  "presets": [
+    { "name": "Sorein Trust & Compliance" }
+  ]
+}
+{% endschema %}

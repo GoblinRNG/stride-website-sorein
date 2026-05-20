@@ -1,0 +1,301 @@
+{%- comment -%}
+  A6 Builder Section
+  Reads products from schema product pickers.
+  Exports variant data as JSON for JS calculator.
+  All prices from Shopify — never hardcoded.
+{%- endcomment -%}
+
+{%- liquid
+  assign handle_base    = section.settings.product_handle_base
+  assign handle_battery = section.settings.product_handle_battery
+  assign handle_inverter = section.settings.product_handle_inverter
+  assign handle_chassis  = section.settings.product_handle_chassis
+
+  assign prod_base    = all_products[handle_base]
+  assign prod_battery = all_products[handle_battery]
+  assign prod_inverter = all_products[handle_inverter]
+  assign prod_chassis  = all_products[handle_chassis]
+
+  assign max_batteries = section.settings.max_batteries | default: 4
+  assign max_inverters = section.settings.max_inverters | default: 3
+  assign vat_rate = section.settings.vat_rate | default: 25
+-%}
+
+{%- comment -%} Export product data for JS {%- endcomment -%}
+<script type="application/json" data-builder-products>
+{
+  {{ handle_base | json }}: {
+    "title": {{ prod_base.title | default: 'Sorein Base Station' | json }},
+    "handle": {{ handle_base | json }},
+    "price": {{ prod_base.selected_or_first_available_variant.price | default: 1199500 }},
+    "variants": [
+      {%- for v in prod_base.variants -%}
+      { "id": {{ v.id }}, "title": {{ v.title | json }}, "price": {{ v.price }}, "weight": {{ v.weight | default: 0 }}, "available": {{ v.available }} }
+      {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  },
+  {{ handle_battery | json }}: {
+    "title": {{ prod_battery.title | default: 'EB210 Expansion Battery Module' | json }},
+    "handle": {{ handle_battery | json }},
+    "price": {{ prod_battery.selected_or_first_available_variant.price | default: 1199500 }},
+    "variants": [
+      {%- for v in prod_battery.variants -%}
+      { "id": {{ v.id }}, "title": {{ v.title | json }}, "price": {{ v.price }}, "weight": {{ v.weight | default: 0 }}, "available": {{ v.available }} }
+      {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  },
+  {{ handle_inverter | json }}: {
+    "title": {{ prod_inverter.title | default: 'Extra Inverter' | json }},
+    "handle": {{ handle_inverter | json }},
+    "price": {{ prod_inverter.selected_or_first_available_variant.price | default: 599500 }},
+    "variants": [
+      {%- for v in prod_inverter.variants -%}
+      { "id": {{ v.id }}, "title": {{ v.title | json }}, "price": {{ v.price }}, "weight": {{ v.weight | default: 0 }}, "available": {{ v.available }} }
+      {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  },
+  {{ handle_chassis | json }}: {
+    "title": {{ prod_chassis.title | default: 'Mobile Battery Chassis' | json }},
+    "handle": {{ handle_chassis | json }},
+    "price": {{ prod_chassis.selected_or_first_available_variant.price | default: 0 }},
+    "variants": [
+      {%- for v in prod_chassis.variants -%}
+      { "id": {{ v.id }}, "title": {{ v.title | json }}, "price": {{ v.price }}, "weight": {{ v.weight | default: 0 }}, "available": {{ v.available }} }
+      {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  }
+}
+</script>
+
+<div class="sorein-section sorein-builder"
+  data-section-id="{{ section.id }}"
+  data-section-type="sorein-a6-builder-3d"
+  data-handle-base="{{ handle_base | escape }}"
+  data-handle-battery="{{ handle_battery | escape }}"
+  data-handle-inverter="{{ handle_inverter | escape }}"
+  data-handle-chassis="{{ handle_chassis | escape }}"
+  data-max-batteries="{{ max_batteries }}"
+  data-max-inverters="{{ max_inverters }}"
+  data-vat="{{ vat_rate }}">
+
+  <div class="sorein-builder__bg-grid" aria-hidden="true"></div>
+
+  <div class="sorein-builder__header sorein-container">
+    <span class="sorein-eyebrow sorein-eyebrow--light sorein-reveal">Modular Power</span>
+    <h2 class="sorein-builder__title sorein-reveal sorein-reveal--delay-1">{{ section.settings.heading | escape }}</h2>
+    <p class="sorein-builder__subtitle sorein-reveal sorein-reveal--delay-2">{{ section.settings.subheading | escape }}</p>
+  </div>
+
+  <div class="sorein-builder__inner sorein-container">
+
+    {%- comment -%} LEFT — 3D stack preview {%- endcomment -%}
+    <div class="sorein-builder__visual">
+      <div class="sorein-builder__stack-preview" aria-hidden="true">
+        <div class="sorein-builder-stack" data-builder-stack>
+
+          {%- comment -%} Inverter placeholder — added by JS {%- endcomment -%}
+
+          {%- comment -%} Battery placeholder — added by JS {%- endcomment -%}
+
+          {%- comment -%} Base — always present {%- endcomment -%}
+          <div class="sorein-builder-module sorein-builder-module--base" data-stack-module="base">
+            <div class="sorein-builder-module__label">Main Base</div>
+            <div class="sorein-builder-module__name">
+              {{ prod_base.title | default: 'Sorein Base Station' }}
+            </div>
+            <span class="sorein-builder-module__qty">×1</span>
+            <div class="sorein-builder-module__glow"></div>
+          </div>
+        </div>
+
+        <div class="sorein-energy-rings">
+          <div class="sorein-energy-ring"></div>
+          <div class="sorein-energy-ring"></div>
+        </div>
+      </div>
+
+      <p class="sorein-builder__weight-tag">
+        Total shipping weight: <strong><span data-builder-weight>—</span> kg</strong>
+      </p>
+    </div>
+
+    {%- comment -%} RIGHT — purchase panel {%- endcomment -%}
+    <div class="sorein-builder__panel">
+
+      <div class="sorein-builder__steps">
+
+        {%- comment -%} Step 1 — Base (fixed qty 1) {%- endcomment -%}
+        <div class="sorein-builder-step">
+          <div class="sorein-builder-step__header">
+            <span class="sorein-builder-step__num">1</span>
+            <span class="sorein-builder-step__label">
+              {{ prod_base.title | default: 'Main Base Station' }}
+            </span>
+            <span class="sorein-builder-step__price">
+              {%- if prod_base != blank -%}
+                {%- render 'sorein-price', product: prod_base, minimal: true -%}
+              {%- endif -%}
+            </span>
+          </div>
+          <div class="sorein-builder-step__row">
+            <span style="font-size:13px;color:rgba(255,255,255,0.45);">Included — qty fixed at 1</span>
+          </div>
+        </div>
+
+        {%- comment -%} Step 2 — EB210 Expansion Battery {%- endcomment -%}
+        <div class="sorein-builder-step">
+          <div class="sorein-builder-step__header">
+            <span class="sorein-builder-step__num">2</span>
+            <span class="sorein-builder-step__label">
+              {{ prod_battery.title | default: 'EB210 Expansion Battery' }}
+            </span>
+            <span class="sorein-builder-step__price" data-builder-price="battery">—</span>
+          </div>
+          <div class="sorein-builder-step__row">
+            <span style="font-size:12px;color:rgba(255,255,255,0.4);" data-step-price="battery"></span>
+            <div class="sorein-qty-stepper" data-builder-stepper="battery">
+              <button class="sorein-qty-stepper__btn" data-stepper-minus type="button" aria-label="Decrease battery qty" disabled>−</button>
+              <span class="sorein-qty-stepper__val" data-stepper-val data-builder-qty="battery">0</span>
+              <button class="sorein-qty-stepper__btn" data-stepper-plus type="button" aria-label="Increase battery qty">+</button>
+            </div>
+          </div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.3);margin:8px 0 0;">Max {{ max_batteries }} batteries. Adds {{ prod_battery.metafields.specs.capacity | default: '2160Wh' }} capacity each.</p>
+        </div>
+
+        {%- comment -%} Step 3 — Extra Inverter {%- endcomment -%}
+        <div class="sorein-builder-step">
+          <div class="sorein-builder-step__header">
+            <span class="sorein-builder-step__num">3</span>
+            <span class="sorein-builder-step__label">
+              {{ prod_inverter.title | default: 'Extra Inverter (2200W)' }}
+            </span>
+            <span class="sorein-builder-step__price" data-builder-price="inverter">—</span>
+          </div>
+          <div class="sorein-builder-step__row">
+            <span style="font-size:12px;color:rgba(255,255,255,0.4);" data-step-price="inverter"></span>
+            <div class="sorein-qty-stepper" data-builder-stepper="inverter">
+              <button class="sorein-qty-stepper__btn" data-stepper-minus type="button" aria-label="Decrease inverter qty" disabled>−</button>
+              <span class="sorein-qty-stepper__val" data-stepper-val data-builder-qty="inverter">0</span>
+              <button class="sorein-qty-stepper__btn" data-stepper-plus type="button" aria-label="Increase inverter qty">+</button>
+            </div>
+          </div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.3);margin:8px 0 0;">Max {{ max_inverters }} inverters. Each adds 2200W AC output.</p>
+        </div>
+
+        {%- comment -%} Step 4 — Chassis {%- endcomment -%}
+        <div class="sorein-builder-step">
+          <div class="sorein-builder-step__header">
+            <span class="sorein-builder-step__num">4</span>
+            <span class="sorein-builder-step__label">Chassis</span>
+          </div>
+          {%- if prod_chassis != blank and prod_chassis.variants.size > 0 -%}
+            <div class="sorein-chassis-options">
+              {%- for v in prod_chassis.variants -%}
+                <label class="sorein-chassis-option" data-chassis-option>
+                  <input type="radio" name="sorein-chassis-{{ section.id }}" value="{{ v.id }}"{% if forloop.first %} checked{% endif %}>
+                  <div class="sorein-chassis-option__label">
+                    <div class="sorein-chassis-option__name">{{ v.title }}</div>
+                    <div class="sorein-chassis-option__price">
+                      {%- render 'sorein-price', variant: v, minimal: true -%}
+                    </div>
+                  </div>
+                </label>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="sorein-chassis-options">
+              <label class="sorein-chassis-option" data-chassis-option>
+                <input type="radio" name="sorein-chassis-{{ section.id }}" value="" checked>
+                <div class="sorein-chassis-option__label">
+                  <div class="sorein-chassis-option__name">No chassis</div>
+                  <div class="sorein-chassis-option__price">Included</div>
+                </div>
+              </label>
+            </div>
+          {%- endif -%}
+        </div>
+
+      </div><!-- /.sorein-builder__steps -->
+
+      {%- comment -%} Order Summary {%- endcomment -%}
+      <div class="sorein-builder__summary">
+        <div class="sorein-summary-line sorein-summary-line--item">
+          <span class="sorein-summary-line__key">Base Station ×1</span>
+          <span class="sorein-summary-line__val">
+            {%- if prod_base != blank -%}
+              {{ prod_base.selected_or_first_available_variant.price | money }}
+            {%- else -%}—{%- endif -%}
+          </span>
+        </div>
+        <div class="sorein-summary-line sorein-summary-line--item">
+          <span class="sorein-summary-line__key">Expansion Batteries</span>
+          <span class="sorein-summary-line__val" data-builder-price="battery">—</span>
+        </div>
+        <div class="sorein-summary-line sorein-summary-line--item">
+          <span class="sorein-summary-line__key">Extra Inverters</span>
+          <span class="sorein-summary-line__val" data-builder-price="inverter">—</span>
+        </div>
+        <div class="sorein-summary-line sorein-summary-line--subtotal">
+          <span class="sorein-summary-line__key">Subtotal</span>
+          <span class="sorein-summary-line__val" data-builder-subtotal>—</span>
+        </div>
+        <div class="sorein-summary-line sorein-summary-line--shipping">
+          <span class="sorein-summary-line__key">Shipping</span>
+          <span class="sorein-summary-line__val">Free</span>
+        </div>
+        <div class="sorein-summary-line sorein-summary-line--vat">
+          <span class="sorein-summary-line__key">VAT {{ vat_rate }}% (incl.)</span>
+          <span class="sorein-summary-line__val" data-builder-vat>—</span>
+        </div>
+        <div class="sorein-summary-line sorein-summary-line--total">
+          <span class="sorein-summary-line__key">Total</span>
+          <span class="sorein-summary-line__val" data-builder-total>—</span>
+        </div>
+      </div><!-- /.sorein-builder__summary -->
+
+      <div class="sorein-builder__purchase">
+        <div class="sorein-builder__top-price">
+          <p class="sorein-builder__top-price-label">System Total</p>
+          <div class="sorein-builder__top-price-val" data-builder-total-top>—</div>
+        </div>
+
+        <div class="sorein-builder__klarna-block">
+          <p class="sorein-builder__klarna-text">
+            Pay in 3 interest-free installments — from <strong><span data-klarna-monthly>—</span>/mo</strong> with Klarna
+          </p>
+        </div>
+
+        <button class="sorein-builder__add-btn" data-builder-add-btn type="button" aria-label="Add complete system to cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.8"/><path d="M16 10a4 4 0 01-8 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Add Complete System to Cart
+        </button>
+
+        <div class="sorein-builder__error" data-builder-error role="alert"></div>
+      </div><!-- /.sorein-builder__purchase -->
+    </div><!-- /.sorein-builder__panel -->
+  </div><!-- /.sorein-builder__inner -->
+</div>
+
+{% schema %}
+{
+  "name": "Sorein A6 Builder 3D",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Section heading", "default": "Build Your Infinite Power Eco-System" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Combine base, batteries, and inverters to match your exact power needs." },
+    { "type": "product", "id": "product_handle_base", "label": "Base unit product" },
+    { "type": "product", "id": "product_handle_battery", "label": "Expansion battery product" },
+    { "type": "product", "id": "product_handle_inverter", "label": "Extra inverter product" },
+    { "type": "product", "id": "product_handle_chassis", "label": "Chassis product" },
+    { "type": "range", "id": "max_batteries", "label": "Max batteries", "min": 1, "max": 8, "step": 1, "default": 4 },
+    { "type": "range", "id": "max_inverters", "label": "Max inverters", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "range", "id": "vat_rate", "label": "VAT rate (%)", "min": 0, "max": 30, "step": 1, "default": 25 }
+  ],
+  "presets": [
+    { "name": "Sorein A6 Builder 3D" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,67 @@
+{%- comment -%}
+  Sorein Price Snippet
+  Usage:
+    render 'sorein-price', product: product
+    render 'sorein-price', product: product, show_compare: true
+    render 'sorein-price', variant: variant, minimal: true
+    render 'sorein-price', product: product, minimal: true
+{%- endcomment -%}
+
+{%- liquid
+  if variant != blank
+    assign price_variant = variant
+  elsif product != blank
+    assign price_variant = product.selected_or_first_available_variant
+  endif
+  assign show_comp = show_compare | default: true
+  if minimal
+    assign show_comp = false
+  endif
+-%}
+
+{%- if price_variant != blank -%}
+  <div class="sorein-price" itemscope itemtype="https://schema.org/Offer">
+    <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+
+    <span class="sorein-price__current" itemprop="price" content="{{ price_variant.price | divided_by: 100.0 }}">
+      {{ price_variant.price | money_without_trailing_zeros }}
+    </span>
+
+    {%- if show_comp and price_variant.compare_at_price > price_variant.price -%}
+      <span class="sorein-price__compare" aria-label="Regular price">
+        {{ price_variant.compare_at_price | money_without_trailing_zeros }}
+      </span>
+      {%- unless minimal -%}
+        {%- assign savings = price_variant.compare_at_price | minus: price_variant.price -%}
+        <span class="sorein-price__save" aria-label="Save {{ savings | money_without_trailing_zeros }}">
+          Save {{ savings | money_without_trailing_zeros }}
+        </span>
+      {%- endunless -%}
+    {%- endif -%}
+
+    {%- if price_variant.available == false -%}
+      <span class="sorein-price__unavailable" style="font-size:12px;color:var(--s-red);font-weight:600;margin-left:4px;">Sold Out</span>
+    {%- endif -%}
+  </div>
+
+{%- elsif product != blank -%}
+  {%- comment -%} Price range for products with multiple variants {%- endcomment -%}
+  <div class="sorein-price">
+    {%- if product.price_varies -%}
+      <span class="sorein-price__current">
+        From {{ product.price_min | money_without_trailing_zeros }}
+      </span>
+    {%- else -%}
+      <span class="sorein-price__current">
+        {{ product.price | money_without_trailing_zeros }}
+      </span>
+      {%- if show_comp and product.compare_at_price_max > product.price -%}
+        <span class="sorein-price__compare">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span>
+        {%- unless minimal -%}
+          {%- assign savings = product.compare_at_price_max | minus: product.price -%}
+          <span class="sorein-price__save">Save {{ savings | money_without_trailing_zeros }}</span>
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+{%- endif -%}

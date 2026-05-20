@@ -1,0 +1,110 @@
+<header class="sorein-nav" role="banner" data-section-id="{{ section.id }}">
+  <div class="sorein-nav__inner">
+
+    {%- comment -%} Logo {%- endcomment -%}
+    <a href="{{ routes.root_url }}" class="sorein-nav__logo" aria-label="{{ shop.name }} — home">
+      {%- if section.settings.logo -%}
+        <img src="{{ section.settings.logo | image_url: width: 160 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ section.settings.logo_width | default: 120 }}"
+          height="36"
+          loading="eager">
+      {%- else -%}
+        <div class="sorein-nav__logo-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 2L15 5.5V12.5L9 16L3 12.5V5.5L9 2Z" fill="white" opacity="0.9"/>
+            <path d="M9 2L9 16" stroke="#00c9a7" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="sorein-nav__logo-text">{{ shop.name | default: 'SOREIN' }}</span>
+      {%- endif -%}
+    </a>
+
+    {%- comment -%} Desktop nav {%- endcomment -%}
+    <nav aria-label="Main navigation">
+      <ul class="sorein-nav__links" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'nav_link' -%}
+            <li role="listitem" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.url }}"
+                class="sorein-nav__link{% if request.path == block.settings.url %} sorein-nav__link--active{% endif %}">
+                {{ block.settings.label | escape }}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.blocks.size == 0 -%}
+          <li role="listitem"><a href="/collections/power-stations" class="sorein-nav__link">Power Stations</a></li>
+          <li role="listitem"><a href="/pages/build-your-system" class="sorein-nav__link">Build Your System</a></li>
+          <li role="listitem"><a href="/collections/solar-panels" class="sorein-nav__link">Solar Panels</a></li>
+          <li role="listitem"><a href="/pages/technology" class="sorein-nav__link">Technology</a></li>
+          <li role="listitem"><a href="/pages/support" class="sorein-nav__link">Support</a></li>
+        {%- endif -%}
+      </ul>
+    </nav>
+
+    {%- comment -%} Actions {%- endcomment -%}
+    <div class="sorein-nav__actions">
+      {%- if section.settings.show_search -%}
+        <a href="{{ routes.search_url }}" class="sorein-nav__cart-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </a>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="sorein-nav__cart-btn" aria-label="Cart ({{ cart.item_count }} items)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.8"/><path d="M16 10a4 4 0 01-8 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="sorein-nav__cart-count" aria-label="{{ cart.item_count }} items">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+
+      <button class="sorein-nav__menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sorein-mobile-nav">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+  </div><!-- /.sorein-nav__inner -->
+
+  {%- comment -%} Mobile menu {%- endcomment -%}
+  <nav class="sorein-nav__mobile" id="sorein-mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
+    <ul class="sorein-nav__mobile-links" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'nav_link' -%}
+          <li role="listitem">
+            <a href="{{ block.settings.url }}" class="sorein-nav__mobile-link">{{ block.settings.label | escape }}</a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if section.blocks.size == 0 -%}
+        <li><a href="/collections/power-stations" class="sorein-nav__mobile-link">Power Stations</a></li>
+        <li><a href="/pages/build-your-system" class="sorein-nav__mobile-link">Build Your System</a></li>
+        <li><a href="/collections/solar-panels" class="sorein-nav__mobile-link">Solar Panels</a></li>
+        <li><a href="/pages/technology" class="sorein-nav__mobile-link">Technology</a></li>
+        <li><a href="/pages/support" class="sorein-nav__mobile-link">Support</a></li>
+      {%- endif -%}
+    </ul>
+  </nav>
+
+</header>
+
+{% schema %}
+{
+  "name": "Sorein Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    { "type": "range", "id": "logo_width", "label": "Logo width (px)", "min": 60, "max": 200, "step": 4, "default": 120 },
+    { "type": "checkbox", "id": "show_search", "label": "Show search icon", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Nav link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Link label", "default": "Power Stations" },
+        { "type": "url", "id": "url", "label": "Link URL" }
+      ]
+    }
+  ],
+  "max_blocks": 8
+}
+{% endschema %}

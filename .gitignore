@@ -1,0 +1,8 @@
+# Shopify CLI
+.shopify/
+node_modules/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
