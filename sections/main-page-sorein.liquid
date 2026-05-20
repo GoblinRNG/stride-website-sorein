@@ -1,0 +1,24 @@
+<section class="sorein-page" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-page__layout">
+      <div class="sorein-page__content">
+        {%- if section.settings.show_title -%}
+          <h1 class="sorein-page__title">{{ page.title }}</h1>
+        {%- endif -%}
+        <div class="sorein-page__body">{{ page.content }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "settings": [
+    { "type": "checkbox", "id": "show_title", "label": "Show page title", "default": true }
+  ],
+  "presets": [
+    { "name": "Page Content" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,126 @@
+<section class="sorein-pdp" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-pdp__layout">
+
+      <!-- Media gallery -->
+      <div class="sorein-pdp__media">
+        <div class="sorein-pdp__media-main">
+          {%- if product.selected_or_first_available_variant.image -%}
+            <img id="sorein-pdp-main-img"
+                 src="{{ product.selected_or_first_available_variant.image | image_url: width: 900 }}"
+                 alt="{{ product.selected_or_first_available_variant.image.alt | escape }}"
+                 width="900" height="600"
+                 loading="eager">
+          {%- elsif product.featured_image -%}
+            <img id="sorein-pdp-main-img"
+                 src="{{ product.featured_image | image_url: width: 900 }}"
+                 alt="{{ product.featured_image.alt | escape }}"
+                 width="900" height="600"
+                 loading="eager">
+          {%- endif -%}
+        </div>
+        {%- if product.images.size > 1 -%}
+          <div class="sorein-pdp__thumbnails">
+            {%- for image in product.images limit: 8 -%}
+              <button class="sorein-pdp__thumb{% if forloop.first %} is-active{% endif %}"
+                      data-pdp-thumb="{{ image | image_url: width: 900 }}"
+                      aria-label="View image {{ forloop.index }}">
+                <img src="{{ image | image_url: width: 120 }}"
+                     alt="{{ image.alt | escape }}"
+                     width="120" height="80"
+                     loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Product info -->
+      <div class="sorein-pdp__info">
+        {%- if product.vendor != blank -%}
+          <p class="sorein-pdp__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+        <h1 class="sorein-pdp__title">{{ product.title }}</h1>
+
+        <div class="sorein-pdp__price">
+          {% render 'sorein-price', product_or_variant: product.selected_or_first_available_variant %}
+        </div>
+
+        {%- if product.description != blank -%}
+          <div class="sorein-pdp__description">{{ product.description }}</div>
+        {%- endif -%}
+
+        <!-- Variant selector -->
+        {%- if product.has_only_default_variant == false -%}
+          {%- for option in product.options_with_values -%}
+            <div class="sorein-pdp__option">
+              <label class="sorein-pdp__option-label">{{ option.name }}</label>
+              <div class="sorein-pdp__option-values">
+                {%- for value in option.values -%}
+                  <button class="sorein-pdp__option-btn{% if option.selected_value == value %} is-selected{% endif %}"
+                          data-variant-option="{{ option.position }}"
+                          data-value="{{ value }}">
+                    {{ value }}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+
+        <!-- Add to cart -->
+        <form action="{{ routes.cart_add_url }}" method="post" class="sorein-pdp__form" data-add-to-cart>
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button type="submit"
+                  class="sorein-btn sorein-btn--primary sorein-btn--lg sorein-pdp__add-btn"
+                  {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+            {%- if product.selected_or_first_available_variant.available -%}
+              Add to Cart
+            {%- else -%}
+              Sold Out
+            {%- endif -%}
+          </button>
+        </form>
+
+        {% render 'sorein-trust-badges' %}
+
+        <!-- Spec grid -->
+        {% render 'sorein-spec-grid' %}
+      </div>
+    </div>
+
+    <!-- Related products -->
+    {%- if section.settings.show_related -%}
+      {%- assign related_col = collections[section.settings.related_collection] -%}
+      {%- if related_col != blank and related_col.products_count > 1 -%}
+        <div class="sorein-pdp__related">
+          <h2 class="sorein-section-title" style="margin-bottom:1.5rem;">You May Also Like</h2>
+          <div class="sorein-orbit" data-orbit>
+            <div class="sorein-orbit__track" data-orbit-track>
+              {%- for rel in related_col.products limit: 6 -%}
+                {%- unless rel.id == product.id -%}
+                  <div class="sorein-orbit__item">
+                    {% render 'sorein-product-card', card_product: rel %}
+                  </div>
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Page",
+  "settings": [
+    { "type": "checkbox", "id": "show_related", "label": "Show related products", "default": true },
+    { "type": "collection", "id": "related_collection", "label": "Related products collection" }
+  ],
+  "presets": [
+    { "name": "Product Page" }
+  ]
+}
+{% endschema %}

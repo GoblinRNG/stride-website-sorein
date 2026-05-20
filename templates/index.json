@@ -1,0 +1,107 @@
+{
+  "sections": {
+    "announcement": {
+      "type": "sorein-announcement-bar",
+      "settings": {}
+    },
+    "hero": {
+      "type": "sorein-energy-grid-hero",
+      "blocks": {
+        "stat1": { "type": "stat", "settings": { "value": "2 400 W", "label": "AC output" } },
+        "stat2": { "type": "stat", "settings": { "value": "LiFePO4", "label": "Chemistry" } },
+        "stat3": { "type": "stat", "settings": { "value": "30 days", "label": "Return policy" } }
+      },
+      "block_order": ["stat1", "stat2", "stat3"],
+      "settings": {}
+    },
+    "routes": {
+      "type": "sorein-energy-routes",
+      "blocks": {
+        "route1": { "type": "route", "settings": { "icon": "home", "color": "teal", "title": "Home Backup", "description": "Keep your family powered during grid outages.", "filter_tag": "home-backup" } },
+        "route2": { "type": "route", "settings": { "icon": "cabin", "color": "teal", "title": "Off-Grid Cabin", "description": "Full cabin power from solar. No grid required.", "filter_tag": "cabin" } },
+        "route3": { "type": "route", "settings": { "icon": "van", "color": "solar", "title": "Camper Van", "description": "Vehicle-rechargeable. Silent. Compact.", "filter_tag": "vanlife" } },
+        "route4": { "type": "route", "settings": { "icon": "camping", "color": "solar", "title": "Camping", "description": "Portable power for any adventure.", "filter_tag": "camping" } },
+        "route5": { "type": "route", "settings": { "icon": "worksite", "color": "battery", "title": "Worksite", "description": "230V output for tools and equipment anywhere.", "filter_tag": "worksite" } },
+        "route6": { "type": "route", "settings": { "icon": "emergency", "color": "battery", "title": "Emergency", "description": "Always-ready backup for critical situations.", "filter_tag": "emergency" } }
+      },
+      "block_order": ["route1", "route2", "route3", "route4", "route5", "route6"],
+      "settings": {}
+    },
+    "products": {
+      "type": "sorein-product-universe",
+      "settings": {}
+    },
+    "builder": {
+      "type": "sorein-builder-3d",
+      "settings": {}
+    },
+    "solar": {
+      "type": "sorein-solar-3d",
+      "blocks": {
+        "spec1": { "type": "spec", "settings": { "value": "800W", "label": "Max solar input" } },
+        "spec2": { "type": "spec", "settings": { "value": "MPPT", "label": "Charge controller" } },
+        "spec3": { "type": "spec", "settings": { "value": "12–60V", "label": "Input voltage" } }
+      },
+      "block_order": ["spec1", "spec2", "spec3"],
+      "settings": {}
+    },
+    "technology": {
+      "type": "sorein-technology-reveal",
+      "blocks": {
+        "tech1": { "type": "tech", "settings": { "icon": "battery", "color": "teal", "title": "LiFePO4 Chemistry", "description": "3,000+ charge cycles. No thermal runaway. Safe indoors." } },
+        "tech2": { "type": "tech", "settings": { "icon": "sine-wave", "color": "solar", "title": "Pure Sine Wave", "description": "Clean AC output for sensitive electronics and medical devices." } },
+        "tech3": { "type": "tech", "settings": { "icon": "modular", "color": "battery", "title": "Modular Design", "description": "Add capacity as your needs grow. No tools required." } },
+        "tech4": { "type": "tech", "settings": { "icon": "solar", "color": "teal", "title": "MPPT Solar", "description": "Extracts up to 30% more energy from your panels." } },
+        "tech5": { "type": "tech", "settings": { "icon": "shield", "color": "solar", "title": "BMS Protection", "description": "Multi-layer protection against overcharge and short circuits." } },
+        "tech6": { "type": "tech", "settings": { "icon": "leaf", "color": "battery", "title": "Zero Emissions", "description": "Silent. No fumes. Safe for indoor use year-round." } }
+      },
+      "block_order": ["tech1", "tech2", "tech3", "tech4", "tech5", "tech6"],
+      "settings": {}
+    },
+    "comparison": {
+      "type": "sorein-comparison",
+      "blocks": {
+        "row1": { "type": "row", "settings": { "feature": "Expandable capacity", "sorein_check": true, "fixed_check": false, "gen_check": false } },
+        "row2": { "type": "row", "settings": { "feature": "Silent operation", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        "row3": { "type": "row", "settings": { "feature": "Indoor safe", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        "row4": { "type": "row", "settings": { "feature": "Solar compatible", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        "row5": { "type": "row", "settings": { "feature": "Zero fuel cost", "sorein_check": true, "fixed_check": true, "gen_check": false } }
+      },
+      "block_order": ["row1", "row2", "row3", "row4", "row5"],
+      "settings": {}
+    },
+    "trust": {
+      "type": "sorein-trust",
+      "blocks": {
+        "t1": { "type": "trust_item", "settings": { "icon": "shield", "color": "teal", "title": "30-Day Returns", "description": "Try risk-free. Return within 30 days for a full refund." } },
+        "t2": { "type": "trust_item", "settings": { "icon": "award", "color": "solar", "title": "2-Year Warranty", "description": "Full manufacturer warranty on every unit." } },
+        "t3": { "type": "trust_item", "settings": { "icon": "leaf", "color": "battery", "title": "Carbon Neutral Shipping", "description": "Every shipment offset at no extra cost." } },
+        "t4": { "type": "trust_item", "settings": { "icon": "phone", "color": "teal", "title": "Expert Support", "description": "Energy specialists ready to help you build the right system." } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": {}
+    },
+    "testimonials": {
+      "type": "sorein-testimonials",
+      "blocks": {
+        "q1": { "type": "testimonial", "settings": { "stars": 5, "quote": "Powered our entire cabin for a full winter weekend. Silent, clean, and easy to set up.", "name": "Erik L.", "context": "Cabin owner, Dalarna" } },
+        "q2": { "type": "testimonial", "settings": { "stars": 5, "quote": "Took it van camping for two weeks. Ran the fridge, lights, and laptop with zero issues.", "name": "Sofia M.", "context": "Van traveller" } },
+        "q3": { "type": "testimonial", "settings": { "stars": 5, "quote": "The modular design is the killer feature. I started with the base and added a battery module six months later.", "name": "Jens H.", "context": "Home backup user" } }
+      },
+      "block_order": ["q1", "q2", "q3"],
+      "settings": {}
+    },
+    "faq": {
+      "type": "sorein-faq",
+      "blocks": {
+        "faq1": { "type": "question", "settings": { "question": "How long does the battery last?", "answer": "<p>Runtime depends on your load. With a 2 kWh configuration, you can run a 200W fridge for ~8 hours, or charge a laptop 20+ times.</p>" } },
+        "faq2": { "type": "question", "settings": { "question": "Can I add more capacity later?", "answer": "<p>Yes. Each battery module adds 1 kWh. No tools required.</p>" } },
+        "faq3": { "type": "question", "settings": { "question": "Is it safe to use indoors?", "answer": "<p>Completely. LiFePO4 produces no fumes and has no thermal runaway risk.</p>" } },
+        "faq4": { "type": "question", "settings": { "question": "What is the return policy?", "answer": "<p>30-day returns. Contact us and we'll arrange a free return and full refund.</p>" } }
+      },
+      "block_order": ["faq1", "faq2", "faq3", "faq4"],
+      "settings": {}
+    }
+  },
+  "order": ["announcement", "hero", "routes", "products", "builder", "solar", "technology", "comparison", "trust", "testimonials", "faq"]
+}

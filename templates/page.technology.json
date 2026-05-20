@@ -1,0 +1,35 @@
+{
+  "sections": {
+    "hero_text": {
+      "type": "main-page-sorein",
+      "settings": { "show_title": true }
+    },
+    "technology": {
+      "type": "sorein-technology-reveal",
+      "blocks": {
+        "tech1": { "type": "tech", "settings": { "icon": "battery", "color": "teal", "title": "LiFePO4 Chemistry", "description": "3,000+ charge cycles. No thermal runaway. Completely safe indoors." } },
+        "tech2": { "type": "tech", "settings": { "icon": "sine-wave", "color": "solar", "title": "Pure Sine Wave Output", "description": "Compatible with all appliances including sensitive electronics." } },
+        "tech3": { "type": "tech", "settings": { "icon": "modular", "color": "battery", "title": "Tool-Free Modular", "description": "Snap-lock connectors. Expand capacity in under 60 seconds." } },
+        "tech4": { "type": "tech", "settings": { "icon": "solar", "color": "teal", "title": "MPPT Charge Controller", "description": "Up to 30% more energy extracted from every panel." } },
+        "tech5": { "type": "tech", "settings": { "icon": "shield", "color": "solar", "title": "12-Layer BMS", "description": "Overcharge, over-discharge, short circuit, and temperature protection." } },
+        "tech6": { "type": "tech", "settings": { "icon": "globe", "color": "battery", "title": "Universal Voltage", "description": "Supports 230V EU/UK and 120V US appliances simultaneously." } }
+      },
+      "block_order": ["tech1", "tech2", "tech3", "tech4", "tech5", "tech6"],
+      "settings": { "eyebrow": "Engineering", "title": "Inside Every SOREIN Unit" }
+    },
+    "comparison": {
+      "type": "sorein-comparison",
+      "blocks": {
+        "row1": { "type": "row", "settings": { "feature": "Expandable capacity", "sorein_check": true, "fixed_check": false, "gen_check": false } },
+        "row2": { "type": "row", "settings": { "feature": "Silent operation", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        "row3": { "type": "row", "settings": { "feature": "Indoor safe", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        "row4": { "type": "row", "settings": { "feature": "Solar compatible", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        "row5": { "type": "row", "settings": { "feature": "Zero fuel cost", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        "row6": { "type": "row", "settings": { "feature": "High surge power", "sorein_check": true, "fixed_check": false, "gen_check": true } }
+      },
+      "block_order": ["row1", "row2", "row3", "row4", "row5", "row6"],
+      "settings": {}
+    }
+  },
+  "order": ["hero_text", "technology", "comparison"]
+}

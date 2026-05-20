@@ -1,0 +1,86 @@
+<header class="sorein-nav" id="sorein-header" role="banner">
+  <div class="sorein-container sorein-nav__inner">
+
+    <!-- Logo -->
+    <a href="{{ routes.root_url }}" class="sorein-nav__logo" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo -%}
+        <img src="{{ section.settings.logo | image_url: width: 160 }}"
+             alt="{{ shop.name }}"
+             width="120"
+             height="40"
+             loading="eager">
+      {%- else -%}
+        <span class="sorein-nav__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="sorein-nav__links" aria-label="Main navigation">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}"
+           class="sorein-nav__link{% if link.active %} is-active{% endif %}"
+           {% if link.active %}aria-current="page"{% endif %}>
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+    </nav>
+
+    <!-- Action buttons -->
+    <div class="sorein-nav__actions">
+
+      <!-- Search -->
+      <button class="sorein-nav__action-btn" aria-label="Search" data-search-toggle>
+        {% render 'sorein-icon', icon: 'search' %}
+      </button>
+
+      <!-- Cart -->
+      <button class="sorein-nav__action-btn" aria-label="Cart ({{ cart.item_count }} items)" data-cart-toggle>
+        {% render 'sorein-icon', icon: 'cart' %}
+        {%- if cart.item_count > 0 -%}
+          <span class="sorein-nav__cart-badge" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </button>
+
+      <!-- Mobile menu toggle -->
+      <button class="sorein-nav__mobile-toggle"
+              aria-expanded="false"
+              aria-controls="sorein-mobile-nav"
+              aria-label="Open menu">
+        {% render 'sorein-icon', icon: 'menu' %}
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Mobile off-canvas menu -->
+  <div class="sorein-nav__mobile-menu" id="sorein-mobile-nav" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <div class="sorein-nav__mobile-header">
+      <span class="sorein-nav__logo-text">{{ shop.name }}</span>
+      <button class="sorein-nav__mobile-close" aria-label="Close menu">
+        {% render 'sorein-icon', icon: 'close' %}
+      </button>
+    </div>
+    <nav aria-label="Mobile navigation">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}"
+           class="sorein-nav__mobile-link{% if link.active %} is-active{% endif %}"
+           {% if link.active %}aria-current="page"{% endif %}>
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+    </nav>
+  </div>
+
+  <!-- Mobile menu backdrop -->
+  <div class="sorein-nav__backdrop" aria-hidden="true" data-menu-backdrop></div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

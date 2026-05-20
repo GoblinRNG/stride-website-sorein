@@ -1,0 +1,115 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Sorein Energy Grid",
+    "theme_author": "SOREIN",
+    "theme_version": "4.0.0",
+    "theme_documentation_url": "https://sorein.com",
+    "theme_support_url": "https://sorein.com/support"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "accent_teal",
+        "label": "Energy Teal (accent)",
+        "default": "#00d4aa"
+      },
+      {
+        "type": "color",
+        "id": "accent_solar",
+        "label": "Solar Orange (accent)",
+        "default": "#f5a623"
+      },
+      {
+        "type": "color",
+        "id": "accent_battery",
+        "label": "Battery Blue (accent)",
+        "default": "#4db8ff"
+      }
+    ]
+  },
+  {
+    "name": "Media",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32x32px PNG recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Header logo",
+        "info": "SVG or PNG with transparent background"
+      }
+    ]
+  },
+  {
+    "name": "3D / Spline Scenes",
+    "settings": [
+      {
+        "type": "text",
+        "id": "spline_hero_url",
+        "label": "Spline Hero Scene URL",
+        "info": "Optional. Paste a public Spline scene URL (https://my.spline.design/...). Leave blank to use CSS 3D fallback."
+      },
+      {
+        "type": "text",
+        "id": "spline_builder_url",
+        "label": "Spline Builder Scene URL",
+        "info": "Optional Spline scene for the modular builder section."
+      },
+      {
+        "type": "text",
+        "id": "spline_solar_url",
+        "label": "Spline Solar Scene URL",
+        "info": "Optional Spline scene for the solar charging section."
+      },
+      {
+        "type": "image_picker",
+        "id": "hero_fallback_image",
+        "label": "Hero fallback image",
+        "info": "Used when no Spline scene is set."
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "instagram_url",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "facebook_url",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "youtube_url",
+        "label": "YouTube URL"
+      }
+    ]
+  },
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Announcement text",
+        "default": "Modular power systems for home, travel, and off-grid independence — Free shipping over 5 000 kr"
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Announcement link (optional)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+{%- if product.metafields.specs != blank -%}
+<div class="sorein-spec-grid">
+  {%- for spec in product.metafields.specs.list -%}
+    <div class="sorein-spec-grid__item">
+      <span class="sorein-spec-grid__label">{{ spec.name }}</span>
+      <span class="sorein-spec-grid__value">{{ spec.value }}</span>
+    </div>
+  {%- endfor -%}
+</div>
+{%- endif -%}

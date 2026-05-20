@@ -1,0 +1,386 @@
+/* === SOREIN 3D + ANIMATION EFFECTS CSS === */
+
+/* === ENERGY GRID BACKGROUND === */
+.sorein-energy-grid-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sorein-grid-lines {
+  position: absolute;
+  inset: -20%;
+  background-image:
+    linear-gradient(rgba(0,212,170,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,170,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(800px) rotateX(25deg);
+  transform-origin: center top;
+}
+.sorein-grid-lines--dense {
+  background-size: 30px 30px;
+  opacity: 0.5;
+}
+
+/* === FLOATING ENERGY NODES === */
+.sorein-energy-node {
+  position: absolute;
+  border-radius: 50%;
+  animation: sorein-node-pulse 3s ease-in-out infinite;
+}
+.sorein-energy-node--teal {
+  background: radial-gradient(circle, rgba(0,212,170,0.4) 0%, transparent 70%);
+}
+.sorein-energy-node--solar {
+  background: radial-gradient(circle, rgba(245,166,35,0.3) 0%, transparent 70%);
+}
+.sorein-energy-node--battery {
+  background: radial-gradient(circle, rgba(77,184,255,0.3) 0%, transparent 70%);
+}
+
+/* === ENERGY PATH LINES (SVG) === */
+.sorein-energy-paths {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.sorein-path-line {
+  stroke: var(--s-teal);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sorein-path-line.is-active {
+  opacity: 1;
+  animation: sorein-path-draw 1.5s ease forwards;
+}
+.sorein-path-line--solar { stroke: var(--s-solar); }
+.sorein-path-line--battery { stroke: var(--s-battery); }
+.sorein-path-dot {
+  fill: var(--s-teal);
+  r: 3;
+  opacity: 0;
+}
+.sorein-path-dot.is-active {
+  opacity: 1;
+  animation: sorein-dot-travel 1.5s ease forwards;
+}
+
+/* === ENERGY RING PULSES === */
+.sorein-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--s-teal);
+  animation: sorein-ring-expand 3s ease-out infinite;
+  pointer-events: none;
+}
+.sorein-ring:nth-child(2) { animation-delay: 1s; }
+.sorein-ring:nth-child(3) { animation-delay: 2s; }
+.sorein-ring--solar { border-color: var(--s-solar); }
+.sorein-ring--battery { border-color: var(--s-battery); }
+
+/* === HERO 3D FLOATING PRODUCT === */
+.sorein-hero__module-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  animation: sorein-float 4s ease-in-out infinite;
+  will-change: transform;
+}
+.sorein-hero__module-3d-inner {
+  transform-style: preserve-3d;
+  transform: rotateY(-15deg) rotateX(5deg);
+  transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.sorein-hero__module-3d:hover .sorein-hero__module-3d-inner {
+  transform: rotateY(0deg) rotateX(0deg);
+}
+.sorein-hero__product-glow {
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(circle, rgba(0,212,170,0.15) 0%, transparent 70%);
+  pointer-events: none;
+  animation: sorein-glow-pulse 4s ease-in-out infinite;
+}
+
+/* === MODULE STACK 3D === */
+.sorein-module-stack-3d {
+  transform-style: preserve-3d;
+  perspective: 600px;
+  transform: perspective(600px) rotateX(20deg) rotateY(-10deg);
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.sorein-module-stack-3d:hover {
+  transform: perspective(600px) rotateX(15deg) rotateY(0deg);
+}
+.sorein-module-layer {
+  position: relative;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  margin-top: -1px;
+}
+.sorein-module-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  pointer-events: none;
+}
+.sorein-module-layer--base::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 12px rgba(0,212,170,0.15);
+  pointer-events: none;
+}
+.sorein-module-layer--battery::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 10px rgba(245,166,35,0.12);
+  pointer-events: none;
+}
+
+/* === SOLAR PANEL ANIMATION === */
+.sorein-solar__panel-3d {
+  transform-origin: bottom center;
+  transform: rotateX(0deg);
+  transition: transform 1s cubic-bezier(0.4,0,0.2,1);
+}
+.sorein-solar__panel-3d.is-unfolded { transform: rotateX(-35deg); }
+
+.sorein-solar__sun {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--s-solar) 0%, rgba(245,166,35,0) 70%);
+  box-shadow: 0 0 20px rgba(245,166,35,0.5);
+  animation: sorein-sun-pulse 3s ease-in-out infinite;
+}
+.sorein-solar__beam-line {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(245,166,35,0.6), transparent);
+  transform-origin: top center;
+  animation: sorein-beam-flicker 2s ease-in-out infinite;
+}
+
+/* === CARD 3D TILT === */
+.sorein-card--3d {
+  transform-style: preserve-3d;
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.15s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.sorein-card--3d:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+
+/* === CLIP-PATH REVEAL === */
+.sorein-clip-reveal {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.sorein-clip-reveal.is-visible { clip-path: inset(0 0% 0 0); }
+
+/* === TECHNOLOGY CARD CONNECTOR LINES === */
+.sorein-tech-connector {
+  position: absolute;
+  top: 50%;
+  right: -1px;
+  width: 2px;
+  height: 40px;
+  transform: translateY(-50%);
+  background: linear-gradient(180deg, transparent, var(--s-teal), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.sorein-tech-card:hover .sorein-tech-connector { opacity: 0.6; }
+
+/* === GLOW EFFECTS === */
+.sorein-glow--teal { box-shadow: var(--s-glow-teal); }
+.sorein-glow--solar { box-shadow: var(--s-glow-solar); }
+.sorein-glow--battery { box-shadow: var(--s-glow-battery); }
+
+.sorein-text-glow--teal { text-shadow: 0 0 20px rgba(0,212,170,0.5); }
+.sorein-text-glow--solar { text-shadow: 0 0 20px rgba(245,166,35,0.5); }
+
+/* === ANIMATED ENERGY LINE (horizontal bar) === */
+.sorein-energy-bar {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--s-teal), transparent);
+  position: relative;
+  overflow: hidden;
+}
+.sorein-energy-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,212,170,0.8), transparent);
+  animation: sorein-energy-flow 2.5s linear infinite;
+}
+
+/* === PRODUCT SPOTLIGHT === */
+.sorein-product-spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.sorein-product-spotlight::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* === CHARGE INDICATOR === */
+.sorein-charge-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+}
+.sorein-charge-bar {
+  width: 8px;
+  border-radius: 2px;
+  background: var(--s-border);
+  transition: height 0.5s ease, background 0.3s;
+}
+.sorein-charge-bar.is-filled { background: var(--s-teal); }
+.sorein-charge-bar.is-filled--solar { background: var(--s-solar); }
+
+/* === SHIMMER LOADING === */
+.sorein-shimmer {
+  background: linear-gradient(90deg, var(--s-surface) 25%, var(--s-surface-2) 50%, var(--s-surface) 75%);
+  background-size: 200% 100%;
+  animation: sorein-shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* === KEYFRAMES === */
+@keyframes sorein-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes sorein-ring-expand {
+  0% { transform: scale(0.6); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
+@keyframes sorein-node-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+@keyframes sorein-path-draw {
+  from { stroke-dashoffset: 200; opacity: 0.8; }
+  to { stroke-dashoffset: 0; opacity: 0.8; }
+}
+@keyframes sorein-dot-travel {
+  from { opacity: 1; offset-distance: 0%; }
+  to { opacity: 0; offset-distance: 100%; }
+}
+@keyframes sorein-glow-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+@keyframes sorein-sun-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(245,166,35,0.5); }
+  50% { box-shadow: 0 0 40px rgba(245,166,35,0.8); }
+}
+@keyframes sorein-beam-flicker {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@keyframes sorein-energy-flow {
+  from { left: -60%; }
+  to { left: 100%; }
+}
+@keyframes sorein-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes sorein-shimmer-bar {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+@keyframes sorein-stack-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes sorein-fade-scale {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes sorein-slide-right {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* === SPLINE CONTAINER === */
+.sorein-spline-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.sorein-spline-wrap spline-viewer {
+  width: 100%;
+  height: 100%;
+}
+.sorein-spline-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--s-bg);
+}
+.sorein-spline-loader__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--s-teal);
+  margin: 0 4px;
+  animation: sorein-dot-bounce 1.2s ease-in-out infinite;
+}
+.sorein-spline-loader__dot:nth-child(2) { animation-delay: 0.2s; }
+.sorein-spline-loader__dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes sorein-dot-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* === LIVE FILTER CARD ANIMATION === */
+.sorein-card.is-filtering-out {
+  animation: sorein-filter-out 0.25s ease forwards;
+}
+.sorein-card.is-filtering-in {
+  animation: sorein-fade-scale 0.35s ease forwards;
+}
+@keyframes sorein-filter-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); pointer-events: none; }
+}
+
+/* === REDUCED MOTION OVERRIDES === */
+@media (prefers-reduced-motion: reduce) {
+  .sorein-hero__module-3d,
+  .sorein-energy-node,
+  .sorein-ring,
+  .sorein-solar__sun,
+  .sorein-solar__beam-line,
+  .sorein-energy-bar::after { animation: none; }
+  .sorein-path-line,
+  .sorein-path-dot { transition: none; }
+}

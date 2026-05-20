@@ -1,0 +1,40 @@
+{%- assign card_product = card_product | default: product -%}
+{%- assign first_variant = card_product.selected_or_first_available_variant -%}
+<article class="sorein-product-card sorein-reveal" data-product-id="{{ card_product.id }}">
+  <a href="{{ card_product.url }}" class="sorein-product-card__media-link" tabindex="-1" aria-hidden="true">
+    <div class="sorein-product-card__media">
+      {%- if card_product.featured_image -%}
+        <img src="{{ card_product.featured_image | image_url: width: 600 }}"
+             alt="{{ card_product.featured_image.alt | escape }}"
+             width="600"
+             height="400"
+             loading="lazy">
+      {%- else -%}
+        <div class="sorein-product-card__media-placeholder" aria-hidden="true"></div>
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="sorein-product-card__body">
+    {%- if card_product.tags contains 'bestseller' -%}
+      <span class="sorein-product-card__badge sorein-product-card__badge--teal">Bestseller</span>
+    {%- elsif card_product.tags contains 'new' -%}
+      <span class="sorein-product-card__badge sorein-product-card__badge--solar">New</span>
+    {%- endif -%}
+
+    <a href="{{ card_product.url }}" class="sorein-product-card__title-link">
+      <h3 class="sorein-product-card__title">{{ card_product.title }}</h3>
+    </a>
+
+    {%- if card_product.metafields.custom.short_description != blank -%}
+      <p class="sorein-product-card__desc">{{ card_product.metafields.custom.short_description }}</p>
+    {%- elsif card_product.description != blank -%}
+      <p class="sorein-product-card__desc">{{ card_product.description | strip_html | truncate: 80 }}</p>
+    {%- endif -%}
+
+    <div class="sorein-product-card__footer">
+      {% render 'sorein-price', product_or_variant: first_variant %}
+      <a href="{{ card_product.url }}" class="sorein-btn sorein-btn--ghost sorein-btn--sm">View</a>
+    </div>
+  </div>
+</article>

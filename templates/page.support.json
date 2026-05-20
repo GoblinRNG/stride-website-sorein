@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "page_content": {
+      "type": "main-page-sorein",
+      "settings": { "show_title": true }
+    },
+    "faq": {
+      "type": "sorein-faq",
+      "blocks": {
+        "faq1": { "type": "question", "settings": { "question": "How long does the battery last on a single charge?", "answer": "<p>Runtime depends on your load. A 2 kWh configuration runs a 200W fridge for ~8 hours, or charges a laptop 20+ times.</p>" } },
+        "faq2": { "type": "question", "settings": { "question": "Can I add more capacity later?", "answer": "<p>Yes. Add battery modules at any time. Each adds 1 kWh. No tools needed.</p>" } },
+        "faq3": { "type": "question", "settings": { "question": "Is it safe to use indoors?", "answer": "<p>Completely safe. LiFePO4 produces no fumes and has no thermal runaway risk.</p>" } },
+        "faq4": { "type": "question", "settings": { "question": "What is the return policy?", "answer": "<p>30-day returns. Contact support and we'll arrange a free return and full refund.</p>" } },
+        "faq5": { "type": "question", "settings": { "question": "How do I claim my warranty?", "answer": "<p>Contact our support team with your order number and a description of the issue. We'll handle it quickly.</p>" } }
+      },
+      "block_order": ["faq1", "faq2", "faq3", "faq4", "faq5"],
+      "settings": { "eyebrow": "Support", "title": "How Can We Help?" }
+    },
+    "trust": {
+      "type": "sorein-trust",
+      "blocks": {
+        "t1": { "type": "trust_item", "settings": { "icon": "shield", "color": "teal", "title": "30-Day Returns", "description": "Return within 30 days for a full refund." } },
+        "t2": { "type": "trust_item", "settings": { "icon": "award", "color": "solar", "title": "2-Year Warranty", "description": "Full manufacturer warranty on every unit." } },
+        "t3": { "type": "trust_item", "settings": { "icon": "phone", "color": "battery", "title": "Expert Support", "description": "Energy specialists ready to help." } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": {}
+    }
+  },
+  "order": ["page_content", "faq", "trust"]
+}

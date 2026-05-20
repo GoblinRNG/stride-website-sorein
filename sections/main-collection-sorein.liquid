@@ -1,0 +1,60 @@
+<section class="sorein-collection" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <!-- Collection header -->
+    <div class="sorein-collection__header">
+      <h1 class="sorein-collection__title">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <p class="sorein-collection__desc">{{ collection.description }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Filter bar -->
+    {%- if section.settings.show_filters -%}
+      <div class="sorein-filter-bar" role="group" aria-label="Filter by tag">
+        <button class="sorein-filter-pill is-active" data-collection-filter="all">All</button>
+        {%- for tag in collection.all_tags -%}
+          <button class="sorein-filter-pill" data-collection-filter="{{ tag | handleize }}">
+            {{ tag }}
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Product grid -->
+    <div class="sorein-collection__grid" data-stagger>
+      {%- paginate collection.products by section.settings.products_per_page -%}
+        {%- for prod in collection.products -%}
+          {% render 'sorein-product-card', card_product: prod %}
+        {%- else -%}
+          <p class="sorein-collection__empty">No products found in this collection.</p>
+        {%- endfor -%}
+
+        <!-- Pagination -->
+        {%- if paginate.pages > 1 -%}
+          <div class="sorein-pagination" style="grid-column:1/-1;">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="sorein-btn sorein-btn--ghost">Previous</a>
+            {%- endif -%}
+            <span class="sorein-pagination__info">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="sorein-btn sorein-btn--ghost">Next</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Page",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "show_filters", "label": "Show tag filters", "default": true }
+  ],
+  "presets": [
+    { "name": "Collection Page" }
+  ]
+}
+{% endschema %}

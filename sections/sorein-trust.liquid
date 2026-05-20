@@ -1,0 +1,60 @@
+<section class="sorein-trust-section sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-trust-grid" data-stagger>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'trust_item' -%}
+          <div class="sorein-trust-item" {{ block.shopify_attributes }}>
+            <div class="sorein-trust-item__icon sorein-trust-item__icon--{{ block.settings.color | default: 'teal' }}">
+              <svg class="sorein-icon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="#icon-{{ block.settings.icon | default: 'shield' }}"></use>
+              </svg>
+            </div>
+            <h3 class="sorein-trust-item__title">{{ block.settings.title }}</h3>
+            <p class="sorein-trust-item__desc">{{ block.settings.description }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust",
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "shield", "label": "Shield" },
+          { "value": "award", "label": "Award" },
+          { "value": "clock", "label": "Clock" },
+          { "value": "leaf", "label": "Leaf" },
+          { "value": "globe", "label": "Globe" },
+          { "value": "phone", "label": "Phone" }
+        ], "default": "shield" },
+        { "type": "select", "id": "color", "label": "Color", "options": [
+          { "value": "teal", "label": "Teal" },
+          { "value": "solar", "label": "Solar" },
+          { "value": "battery", "label": "Blue" }
+        ], "default": "teal" },
+        { "type": "text", "id": "title", "label": "Title", "default": "30-Day Returns" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Not satisfied? Return it within 30 days, no questions asked." }
+      ]
+    }
+  ],
+  "settings": [],
+  "presets": [
+    {
+      "name": "Trust",
+      "blocks": [
+        { "type": "trust_item", "settings": { "icon": "shield", "color": "teal", "title": "30-Day Returns", "description": "Try risk-free. Return within 30 days for a full refund." } },
+        { "type": "trust_item", "settings": { "icon": "award", "color": "solar", "title": "2-Year Warranty", "description": "Every SOREIN unit is covered by a full 2-year manufacturer warranty." } },
+        { "type": "trust_item", "settings": { "icon": "leaf", "color": "battery", "title": "Carbon Neutral Shipping", "description": "We offset every shipment's carbon footprint at no extra cost." } },
+        { "type": "trust_item", "settings": { "icon": "phone", "color": "teal", "title": "Expert Support", "description": "Our energy specialists are available to help you build the right system." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,29 @@
+<div class="sorein-cart-drawer" id="sorein-cart-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="sorein-cart-drawer__overlay" data-cart-close></div>
+  <div class="sorein-cart-drawer__panel">
+    <div class="sorein-cart-drawer__header">
+      <h2 class="sorein-cart-drawer__title">Your Cart</h2>
+      <button class="sorein-cart-drawer__close" aria-label="Close cart" data-cart-close>
+        {% render 'sorein-icon', icon: 'close' %}
+      </button>
+    </div>
+
+    <div class="sorein-cart-drawer__items" id="sorein-cart-items">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="sorein-cart-drawer__footer">
+      <div class="sorein-cart-drawer__subtotal">
+        <span>Subtotal</span>
+        <span id="sorein-cart-subtotal">—</span>
+      </div>
+      <p class="sorein-cart-drawer__vat-note">Incl. 25% VAT. Shipping calculated at checkout.</p>
+      <a href="{{ routes.cart_url }}" class="sorein-btn sorein-btn--primary sorein-btn--lg" style="width:100%;justify-content:center;">
+        Go to Checkout
+      </a>
+      <button class="sorein-btn sorein-btn--ghost sorein-btn--lg" style="width:100%;justify-content:center;margin-top:0.5rem;" data-cart-close>
+        Continue Shopping
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<section class="sorein-comparison sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'Compare' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'Why Choose Modular?' }}</h2>
+    </div>
+
+    <div class="sorein-comparison__table-wrap">
+      <table class="sorein-comparison__table">
+        <thead>
+          <tr>
+            <th class="sorein-comparison__th sorein-comparison__th--feature">Feature</th>
+            <th class="sorein-comparison__th sorein-comparison__th--sorein">SOREIN Modular</th>
+            <th class="sorein-comparison__th sorein-comparison__th--fixed">Fixed Units</th>
+            <th class="sorein-comparison__th sorein-comparison__th--generator">Generator</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'row' -%}
+              <tr class="sorein-comparison__row" {{ block.shopify_attributes }}>
+                <td class="sorein-comparison__td sorein-comparison__td--label">{{ block.settings.feature }}</td>
+                <td class="sorein-comparison__td sorein-comparison__td--sorein">
+                  {%- if block.settings.sorein_check -%}
+                    <span class="sorein-comparison__check" aria-label="Yes">{% render 'sorein-icon', icon: 'check', width: 18, height: 18 %}</span>
+                  {%- else -%}
+                    <span class="sorein-comparison__value">{{ block.settings.sorein_value }}</span>
+                  {%- endif -%}
+                </td>
+                <td class="sorein-comparison__td">
+                  {%- if block.settings.fixed_check -%}
+                    <span class="sorein-comparison__check sorein-comparison__check--dim" aria-label="Yes">{% render 'sorein-icon', icon: 'check', width: 18, height: 18 %}</span>
+                  {%- else -%}
+                    <span class="sorein-comparison__cross" aria-label="No">×</span>
+                  {%- endif -%}
+                </td>
+                <td class="sorein-comparison__td">
+                  {%- if block.settings.gen_check -%}
+                    <span class="sorein-comparison__check sorein-comparison__check--dim" aria-label="Yes">{% render 'sorein-icon', icon: 'check', width: 18, height: 18 %}</span>
+                  {%- else -%}
+                    <span class="sorein-comparison__cross" aria-label="No">×</span>
+                  {%- endif -%}
+                </td>
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comparison",
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Comparison Row",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Feature", "default": "Expandable capacity" },
+        { "type": "checkbox", "id": "sorein_check", "label": "SOREIN has it", "default": true },
+        { "type": "text", "id": "sorein_value", "label": "SOREIN value (if not checkbox)", "default": "" },
+        { "type": "checkbox", "id": "fixed_check", "label": "Fixed units have it", "default": false },
+        { "type": "checkbox", "id": "gen_check", "label": "Generator has it", "default": false }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Compare" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Why Choose Modular?" }
+  ],
+  "presets": [
+    {
+      "name": "Comparison",
+      "blocks": [
+        { "type": "row", "settings": { "feature": "Expandable capacity", "sorein_check": true, "fixed_check": false, "gen_check": false } },
+        { "type": "row", "settings": { "feature": "Silent operation", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        { "type": "row", "settings": { "feature": "Indoor safe", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        { "type": "row", "settings": { "feature": "Solar compatible", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        { "type": "row", "settings": { "feature": "Zero fuel cost", "sorein_check": true, "fixed_check": true, "gen_check": false } },
+        { "type": "row", "settings": { "feature": "High surge power", "sorein_check": true, "fixed_check": false, "gen_check": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

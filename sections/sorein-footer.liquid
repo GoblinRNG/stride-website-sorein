@@ -1,0 +1,97 @@
+<footer class="sorein-footer" role="contentinfo">
+  <div class="sorein-container">
+    <div class="sorein-footer__grid">
+
+      <!-- Brand column -->
+      <div class="sorein-footer__brand">
+        <a href="{{ routes.root_url }}" class="sorein-footer__logo" aria-label="{{ shop.name }}">
+          {%- if section.settings.logo != blank -%}
+            <img src="{{ section.settings.logo | image_url: width: 120 }}"
+                 alt="{{ shop.name }}"
+                 width="120" height="40"
+                 loading="lazy">
+          {%- else -%}
+            <span class="sorein-footer__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+        {%- if section.settings.tagline != blank -%}
+          <p class="sorein-footer__tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+        <div class="sorein-footer__social">
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" class="sorein-footer__social-link" aria-label="Instagram" rel="noopener" target="_blank">
+              {% render 'sorein-icon', icon: 'instagram', width: 20, height: 20 %}
+            </a>
+          {%- endif -%}
+          {%- if settings.social_facebook != blank -%}
+            <a href="{{ settings.social_facebook }}" class="sorein-footer__social-link" aria-label="Facebook" rel="noopener" target="_blank">
+              {% render 'sorein-icon', icon: 'facebook', width: 20, height: 20 %}
+            </a>
+          {%- endif -%}
+          {%- if settings.social_youtube != blank -%}
+            <a href="{{ settings.social_youtube }}" class="sorein-footer__social-link" aria-label="YouTube" rel="noopener" target="_blank">
+              {% render 'sorein-icon', icon: 'youtube', width: 20, height: 20 %}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Nav columns from blocks -->
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="sorein-footer__col" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <p class="sorein-footer__col-heading">{{ block.settings.heading }}</p>
+            {%- endif -%}
+            {%- if block.settings.menu != blank -%}
+              <ul class="sorein-footer__links" role="list">
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li><a href="{{ link.url }}" class="sorein-footer__link">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+    </div>
+
+    <div class="sorein-footer__bottom">
+      <p class="sorein-footer__legal">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}.
+        {%- if section.settings.legal_text != blank -%} {{ section.settings.legal_text }}{%- endif -%}
+      </p>
+      <div class="sorein-footer__policies">
+        {%- for policy in shop.enabled_policies -%}
+          <a href="{{ policy.url }}" class="sorein-footer__policy-link">{{ policy.title }}</a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Navigation Column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Column heading", "default": "Products" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Footer logo" },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Modular power for every path." },
+    { "type": "text", "id": "legal_text", "label": "Legal text", "default": "All rights reserved." }
+  ],
+  "presets": [
+    {
+      "name": "Footer"
+    }
+  ]
+}
+{% endschema %}

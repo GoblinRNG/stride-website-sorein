@@ -1,0 +1,87 @@
+{%- assign filter_collection = collections[section.settings.collection] -%}
+
+<section class="sorein-live-filter sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'Browse Products' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'Find Your Match' }}</h2>
+    </div>
+
+    <!-- Filter pills -->
+    <div class="sorein-filter-bar" role="group" aria-label="Filter products">
+      <button class="sorein-filter-pill is-active" data-filter="all">All</button>
+      {%- for block in section.blocks -%}
+        <button class="sorein-filter-pill"
+                data-filter="{{ block.settings.tag }}"
+                {{ block.shopify_attributes }}>
+          {{ block.settings.label }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <!-- Product grid (JS-populated) -->
+    <div class="sorein-filter-grid" id="sorein-filter-grid" data-filter-grid>
+      {%- if filter_collection != blank -%}
+        {%- for prod in filter_collection.products limit: section.settings.limit | default: 12 -%}
+          <div class="sorein-filter-grid__item" data-tags="{{ prod.tags | join: ',' | downcase }}">
+            {% render 'sorein-product-card', card_product: prod %}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    <!-- Hidden product data for JS filter -->
+    {%- if filter_collection != blank -%}
+      <script type="application/json" data-filter-products>
+        [
+          {%- for prod in filter_collection.products limit: section.settings.limit | default: 12 -%}
+            {
+              "id": {{ prod.id }},
+              "title": {{ prod.title | json }},
+              "url": {{ prod.url | json }},
+              "price": {{ prod.selected_or_first_available_variant.price }},
+              "compare_at_price": {{ prod.selected_or_first_available_variant.compare_at_price | default: 0 }},
+              "image": {{ prod.featured_image | image_url: width: 600 | json }},
+              "image_alt": {{ prod.featured_image.alt | json }},
+              "tags": {{ prod.tags | json }},
+              "description": {{ prod.description | strip_html | truncate: 80 | json }}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      </script>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Live Filter",
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "Filter Tag",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Button label", "default": "Home Backup" },
+        { "type": "text", "id": "tag", "label": "Product tag", "info": "Must exactly match product tags.", "default": "home-backup" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Browse Products" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Find Your Match" },
+    { "type": "collection", "id": "collection", "label": "Collection to display" },
+    { "type": "range", "id": "limit", "label": "Max products", "min": 4, "max": 24, "step": 4, "default": 12 }
+  ],
+  "presets": [
+    {
+      "name": "Live Filter",
+      "blocks": [
+        { "type": "filter", "settings": { "label": "Home Backup", "tag": "home-backup" } },
+        { "type": "filter", "settings": { "label": "Camping", "tag": "camping" } },
+        { "type": "filter", "settings": { "label": "Van Life", "tag": "vanlife" } },
+        { "type": "filter", "settings": { "label": "Worksite", "tag": "worksite" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

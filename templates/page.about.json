@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "page_content": {
+      "type": "main-page-sorein",
+      "settings": { "show_title": true }
+    },
+    "trust": {
+      "type": "sorein-trust",
+      "blocks": {
+        "t1": { "type": "trust_item", "settings": { "icon": "leaf", "color": "teal", "title": "Sustainability First", "description": "Every product is designed to reduce dependence on fossil fuels." } },
+        "t2": { "type": "trust_item", "settings": { "icon": "modular", "color": "solar", "title": "Built to Last", "description": "Modular design means your system evolves — nothing gets thrown away." } },
+        "t3": { "type": "trust_item", "settings": { "icon": "globe", "color": "battery", "title": "Designed in Sweden", "description": "Engineered for Nordic winters and summer adventures alike." } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": {}
+    }
+  },
+  "order": ["page_content", "trust"]
+}

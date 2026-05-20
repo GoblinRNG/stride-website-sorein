@@ -1,0 +1,350 @@
+<section class="sorein-power-selector sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'Find Your Match' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'How Much Power Do You Need?' }}</h2>
+    </div>
+
+    <div class="sorein-power-grid">
+      {%- for block in section.blocks -%}
+        <div class="sorein-power-card{% if forloop.first %} is-selected{% endif %}"
+             data-scenario="{{ block.settings.scenario_id }}"
+             data-config="{{ block.settings.config }}"
+             data-watts="{{ block.settings.watts }}"
+             tabindex="0"
+             role="button"
+             aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+          <div class="sorein-power-card__icon">
+            {% render 'sorein-icon', icon: block.settings.icon %}
+          </div>
+          <h3 class="sorein-power-card__title">{{ block.settings.title }}</h3>
+          <p class="sorein-power-card__desc">{{ block.settings.description }}</p>
+          <div class="sorein-power-card__spec">
+            <span class="sorein-power-card__watts">{{ block.settings.watts }}W</span>
+            <span class="sorein-power-card__config">{{ block.settings.config }}</span>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Result panel -->
+    <div class="sorein-power-result" id="sorein-power-result-{{ section.id }}" aria-live="polite">
+      <p class="sorein-power-result__text">Select a scenario to see your recommended configuration.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sorein-power-selector {
+    padding: 80px 0;
+    background: var(--s-bg, #08091a);
+  }
+
+  .sorein-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .sorein-section-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .sorein-section-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--s-accent, #00d4aa);
+    margin-bottom: 12px;
+  }
+
+  .sorein-section-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--s-text, #e8edf5);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .sorein-power-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .sorein-power-card {
+    background: var(--s-surface, #131627);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    outline: none;
+  }
+
+  .sorein-power-card:hover {
+    border-color: rgba(0, 212, 170, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .sorein-power-card:focus-visible {
+    border-color: var(--s-accent, #00d4aa);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.25);
+  }
+
+  .sorein-power-card.is-selected {
+    border-color: var(--s-accent, #00d4aa);
+    box-shadow: 0 0 0 1px var(--s-accent, #00d4aa), 0 8px 32px rgba(0, 212, 170, 0.15);
+  }
+
+  .sorein-power-card__icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 170, 0.1);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    color: var(--s-accent, #00d4aa);
+  }
+
+  .sorein-power-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--s-text, #e8edf5);
+    margin: 0 0 8px;
+  }
+
+  .sorein-power-card__desc {
+    font-size: 0.875rem;
+    color: rgba(232, 237, 245, 0.65);
+    margin: 0 0 20px;
+    line-height: 1.5;
+  }
+
+  .sorein-power-card__spec {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding-top: 16px;
+  }
+
+  .sorein-power-card__watts {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--s-accent, #00d4aa);
+  }
+
+  .sorein-power-card__config {
+    font-size: 0.75rem;
+    color: rgba(232, 237, 245, 0.5);
+    font-weight: 500;
+  }
+
+  .sorein-power-result {
+    background: var(--s-surface, #131627);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 12px;
+    padding: 24px 28px;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+  }
+
+  .sorein-power-result__text {
+    font-size: 1rem;
+    color: var(--s-text, #e8edf5);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .sorein-power-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .sorein-power-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  var sectionId = '{{ section.id }}';
+  var section = document.querySelector('[data-section-id="' + sectionId + '"].sorein-power-selector');
+  if (!section) return;
+
+  var cards = section.querySelectorAll('.sorein-power-card');
+  var resultEl = section.querySelector('.sorein-power-result__text');
+
+  function selectCard(card) {
+    cards.forEach(function(c) {
+      c.classList.remove('is-selected');
+      c.setAttribute('aria-pressed', 'false');
+    });
+    card.classList.add('is-selected');
+    card.setAttribute('aria-pressed', 'true');
+
+    var config = card.getAttribute('data-config') || '';
+    var watts = card.getAttribute('data-watts') || '';
+    var title = card.querySelector('.sorein-power-card__title');
+    var titleText = title ? title.textContent.trim() : '';
+
+    if (resultEl) {
+      resultEl.textContent = titleText
+        ? 'For ' + titleText + ' we recommend the ' + config + ' — delivering up to ' + watts + 'W of continuous power.'
+        : 'Select a scenario to see your recommended configuration.';
+    }
+  }
+
+  cards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      selectCard(card);
+    });
+
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectCard(card);
+      }
+    });
+  });
+
+  // Trigger initial result text for the pre-selected card
+  var firstSelected = section.querySelector('.sorein-power-card.is-selected');
+  if (firstSelected) {
+    selectCard(firstSelected);
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Power Selector",
+  "tag": "section",
+  "class": "sorein-power-selector-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Find Your Match"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "How Much Power Do You Need?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "scenario",
+      "name": "Scenario",
+      "settings": [
+        {
+          "type": "text",
+          "id": "scenario_id",
+          "label": "Scenario ID",
+          "info": "Unique identifier for this scenario (e.g. home-backup)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "home", "label": "Home" },
+            { "value": "cabin", "label": "Cabin" },
+            { "value": "van", "label": "Van" },
+            { "value": "camping", "label": "Camping" },
+            { "value": "zap", "label": "Zap / Lightning" }
+          ],
+          "default": "home"
+        },
+        {
+          "type": "number",
+          "id": "watts",
+          "label": "Power output (W)",
+          "default": 800
+        },
+        {
+          "type": "text",
+          "id": "config",
+          "label": "Recommended configuration",
+          "default": "A6 Base"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Power Selector",
+      "blocks": [
+        {
+          "type": "scenario",
+          "settings": {
+            "scenario_id": "home-backup",
+            "title": "Home Backup",
+            "description": "Keep essential appliances running during power outages.",
+            "icon": "home",
+            "watts": 800,
+            "config": "A6 Base"
+          }
+        },
+        {
+          "type": "scenario",
+          "settings": {
+            "scenario_id": "off-grid-cabin",
+            "title": "Off-Grid Cabin",
+            "description": "Full off-grid living with lights, fridge and tools.",
+            "icon": "cabin",
+            "watts": 2400,
+            "config": "A6 + 3× Battery"
+          }
+        },
+        {
+          "type": "scenario",
+          "settings": {
+            "scenario_id": "camper-van",
+            "title": "Camper Van",
+            "description": "Power your van build — fridge, lighting and devices.",
+            "icon": "van",
+            "watts": 1200,
+            "config": "A6 + 1× Battery"
+          }
+        },
+        {
+          "type": "scenario",
+          "settings": {
+            "scenario_id": "outdoor-events",
+            "title": "Outdoor Events",
+            "description": "Silent, clean power for markets, shoots and pop-ups.",
+            "icon": "camping",
+            "watts": 1600,
+            "config": "A6 + 2× Battery"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8
+}
+{% endschema %}

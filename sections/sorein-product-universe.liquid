@@ -1,0 +1,82 @@
+<section class="sorein-product-universe sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'Product Universe' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'The Full SOREIN Range' }}</h2>
+      <p class="sorein-section-subtitle">{{ section.settings.subtitle | default: 'Modular power systems built for every scenario.' }}</p>
+    </div>
+
+    <div class="sorein-orbit" data-orbit>
+      <div class="sorein-orbit__track" data-orbit-track>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'product' -%}
+            {%- assign card_product = all_products[block.settings.product] -%}
+            {%- if card_product != blank -%}
+              <div class="sorein-orbit__item" {{ block.shopify_attributes }}>
+                {% render 'sorein-product-card', card_product: card_product %}
+              </div>
+            {%- endif -%}
+          {%- elsif block.type == 'collection' -%}
+            {%- assign col = collections[block.settings.collection] -%}
+            {%- if col != blank -%}
+              {%- for col_product in col.products limit: block.settings.limit | default: 4 -%}
+                <div class="sorein-orbit__item">
+                  {% render 'sorein-product-card', card_product: col_product %}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <button class="sorein-orbit__btn sorein-orbit__btn--prev" data-orbit-prev aria-label="Previous">
+        {% render 'sorein-icon', icon: 'chevron-down', width: 20, height: 20, class: 'sorein-icon--rotate-90' %}
+      </button>
+      <button class="sorein-orbit__btn sorein-orbit__btn--next" data-orbit-next aria-label="Next">
+        {% render 'sorein-icon', icon: 'chevron-down', width: 20, height: 20, class: 'sorein-icon--rotate-270' %}
+      </button>
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <div class="sorein-section-cta">
+        <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}"
+           class="sorein-btn sorein-btn--ghost">
+          {{ section.settings.cta_label }}
+          {% render 'sorein-icon', icon: 'arrow-right', width: 18, height: 18 %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Universe",
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Single Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    },
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "range", "id": "limit", "label": "Products to show", "min": 1, "max": 8, "step": 1, "default": 4 }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Product Universe" },
+    { "type": "text", "id": "title", "label": "Title", "default": "The Full SOREIN Range" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Modular power systems built for every scenario." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "View All Products" },
+    { "type": "url", "id": "cta_url", "label": "CTA URL" }
+  ],
+  "presets": [
+    { "name": "Product Universe" }
+  ]
+}
+{% endschema %}

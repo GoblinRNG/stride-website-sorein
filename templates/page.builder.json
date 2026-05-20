@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "builder": {
+      "type": "sorein-builder-3d",
+      "settings": {}
+    },
+    "trust": {
+      "type": "sorein-trust",
+      "blocks": {
+        "t1": { "type": "trust_item", "settings": { "icon": "shield", "color": "teal", "title": "30-Day Returns", "description": "Not happy? Return within 30 days for a full refund." } },
+        "t2": { "type": "trust_item", "settings": { "icon": "award", "color": "solar", "title": "2-Year Warranty", "description": "Full manufacturer warranty on every unit." } }
+      },
+      "block_order": ["t1", "t2"],
+      "settings": {}
+    },
+    "faq": {
+      "type": "sorein-faq",
+      "blocks": {
+        "faq1": { "type": "question", "settings": { "question": "Can I change my configuration after ordering?", "answer": "<p>Contact us within 24 hours of ordering and we can modify your configuration before dispatch.</p>" } },
+        "faq2": { "type": "question", "settings": { "question": "Are modules interchangeable between units?", "answer": "<p>Yes. All SOREIN battery and inverter modules are compatible with every A6 Base Unit.</p>" } }
+      },
+      "block_order": ["faq1", "faq2"],
+      "settings": { "eyebrow": "Builder FAQ", "title": "Questions About Configuring" }
+    }
+  },
+  "order": ["builder", "trust", "faq"]
+}

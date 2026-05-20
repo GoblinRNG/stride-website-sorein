@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product-sorein",
+      "settings": {
+        "show_related": true
+      }
+    }
+  },
+  "order": ["main"]
+}

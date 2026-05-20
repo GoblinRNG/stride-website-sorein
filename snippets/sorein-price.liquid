@@ -1,0 +1,13 @@
+{%- assign target = product_or_variant -%}
+{%- if target == blank -%}{%- assign target = product.selected_or_first_available_variant -%}{%- endif -%}
+<div class="sorein-price{% if target.compare_at_price > target.price %} sorein-price--sale{% endif %}">
+  <span class="sorein-price__current">{{ target.price | money_without_trailing_zeros }}</span>
+  {%- if target.compare_at_price > target.price -%}
+    <span class="sorein-price__compare">{{ target.compare_at_price | money_without_trailing_zeros }}</span>
+    <span class="sorein-price__badge">
+      {%- assign saving = target.compare_at_price | minus: target.price -%}
+      {%- assign pct = saving | times: 100 | divided_by: target.compare_at_price -%}
+      -{{ pct }}%
+    </span>
+  {%- endif -%}
+</div>

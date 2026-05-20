@@ -1,0 +1,64 @@
+<section class="sorein-testimonials sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'Customers' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'What Owners Say' }}</h2>
+    </div>
+
+    <div class="sorein-testimonials__grid" data-stagger>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'testimonial' -%}
+          <blockquote class="sorein-testimonial-card" {{ block.shopify_attributes }}>
+            <div class="sorein-testimonial-card__stars" aria-label="{{ block.settings.stars }} out of 5 stars">
+              {%- for i in (1..5) -%}
+                <svg class="sorein-icon sorein-icon--star{% if i > block.settings.stars %} sorein-icon--star-empty{% endif %}"
+                     width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="#icon-star"></use>
+                </svg>
+              {%- endfor -%}
+            </div>
+            <p class="sorein-testimonial-card__quote">{{ block.settings.quote }}</p>
+            <footer class="sorein-testimonial-card__footer">
+              <cite class="sorein-testimonial-card__author">{{ block.settings.name }}</cite>
+              {%- if block.settings.context != blank -%}
+                <span class="sorein-testimonial-card__context">{{ block.settings.context }}</span>
+              {%- endif -%}
+            </footer>
+          </blockquote>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "range", "id": "stars", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Best investment I've made for our cabin. We're completely off-grid now." },
+        { "type": "text", "id": "name", "label": "Customer name", "default": "Erik L." },
+        { "type": "text", "id": "context", "label": "Context (optional)", "default": "Off-grid cabin owner, Dalarna" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Customers" },
+    { "type": "text", "id": "title", "label": "Title", "default": "What Owners Say" }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "stars": 5, "quote": "Powered our entire cabin for a full winter weekend. Silent, clean, and easy to set up.", "name": "Erik L.", "context": "Cabin owner, Dalarna" } },
+        { "type": "testimonial", "settings": { "stars": 5, "quote": "Took it van camping for two weeks. Ran the fridge, lights, and laptop with zero issues.", "name": "Sofia M.", "context": "Van traveller" } },
+        { "type": "testimonial", "settings": { "stars": 5, "quote": "The modular design is the killer feature. I started with the base and added a battery module six months later.", "name": "Jens H.", "context": "Home backup user" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

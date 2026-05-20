@@ -1,0 +1,74 @@
+<section class="sorein-tech sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'The Technology' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'Built Different' }}</h2>
+      <p class="sorein-section-subtitle">{{ section.settings.subtitle | default: 'Every component engineered for reliability.' }}</p>
+    </div>
+
+    <div class="sorein-tech-grid" data-stagger>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'tech' -%}
+          <div class="sorein-tech-card" {{ block.shopify_attributes }}>
+            <div class="sorein-tech-card__icon sorein-tech-card__icon--{{ block.settings.color | default: 'teal' }}">
+              <svg class="sorein-icon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="#icon-{{ block.settings.icon | default: 'zap' }}"></use>
+              </svg>
+            </div>
+            <h3 class="sorein-tech-card__title">{{ block.settings.title }}</h3>
+            <p class="sorein-tech-card__desc">{{ block.settings.description }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Technology Reveal",
+  "blocks": [
+    {
+      "type": "tech",
+      "name": "Tech Feature",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "battery", "label": "Battery" },
+          { "value": "solar", "label": "Solar" },
+          { "value": "shield", "label": "Shield" },
+          { "value": "zap", "label": "Power" },
+          { "value": "sine-wave", "label": "Sine Wave" },
+          { "value": "modular", "label": "Modular" },
+          { "value": "leaf", "label": "Eco" },
+          { "value": "globe", "label": "Globe" }
+        ], "default": "battery" },
+        { "type": "select", "id": "color", "label": "Icon color", "options": [
+          { "value": "teal", "label": "Teal" },
+          { "value": "solar", "label": "Solar Orange" },
+          { "value": "battery", "label": "Battery Blue" }
+        ], "default": "teal" },
+        { "type": "text", "id": "title", "label": "Title", "default": "LiFePO4 Chemistry" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Lithium iron phosphate cells deliver 3,000+ charge cycles — 10x more than standard lithium." }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Technology" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Built Different" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Every component engineered for reliability." }
+  ],
+  "presets": [
+    {
+      "name": "Technology Reveal",
+      "blocks": [
+        { "type": "tech", "settings": { "icon": "battery", "color": "teal", "title": "LiFePO4 Chemistry", "description": "3,000+ charge cycles. No thermal runaway. Safe indoors." } },
+        { "type": "tech", "settings": { "icon": "sine-wave", "color": "solar", "title": "Pure Sine Wave", "description": "Clean AC output compatible with sensitive electronics and medical devices." } },
+        { "type": "tech", "settings": { "icon": "modular", "color": "battery", "title": "Modular Design", "description": "Add battery modules as your needs grow. No tools required." } },
+        { "type": "tech", "settings": { "icon": "solar", "color": "teal", "title": "MPPT Solar Input", "description": "Maximum power point tracking extracts up to 30% more energy from panels." } },
+        { "type": "tech", "settings": { "icon": "shield", "color": "solar", "title": "BMS Protection", "description": "Multi-layer battery management protects against overcharge, over-discharge, and short circuits." } },
+        { "type": "tech", "settings": { "icon": "leaf", "color": "battery", "title": "Zero Emissions", "description": "Silent operation. No fumes. Safe for indoor use, year-round." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

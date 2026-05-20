@@ -1,0 +1,68 @@
+<section class="sorein-faq sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-faq__layout">
+      <div class="sorein-faq__header">
+        <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'FAQ' }}</p>
+        <h2 class="sorein-section-title">{{ section.settings.title | default: 'Common Questions' }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="sorein-section-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="sorein-faq__list" data-faq-list>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'question' -%}
+            <div class="sorein-faq__item" {{ block.shopify_attributes }}>
+              <button class="sorein-faq__question"
+                      aria-expanded="false"
+                      aria-controls="sorein-faq-{{ block.id }}">
+                {{ block.settings.question }}
+                <span class="sorein-faq__chevron" aria-hidden="true">
+                  {% render 'sorein-icon', icon: 'chevron-down', width: 18, height: 18 %}
+                </span>
+              </button>
+              <div class="sorein-faq__answer" id="sorein-faq-{{ block.id }}" hidden>
+                <div class="sorein-faq__answer-inner">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How many solar panels can I connect?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>The A6 Base Unit supports up to 800W of solar input via the MC4 connectors. You can connect panels in series or parallel as long as you stay within the voltage and wattage limits.</p>" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FAQ" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Common Questions" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "" }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "question", "settings": { "question": "How long does the battery last on a single charge?", "answer": "<p>Runtime depends on your load. With a 2 kWh configuration, you can run a 200W refrigerator for ~8 hours, or charge a laptop 20+ times.</p>" } },
+        { "type": "question", "settings": { "question": "Can I add more capacity later?", "answer": "<p>Yes — the modular design means you can add battery modules at any time. Each extra battery module adds 1 kWh. No tools required.</p>" } },
+        { "type": "question", "settings": { "question": "Is it safe to use indoors?", "answer": "<p>Completely. LiFePO4 chemistry produces no fumes and has no thermal runaway risk. SOREIN units are designed for indoor use.</p>" } },
+        { "type": "question", "settings": { "question": "What is the return policy?", "answer": "<p>We offer a 30-day return window. If you're not satisfied for any reason, contact us and we'll arrange a free return and full refund.</p>" } },
+        { "type": "question", "settings": { "question": "Does it come with a warranty?", "answer": "<p>Every SOREIN unit is covered by a 2-year manufacturer warranty against defects in materials and workmanship.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

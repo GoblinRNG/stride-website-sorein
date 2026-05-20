@@ -1,0 +1,48 @@
+{
+  "general": {
+    "search": "Search",
+    "close": "Close",
+    "menu": "Menu",
+    "loading": "Loading…"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "view_details": "View Details",
+      "quick_add": "Quick Add",
+      "from": "From",
+      "compare_at": "Was"
+    }
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "checkout": "Proceed to Checkout",
+    "continue_shopping": "Continue Shopping",
+    "subtotal": "Subtotal",
+    "vat_note": "Prices include Swedish VAT 25%",
+    "remove": "Remove",
+    "item_count": {
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "open_cart": "Open cart, {{ count }} items",
+    "open_menu": "Open navigation menu",
+    "close_menu": "Close navigation menu"
+  },
+  "sections": {
+    "header": {
+      "logo": "{{ shop_name }}"
+    }
+  },
+  "pagination": {
+    "next": "Next",
+    "previous": "Previous"
+  }
+}

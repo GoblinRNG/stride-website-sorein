@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection-sorein",
+      "settings": {
+        "products_per_page": 24,
+        "show_filters": true
+      }
+    }
+  },
+  "order": ["main"]
+}

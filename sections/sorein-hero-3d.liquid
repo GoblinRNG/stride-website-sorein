@@ -1,0 +1,485 @@
+<style>
+  /* ── Hero base ───────────────────────────────────────────── */
+  .sorein-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--s-bg, #08091a);
+    color: var(--s-text, #e8edf5);
+  }
+
+  /* ── Energy rings ────────────────────────────────────────── */
+  .sorein-hero__rings {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .sorein-hero__ring {
+    position: absolute;
+    right: 8%;
+    border-radius: 50%;
+    border: 1px solid var(--s-accent, #00d4aa);
+    opacity: 0;
+    animation: sorein-ring-pulse 4s ease-out infinite;
+  }
+
+  .sorein-hero__ring--1 {
+    width: 320px;
+    height: 320px;
+    animation-delay: 0s;
+  }
+
+  .sorein-hero__ring--2 {
+    width: 500px;
+    height: 500px;
+    animation-delay: 1.3s;
+    opacity: 0;
+  }
+
+  .sorein-hero__ring--3 {
+    width: 680px;
+    height: 680px;
+    animation-delay: 2.6s;
+    opacity: 0;
+  }
+
+  @keyframes sorein-ring-pulse {
+    0%   { opacity: 0;    transform: scale(0.85); }
+    20%  { opacity: 0.35; }
+    80%  { opacity: 0.08; }
+    100% { opacity: 0;    transform: scale(1.1); }
+  }
+
+  /* ── Layout grid ─────────────────────────────────────────── */
+  .sorein-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+    width: 100%;
+    padding: 8rem 0 5rem;
+  }
+
+  /* ── Text side ───────────────────────────────────────────── */
+  .sorein-hero__content {
+    max-width: 560px;
+  }
+
+  .sorein-hero__eyebrow {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--s-accent, #00d4aa);
+    margin-bottom: 1.25rem;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    border-radius: 2rem;
+  }
+
+  .sorein-hero__heading {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.5rem;
+    background: linear-gradient(135deg, #e8edf5 30%, var(--s-accent, #00d4aa) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sorein-hero__subheading {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(232, 237, 245, 0.7);
+    margin-bottom: 2.5rem;
+    max-width: 440px;
+  }
+
+  /* ── CTA buttons ─────────────────────────────────────────── */
+  .sorein-hero__ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+  }
+
+  .sorein-hero__cta--primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    background: var(--s-accent, #00d4aa);
+    color: #08091a;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .sorein-hero__cta--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 212, 170, 0.35);
+  }
+
+  .sorein-hero__cta--ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    background: transparent;
+    color: var(--s-text, #e8edf5);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid rgba(232, 237, 245, 0.3);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .sorein-hero__cta--ghost:hover {
+    border-color: var(--s-accent, #00d4aa);
+    background: rgba(0, 212, 170, 0.06);
+  }
+
+  /* ── Stats bar ───────────────────────────────────────────── */
+  .sorein-hero__stats {
+    display: flex;
+    gap: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(232, 237, 245, 0.1);
+  }
+
+  .sorein-hero__stat-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--s-accent, #00d4aa);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .sorein-hero__stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(232, 237, 245, 0.5);
+  }
+
+  /* ── 3-D product visual ──────────────────────────────────── */
+  .sorein-hero__visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+  }
+
+  .sorein-hero__scene {
+    transform-style: preserve-3d;
+    animation: sorein-float 6s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes sorein-float {
+    0%, 100% { transform: rotateY(-12deg) rotateX(5deg) translateY(0); }
+    50%       { transform: rotateY(-12deg) rotateX(5deg) translateY(-18px); }
+  }
+
+  .sorein-hero__product-box {
+    position: relative;
+    width: 280px;
+    height: 360px;
+    transform-style: preserve-3d;
+  }
+
+  /* Face definitions */
+  .sorein-hero__face {
+    position: absolute;
+    backface-visibility: hidden;
+  }
+
+  .sorein-hero__face--front {
+    width: 280px;
+    height: 360px;
+    background: linear-gradient(160deg, var(--s-surface, #131627) 0%, #0e1020 100%);
+    border: 1px solid rgba(0, 212, 170, 0.25);
+    border-radius: 1rem;
+    transform: translateZ(40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .sorein-hero__face--front::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(0, 212, 170, 0.15) 0%, transparent 65%);
+    border-radius: inherit;
+  }
+
+  .sorein-hero__face--right {
+    width: 80px;
+    height: 360px;
+    background: linear-gradient(90deg, #0a0b1a, #0d0f1e);
+    border-top: 1px solid rgba(0, 212, 170, 0.15);
+    border-bottom: 1px solid rgba(0, 212, 170, 0.1);
+    right: 0;
+    top: 0;
+    transform: rotateY(90deg) translateZ(240px);
+    border-radius: 0 1rem 1rem 0;
+  }
+
+  .sorein-hero__face--top {
+    width: 280px;
+    height: 80px;
+    background: linear-gradient(180deg, rgba(0, 212, 170, 0.08), transparent);
+    top: 0;
+    transform: rotateX(90deg) translateZ(-40px) translateY(-40px);
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  /* Product label on front face */
+  .sorein-hero__product-label {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .sorein-hero__product-label span {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--s-accent, #00d4aa);
+    margin-bottom: 0.5rem;
+  }
+
+  .sorein-hero__product-label strong {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: var(--s-text, #e8edf5);
+  }
+
+  /* Accent glow line on the box */
+  .sorein-hero__face--front::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--s-accent, #00d4aa), transparent);
+  }
+
+  /* Shadow beneath scene */
+  .sorein-hero__shadow {
+    width: 240px;
+    height: 24px;
+    background: radial-gradient(ellipse, rgba(0, 212, 170, 0.2) 0%, transparent 70%);
+    margin: 1.5rem auto 0;
+    border-radius: 50%;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .sorein-hero__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 6rem 0 4rem;
+    }
+
+    .sorein-hero__content {
+      max-width: 100%;
+    }
+
+    .sorein-hero__ctas {
+      justify-content: center;
+    }
+
+    .sorein-hero__stats {
+      justify-content: center;
+    }
+
+    .sorein-hero__subheading {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sorein-hero__ring--1 { right: 50%; transform: translateX(50%); }
+    .sorein-hero__ring--2 { right: 50%; transform: translateX(50%); }
+    .sorein-hero__ring--3 { right: 50%; transform: translateX(50%); }
+  }
+</style>
+
+<section class="sorein-hero" id="sorein-hero" data-hero-parallax>
+
+  <!-- Background energy rings -->
+  <div class="sorein-hero__rings" aria-hidden="true">
+    <div class="sorein-hero__ring sorein-hero__ring--1"></div>
+    <div class="sorein-hero__ring sorein-hero__ring--2"></div>
+    <div class="sorein-hero__ring sorein-hero__ring--3"></div>
+  </div>
+
+  <div class="sorein-container">
+    <div class="sorein-hero__inner">
+
+      <!-- Text content -->
+      <div class="sorein-hero__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sorein-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h1 class="sorein-hero__heading">{{ section.settings.heading }}</h1>
+
+        {%- if section.settings.subheading != blank -%}
+          <p class="sorein-hero__subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+
+        <div class="sorein-hero__ctas">
+          {%- if section.settings.cta_primary_label != blank -%}
+            <a href="{{ section.settings.cta_primary_url | default: '#' }}" class="sorein-hero__cta--primary">
+              {{ section.settings.cta_primary_label }}
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.cta_secondary_label != blank -%}
+            <a href="{{ section.settings.cta_secondary_url | default: '#' }}" class="sorein-hero__cta--ghost">
+              {{ section.settings.cta_secondary_label }}
+            </a>
+          {%- endif -%}
+        </div>
+
+        <!-- Stats bar -->
+        <div class="sorein-hero__stats">
+          {%- if section.settings.stat1_value != blank -%}
+            <div class="sorein-hero__stat">
+              <p class="sorein-hero__stat-value">{{ section.settings.stat1_value }}</p>
+              <p class="sorein-hero__stat-label">{{ section.settings.stat1_label }}</p>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.stat2_value != blank -%}
+            <div class="sorein-hero__stat">
+              <p class="sorein-hero__stat-value">{{ section.settings.stat2_value }}</p>
+              <p class="sorein-hero__stat-label">{{ section.settings.stat2_label }}</p>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.stat3_value != blank -%}
+            <div class="sorein-hero__stat">
+              <p class="sorein-hero__stat-value">{{ section.settings.stat3_value }}</p>
+              <p class="sorein-hero__stat-label">{{ section.settings.stat3_label }}</p>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- CSS 3D product visualization -->
+      <div class="sorein-hero__visual" aria-hidden="true">
+        <div>
+          <div class="sorein-hero__scene">
+            <div class="sorein-hero__product-box">
+              <div class="sorein-hero__face sorein-hero__face--front">
+                <div class="sorein-hero__product-label">
+                  <span>SOREIN</span>
+                  <strong>PRO X1</strong>
+                </div>
+              </div>
+              <div class="sorein-hero__face sorein-hero__face--right"></div>
+              <div class="sorein-hero__face sorein-hero__face--top"></div>
+            </div>
+          </div>
+          <div class="sorein-hero__shadow"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var hero = document.getElementById('sorein-hero');
+  if (!hero || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+
+  var scene = hero.querySelector('.sorein-hero__scene');
+  if (!scene) return;
+
+  var ticking = false;
+
+  function onScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(function () {
+        var scrollY = window.scrollY;
+        var heroH   = hero.offsetHeight;
+        var progress = Math.min(scrollY / heroH, 1);
+        var translateY = progress * 60;
+        var opacity    = 1 - progress * 0.6;
+
+        hero.style.transform = 'translateY(' + translateY + 'px)';
+        hero.style.opacity   = opacity;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero 3D",
+  "settings": [
+    { "type": "text",     "id": "eyebrow",             "label": "Eyebrow label",         "default": "Next-gen fitness technology" },
+    { "type": "text",     "id": "heading",              "label": "Headline",              "default": "Train Without Limits" },
+    { "type": "textarea", "id": "subheading",           "label": "Subheading",            "default": "SOREIN redefines connected fitness. Intelligent machines built for those who refuse to stop." },
+    { "type": "text",     "id": "cta_primary_label",   "label": "Primary button label",  "default": "Shop Now" },
+    { "type": "url",      "id": "cta_primary_url",     "label": "Primary button URL" },
+    { "type": "text",     "id": "cta_secondary_label", "label": "Secondary button label","default": "See How It Works" },
+    { "type": "url",      "id": "cta_secondary_url",   "label": "Secondary button URL" },
+    { "type": "text",     "id": "stat1_value",         "label": "Stat 1 value",          "default": "48 kg" },
+    { "type": "text",     "id": "stat1_label",         "label": "Stat 1 label",          "default": "Machine weight" },
+    { "type": "text",     "id": "stat2_value",         "label": "Stat 2 value",          "default": "2 400 W" },
+    { "type": "text",     "id": "stat2_label",         "label": "Stat 2 label",          "default": "Peak power" },
+    { "type": "text",     "id": "stat3_value",         "label": "Stat 3 value",          "default": "30 days" },
+    { "type": "text",     "id": "stat3_label",         "label": "Stat 3 label",          "default": "Free returns" }
+  ],
+  "presets": [
+    {
+      "name": "Hero 3D",
+      "settings": {
+        "eyebrow":             "Next-gen fitness technology",
+        "heading":             "Train Without Limits",
+        "subheading":          "SOREIN redefines connected fitness. Intelligent machines built for those who refuse to stop.",
+        "cta_primary_label":   "Shop Now",
+        "cta_secondary_label": "See How It Works",
+        "stat1_value":         "48 kg",
+        "stat1_label":         "Machine weight",
+        "stat2_value":         "2 400 W",
+        "stat2_label":         "Peak power",
+        "stat3_value":         "30 days",
+        "stat3_label":         "Free returns"
+      }
+    }
+  ]
+}
+{% endschema %}

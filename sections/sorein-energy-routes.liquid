@@ -1,0 +1,84 @@
+<section class="sorein-energy-routes sorein-reveal" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'Energy Routes' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'Power for Every Path' }}</h2>
+      <p class="sorein-section-subtitle">{{ section.settings.subtitle | default: 'Click a use case to explore matching products.' }}</p>
+    </div>
+
+    <div class="sorein-routes-grid" data-stagger>
+      {%- for block in section.blocks -%}
+        {%- assign node_color = block.settings.color | default: 'teal' -%}
+        <div class="sorein-energy-node-card sorein-energy-node-card--{{ node_color }}"
+             data-filter="{{ block.settings.filter_tag }}"
+             tabindex="0"
+             role="button"
+             aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+             {{ block.shopify_attributes }}>
+          <div class="sorein-energy-node-card__dot sorein-energy-node-card__dot--{{ node_color }}"></div>
+          <div class="sorein-energy-node-card__icon sorein-energy-node-card__icon--{{ node_color }}">
+            <svg class="sorein-icon" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="#icon-{{ block.settings.icon | default: 'zap' }}"></use>
+            </svg>
+          </div>
+          <h3 class="sorein-energy-node-card__title">{{ block.settings.title }}</h3>
+          <p class="sorein-energy-node-card__desc">{{ block.settings.description }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="sorein-energy-routes__result" id="sorein-routes-result" aria-live="polite">
+      Click any use case above to filter products.
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Energy Routes",
+  "blocks": [
+    {
+      "type": "route",
+      "name": "Energy Route",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "home", "label": "Home" },
+          { "value": "cabin", "label": "Cabin" },
+          { "value": "van", "label": "Van" },
+          { "value": "camping", "label": "Camping" },
+          { "value": "worksite", "label": "Worksite" },
+          { "value": "emergency", "label": "Emergency" },
+          { "value": "solar", "label": "Solar" },
+          { "value": "zap", "label": "Power" }
+        ], "default": "home" },
+        { "type": "select", "id": "color", "label": "Accent color", "options": [
+          { "value": "teal", "label": "Teal" },
+          { "value": "solar", "label": "Solar Orange" },
+          { "value": "battery", "label": "Battery Blue" }
+        ], "default": "teal" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Home Backup" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Keep essentials running during outages." },
+        { "type": "text", "id": "filter_tag", "label": "Filter tag", "info": "Product tag to filter by (e.g. home-backup). Must match product tags exactly.", "default": "home-backup" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Energy Routes" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Power for Every Path" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Click a use case to explore matching products." }
+  ],
+  "presets": [
+    {
+      "name": "Energy Routes",
+      "blocks": [
+        { "type": "route", "settings": { "icon": "home", "color": "teal", "title": "Home Backup", "description": "Keep your family powered during grid outages.", "filter_tag": "home-backup" } },
+        { "type": "route", "settings": { "icon": "cabin", "color": "teal", "title": "Off-Grid Cabin", "description": "Full cabin power from solar. No grid required.", "filter_tag": "cabin" } },
+        { "type": "route", "settings": { "icon": "van", "color": "solar", "title": "Camper Van", "description": "Vehicle-rechargeable. Silent. Compact.", "filter_tag": "vanlife" } },
+        { "type": "route", "settings": { "icon": "camping", "color": "solar", "title": "Camping", "description": "Portable power for any adventure.", "filter_tag": "camping" } },
+        { "type": "route", "settings": { "icon": "worksite", "color": "battery", "title": "Worksite", "description": "230V output for tools and equipment anywhere.", "filter_tag": "worksite" } },
+        { "type": "route", "settings": { "icon": "emergency", "color": "battery", "title": "Emergency", "description": "Always-ready backup for critical situations.", "filter_tag": "emergency" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

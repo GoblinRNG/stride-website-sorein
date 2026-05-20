@@ -1,0 +1,11 @@
+<div class="sorein-energy-node sorein-energy-node--{{ node_color | default: 'teal' }}"
+     data-node="{{ node_id }}"
+     aria-hidden="true">
+  <div class="sorein-energy-node__ring"></div>
+  <div class="sorein-energy-node__core">
+    {% render 'sorein-icon', icon: node_icon | default: 'zap', width: 20, height: 20 %}
+  </div>
+  {%- if node_label != blank -%}
+    <span class="sorein-energy-node__label">{{ node_label }}</span>
+  {%- endif -%}
+</div>

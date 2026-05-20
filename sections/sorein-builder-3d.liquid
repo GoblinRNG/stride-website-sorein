@@ -1,0 +1,527 @@
+{%- liquid
+  assign builder_base = all_products[section.settings.base_product]
+  assign builder_battery = all_products[section.settings.battery_product]
+  assign builder_inverter = all_products[section.settings.inverter_product]
+  assign builder_chassis = all_products[section.settings.chassis_product]
+-%}
+
+<section class="sorein-builder" data-section-id="{{ section.id }}">
+  <div class="sorein-container">
+    <div class="sorein-section-header">
+      <p class="sorein-section-eyebrow">{{ section.settings.eyebrow | default: 'Build Yours' }}</p>
+      <h2 class="sorein-section-title">{{ section.settings.title | default: 'Configure Your A6' }}</h2>
+    </div>
+
+    <div class="sorein-builder__layout">
+      <!-- LEFT: 3D stack visualization -->
+      <div class="sorein-builder__vis" aria-hidden="true">
+        <div class="sorein-builder__stack" data-builder-stack>
+          <div class="sorein-module-layer sorein-module-layer--chassis is-present" data-module="chassis">
+            <span class="sorein-module-layer__label">Chassis</span>
+          </div>
+          <div class="sorein-module-layer sorein-module-layer--base is-present" data-module="base">
+            <span class="sorein-module-layer__label">A6 Base Unit</span>
+          </div>
+        </div>
+        <div class="sorein-builder__vis-caption">Live configuration preview</div>
+      </div>
+
+      <!-- RIGHT: Configuration panel -->
+      <div class="sorein-builder__panel">
+        <!-- Base unit (always included) -->
+        <div class="sorein-builder__module sorein-builder__module--base">
+          <div class="sorein-builder__module-info">
+            <span class="sorein-builder__module-icon">{% render 'sorein-icon', icon: 'battery' %}</span>
+            <div>
+              <p class="sorein-builder__module-name">
+                {%- if builder_base != blank -%}{{ builder_base.title }}{%- else -%}A6 Base Unit{%- endif -%}
+              </p>
+              <p class="sorein-builder__module-desc">Core power station</p>
+            </div>
+          </div>
+          <div class="sorein-builder__module-price">
+            {%- if builder_base != blank -%}
+              {{ builder_base.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+            {%- endif -%}
+          </div>
+          <span class="sorein-builder__module-qty">×1 Included</span>
+        </div>
+
+        <!-- Extra Battery (qty stepper 0–3) -->
+        <div class="sorein-builder__module">
+          <div class="sorein-builder__module-info">
+            <span class="sorein-builder__module-icon">{% render 'sorein-icon', icon: 'zap' %}</span>
+            <div>
+              <p class="sorein-builder__module-name">
+                {%- if builder_battery != blank -%}{{ builder_battery.title }}{%- else -%}Extra Battery Module{%- endif -%}
+              </p>
+              <p class="sorein-builder__module-desc">+2 kWh per module</p>
+            </div>
+          </div>
+          <div class="sorein-builder__module-price" data-module-unit-price="battery">
+            {%- if builder_battery != blank -%}
+              {{ builder_battery.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+            {%- endif -%}
+          </div>
+          <div class="sorein-stepper" data-stepper data-module="battery">
+            <button class="sorein-stepper__btn" data-stepper-minus data-min="0" aria-label="Remove battery module">−</button>
+            <input class="sorein-stepper__val" type="number" value="0" min="0" max="3" data-stepper-val readonly aria-label="Battery module quantity">
+            <button class="sorein-stepper__btn" data-stepper-plus data-max="3" aria-label="Add battery module">+</button>
+          </div>
+        </div>
+
+        <!-- Inverter (qty 0–1) -->
+        <div class="sorein-builder__module">
+          <div class="sorein-builder__module-info">
+            <span class="sorein-builder__module-icon">{% render 'sorein-icon', icon: 'power' %}</span>
+            <div>
+              <p class="sorein-builder__module-name">
+                {%- if builder_inverter != blank -%}{{ builder_inverter.title }}{%- else -%}Inverter Module{%- endif -%}
+              </p>
+              <p class="sorein-builder__module-desc">AC output 230V</p>
+            </div>
+          </div>
+          <div class="sorein-builder__module-price" data-module-unit-price="inverter">
+            {%- if builder_inverter != blank -%}
+              {{ builder_inverter.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+            {%- endif -%}
+          </div>
+          <div class="sorein-stepper" data-stepper data-module="inverter">
+            <button class="sorein-stepper__btn" data-stepper-minus data-min="0" aria-label="Remove inverter module">−</button>
+            <input class="sorein-stepper__val" type="number" value="0" min="0" max="1" data-stepper-val readonly aria-label="Inverter module quantity">
+            <button class="sorein-stepper__btn" data-stepper-plus data-max="1" aria-label="Add inverter module">+</button>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="sorein-builder__total">
+          <div class="sorein-builder__total-row">
+            <span>Total (incl. VAT)</span>
+            <strong data-builder-subtotal>—</strong>
+          </div>
+          <div class="sorein-builder__total-row sorein-builder__total-row--small">
+            <span>Excl. VAT</span>
+            <span data-builder-excl>—</span>
+          </div>
+          <div class="sorein-builder__total-row sorein-builder__total-row--small">
+            <span>VAT 25%</span>
+            <span data-builder-vat>—</span>
+          </div>
+          <div class="sorein-builder__total-row sorein-builder__total-row--small">
+            <span>Weight</span>
+            <span data-builder-weight>—</span>
+          </div>
+        </div>
+
+        <p class="sorein-builder__klarna">
+          Or from <strong data-builder-klarna>—</strong>/month with Klarna
+        </p>
+
+        <button class="sorein-btn sorein-btn--primary sorein-btn--lg sorein-builder__add"
+                data-builder-add>
+          Add Configuration to Cart
+        </button>
+
+        {%- if section.settings.disclaimer != blank -%}
+          <p class="sorein-builder__disclaimer">{{ section.settings.disclaimer }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Product data for JS — prices sourced from Shopify, never hardcoded -->
+<script type="application/json" data-builder-products="{{ section.id }}">
+{
+  "base": {
+    "id": {{ builder_base.selected_or_first_available_variant.id | json }},
+    "title": {{ builder_base.title | json }},
+    "price": {{ builder_base.selected_or_first_available_variant.price | json }},
+    "weight_g": {{ builder_base.selected_or_first_available_variant.weight | times: 1000 | round | json }}
+  },
+  "battery": {
+    "id": {{ builder_battery.selected_or_first_available_variant.id | json }},
+    "title": {{ builder_battery.title | json }},
+    "price": {{ builder_battery.selected_or_first_available_variant.price | json }},
+    "weight_g": {{ builder_battery.selected_or_first_available_variant.weight | times: 1000 | round | json }}
+  },
+  "inverter": {
+    "id": {{ builder_inverter.selected_or_first_available_variant.id | json }},
+    "title": {{ builder_inverter.title | json }},
+    "price": {{ builder_inverter.selected_or_first_available_variant.price | json }},
+    "weight_g": {{ builder_inverter.selected_or_first_available_variant.weight | times: 1000 | round | json }}
+  },
+  "chassis": {
+    "id": {{ builder_chassis.selected_or_first_available_variant.id | json }},
+    "title": {{ builder_chassis.title | json }},
+    "price": {{ builder_chassis.selected_or_first_available_variant.price | json }},
+    "weight_g": {{ builder_chassis.selected_or_first_available_variant.weight | times: 1000 | round | json }}
+  }
+}
+</script>
+
+<style>
+  .sorein-builder {
+    padding: 80px 0;
+    background: var(--s-bg, #08091a);
+  }
+
+  .sorein-builder__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ---- Visualization ---- */
+  .sorein-builder__vis {
+    position: sticky;
+    top: 100px;
+  }
+
+  .sorein-builder__stack {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+    padding: 32px;
+    background: var(--s-surface, #131627);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    min-height: 320px;
+    justify-content: flex-start;
+  }
+
+  .sorein-module-layer {
+    background: rgba(0, 212, 170, 0.07);
+    border: 1.5px solid rgba(0, 212, 170, 0.2);
+    border-radius: 8px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .sorein-module-layer.is-present {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sorein-module-layer--base {
+    background: rgba(0, 212, 170, 0.12);
+    border-color: rgba(0, 212, 170, 0.4);
+  }
+
+  .sorein-module-layer--chassis {
+    background: rgba(232, 237, 245, 0.04);
+    border-color: rgba(232, 237, 245, 0.12);
+  }
+
+  .sorein-module-layer--battery {
+    background: rgba(0, 180, 230, 0.08);
+    border-color: rgba(0, 180, 230, 0.25);
+  }
+
+  .sorein-module-layer--inverter {
+    background: rgba(160, 100, 255, 0.08);
+    border-color: rgba(160, 100, 255, 0.25);
+  }
+
+  .sorein-module-layer__label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--s-text, #e8edf5);
+    letter-spacing: 0.03em;
+  }
+
+  .sorein-builder__vis-caption {
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(232, 237, 245, 0.35);
+    margin-top: 12px;
+  }
+
+  /* ---- Panel ---- */
+  .sorein-builder__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .sorein-builder__module {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .sorein-builder__module--base {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .sorein-builder__module-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .sorein-builder__module-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 170, 0.1);
+    border-radius: 8px;
+    color: var(--s-accent, #00d4aa);
+  }
+
+  .sorein-builder__module-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--s-text, #e8edf5);
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sorein-builder__module-desc {
+    font-size: 0.8125rem;
+    color: rgba(232, 237, 245, 0.5);
+    margin: 0;
+  }
+
+  .sorein-builder__module-price {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--s-text, #e8edf5);
+    white-space: nowrap;
+    text-align: right;
+    min-width: 80px;
+  }
+
+  .sorein-builder__module-qty {
+    font-size: 0.75rem;
+    color: var(--s-accent, #00d4aa);
+    font-weight: 600;
+    white-space: nowrap;
+    background: rgba(0, 212, 170, 0.08);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ---- Stepper ---- */
+  .sorein-stepper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--s-surface, #131627);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 3px;
+  }
+
+  .sorein-stepper__btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--s-text, #e8edf5);
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+    line-height: 1;
+  }
+
+  .sorein-stepper__btn:hover {
+    background: rgba(0, 212, 170, 0.12);
+    color: var(--s-accent, #00d4aa);
+  }
+
+  .sorein-stepper__btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .sorein-stepper__val {
+    width: 28px;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--s-text, #e8edf5);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    -moz-appearance: textfield;
+    pointer-events: none;
+  }
+
+  .sorein-stepper__val::-webkit-inner-spin-button,
+  .sorein-stepper__val::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  /* ---- Total ---- */
+  .sorein-builder__total {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--s-surface, #131627);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sorein-builder__total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 1rem;
+    color: var(--s-text, #e8edf5);
+    font-weight: 600;
+  }
+
+  .sorein-builder__total-row--small {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: rgba(232, 237, 245, 0.55);
+  }
+
+  .sorein-builder__klarna {
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgba(232, 237, 245, 0.6);
+    margin: 16px 0 0;
+  }
+
+  .sorein-builder__klarna strong {
+    color: var(--s-text, #e8edf5);
+  }
+
+  .sorein-builder__add {
+    margin-top: 16px;
+    width: 100%;
+  }
+
+  /* sorein-btn base styles (in case not globally available) */
+  .sorein-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    text-decoration: none;
+  }
+
+  .sorein-btn--primary {
+    background: var(--s-accent, #00d4aa);
+    color: #08091a;
+  }
+
+  .sorein-btn--primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .sorein-btn--lg {
+    padding: 16px 32px;
+    font-size: 1rem;
+  }
+
+  .sorein-builder__disclaimer {
+    font-size: 0.75rem;
+    color: rgba(232, 237, 245, 0.4);
+    text-align: center;
+    margin: 12px 0 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 900px) {
+    .sorein-builder__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .sorein-builder__vis {
+      position: static;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .sorein-builder__module {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+    }
+
+    .sorein-builder__module-info {
+      grid-column: 1 / -1;
+    }
+  }
+</style>
+
+{{ 'sorein-builder.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "3D Builder",
+  "tag": "section",
+  "class": "sorein-builder-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Build Yours"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Configure Your A6"
+    },
+    {
+      "type": "product",
+      "id": "base_product",
+      "label": "Base unit product"
+    },
+    {
+      "type": "product",
+      "id": "battery_product",
+      "label": "Extra battery product"
+    },
+    {
+      "type": "product",
+      "id": "inverter_product",
+      "label": "Inverter product"
+    },
+    {
+      "type": "product",
+      "id": "chassis_product",
+      "label": "Chassis product"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer text",
+      "default": "Prices include Swedish VAT 25%. Free delivery over 5 000 kr."
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Builder"
+    }
+  ]
+}
+{% endschema %}

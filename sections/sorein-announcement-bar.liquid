@@ -1,0 +1,23 @@
+{%- if section.settings.text != blank -%}
+<div class="sorein-announcement" id="sorein-announcement">
+  <div class="sorein-container">
+    <p class="sorein-announcement__text">
+      {%- if section.settings.link != blank -%}
+        <a href="{{ section.settings.link }}" class="sorein-announcement__link">{{ section.settings.text }}</a>
+      {%- else -%}
+        {{ section.settings.text }}
+      {%- endif -%}
+    </p>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Announcement text", "default": "Free shipping on orders over 5 000 kr — 30-day returns" },
+    { "type": "url", "id": "link", "label": "Link (optional)" }
+  ]
+}
+{% endschema %}
