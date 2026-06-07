@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Warm natural wood grain texture">
+  <defs>
+    <linearGradient id="woodBase" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b07a42"/>
+      <stop offset="0.5" stop-color="#9a6633"/>
+      <stop offset="1" stop-color="#7d4f26"/>
+    </linearGradient>
+    <filter id="woodGrain" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.09" numOctaves="4" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0" result="grain"/>
+      <feComposite in="grain" in2="SourceGraphic" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#woodBase)"/>
+  <g opacity="0.5" filter="url(#woodGrain)"><rect width="600" height="600" fill="#7d4f26"/></g>
+  <g stroke="#6b431f" stroke-width="1.4" opacity="0.35" fill="none">
+    <path d="M0 70 C150 50 450 90 600 64"/>
+    <path d="M0 150 C150 175 450 130 600 158"/>
+    <path d="M0 240 C200 215 420 265 600 236"/>
+    <path d="M0 330 C160 355 470 305 600 340"/>
+    <path d="M0 420 C180 400 430 445 600 414"/>
+    <path d="M0 510 C150 535 460 485 600 520"/>
+  </g>
+  <g stroke="#c79257" stroke-width="1" opacity="0.25" fill="none">
+    <path d="M0 110 C200 95 400 130 600 108"/>
+    <path d="M0 290 C220 270 410 310 600 286"/>
+    <path d="M0 465 C200 488 440 450 600 472"/>
+  </g>
+</svg>

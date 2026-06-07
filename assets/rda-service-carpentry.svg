@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" viewBox="0 0 640 440" role="img" aria-label="Carpentry workbench with hand tools and timber">
+  <defs>
+    <linearGradient id="cpBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efe6d8"/><stop offset="1" stop-color="#ddd0bb"/></linearGradient>
+    <linearGradient id="cpWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c79256"/><stop offset="1" stop-color="#9a6a37"/></linearGradient>
+  </defs>
+  <rect width="640" height="440" fill="url(#cpBg)"/>
+  <polygon points="0,300 640,300 640,440 0,440" fill="#cdb79a" opacity="0.5"/>
+  <!-- workbench -->
+  <rect x="80" y="250" width="480" height="34" rx="6" fill="url(#cpWood)"/>
+  <rect x="110" y="284" width="22" height="120" fill="#8a5c30"/>
+  <rect x="508" y="284" width="22" height="120" fill="#8a5c30"/>
+  <!-- timber stack -->
+  <rect x="120" y="208" width="220" height="20" rx="4" fill="#d8a567"/>
+  <rect x="140" y="186" width="220" height="20" rx="4" fill="#bf8a4f"/>
+  <!-- saw -->
+  <g transform="translate(360,150)"><polygon points="0,0 -10,90 20,96 60,8" fill="#b9bfc4"/><polygon points="60,8 0,0 8,-14 70,-4" fill="#7a5230"/></g>
+  <!-- chisel -->
+  <g transform="translate(220,236)"><rect x="0" y="0" width="120" height="8" rx="2" fill="#8a9097"/><rect x="120" y="-2" width="36" height="12" rx="3" fill="#7a5230"/></g>
+  <!-- square -->
+  <g stroke="#5d6166" stroke-width="8" fill="none"><path d="M430 250 v-70 h70"/></g>
+</svg>

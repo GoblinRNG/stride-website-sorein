@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="56" viewBox="0 0 200 56" role="img" aria-label="RDA Bygg AB">
+  <rect x="2" y="8" width="40" height="40" rx="8" fill="#1a1614"/>
+  <path d="M14 40 V18 h10 a6 6 0 0 1 0 12 h-6 m6 0 l6 10" fill="none" stroke="#f5b81f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="54" y="27" font-family="Inter, sans-serif" font-size="20" font-weight="800" fill="#1a1614" letter-spacing="0.5">RDA BYGG</text>
+  <text x="54" y="45" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#8a7b66" letter-spacing="3">AB · CONSTRUCTION</text>
+</svg>

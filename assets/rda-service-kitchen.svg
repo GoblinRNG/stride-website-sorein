@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" viewBox="0 0 640 440" role="img" aria-label="Custom fitted kitchen with wood cabinetry">
+  <defs>
+    <linearGradient id="kBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1ebe0"/><stop offset="1" stop-color="#e2d8c8"/></linearGradient>
+    <linearGradient id="kCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c08f55"/><stop offset="1" stop-color="#9c6c3c"/></linearGradient>
+  </defs>
+  <rect width="640" height="440" fill="url(#kBg)"/>
+  <!-- upper cabinets -->
+  <g fill="url(#kCab)" stroke="#85592e" stroke-width="2">
+    <rect x="70" y="60" width="120" height="90" rx="4"/><rect x="200" y="60" width="120" height="90" rx="4"/>
+  </g>
+  <!-- worktop -->
+  <rect x="60" y="250" width="520" height="22" rx="4" fill="#e9e2d6"/>
+  <rect x="60" y="250" width="520" height="22" rx="4" fill="none" stroke="#cbbda4" stroke-width="2"/>
+  <!-- base cabinets -->
+  <g fill="url(#kCab)" stroke="#85592e" stroke-width="2">
+    <rect x="70" y="272" width="110" height="130" rx="4"/><rect x="190" y="272" width="110" height="130" rx="4"/><rect x="310" y="272" width="110" height="130" rx="4"/><rect x="430" y="272" width="110" height="130" rx="4"/>
+  </g>
+  <g stroke="#3a2e20" stroke-width="4" stroke-linecap="round">
+    <line x1="120" y1="290" x2="120" y2="320"/><line x1="240" y1="290" x2="240" y2="320"/><line x1="360" y1="290" x2="360" y2="320"/><line x1="480" y1="290" x2="480" y2="320"/>
+  </g>
+  <!-- sink + tap -->
+  <rect x="360" y="256" width="70" height="10" rx="3" fill="#9aa0a6"/>
+  <path d="M450 256 v-30 q0 -14 -14 -14" fill="none" stroke="#7d8388" stroke-width="6" stroke-linecap="round"/>
+  <!-- pendant lights -->
+  <g stroke="#2a241c" stroke-width="2"><line x1="250" y1="40" x2="250" y2="90"/><line x1="330" y1="40" x2="330" y2="100"/></g>
+  <path d="M236 90 a14 14 0 0 0 28 0 z" fill="#3a5a40"/><path d="M316 100 a14 14 0 0 0 28 0 z" fill="#f5b81f"/>
+</svg>

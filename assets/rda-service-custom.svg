@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" viewBox="0 0 640 440" role="img" aria-label="Custom built-in wood storage and joinery">
+  <defs>
+    <linearGradient id="csBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1ebe0"/><stop offset="1" stop-color="#e4dac9"/></linearGradient>
+    <linearGradient id="csWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c08f55"/><stop offset="1" stop-color="#9c6c3c"/></linearGradient>
+  </defs>
+  <rect width="640" height="440" fill="url(#csBg)"/>
+  <!-- built-in shelving unit -->
+  <rect x="120" y="60" width="400" height="320" rx="6" fill="url(#csWood)"/>
+  <rect x="120" y="60" width="400" height="320" rx="6" fill="none" stroke="#7d4f26" stroke-width="3"/>
+  <g stroke="#7d4f26" stroke-width="3">
+    <line x1="120" y1="140" x2="520" y2="140"/><line x1="120" y1="220" x2="520" y2="220"/><line x1="120" y1="300" x2="520" y2="300"/>
+    <line x1="320" y1="60" x2="320" y2="380"/>
+  </g>
+  <!-- objects on shelves -->
+  <g fill="#e9e2d6"><rect x="150" y="100" width="14" height="34"/><rect x="168" y="92" width="14" height="42"/><rect x="186" y="104" width="14" height="30"/></g>
+  <circle cx="420" cy="118" r="16" fill="#3a5a40"/>
+  <rect x="360" y="248" width="120" height="46" rx="6" fill="#f5b81f" opacity="0.85"/>
+  <g fill="#e9e2d6"><rect x="150" y="320" width="120" height="50" rx="4"/></g>
+  <!-- door handle hints -->
+  <g stroke="#2a241c" stroke-width="4" stroke-linecap="round"><line x1="300" y1="330" x2="300" y2="350"/><line x1="340" y1="330" x2="340" y2="350"/></g>
+</svg>

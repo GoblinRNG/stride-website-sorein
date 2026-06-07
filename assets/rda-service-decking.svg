@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" viewBox="0 0 640 440" role="img" aria-label="Outdoor wooden deck with railing and greenery">
+  <defs>
+    <linearGradient id="dkSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcdce8"/><stop offset="1" stop-color="#e7f0ee"/></linearGradient>
+    <linearGradient id="dkDeck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c2925a"/><stop offset="1" stop-color="#9a6c3e"/></linearGradient>
+  </defs>
+  <rect width="640" height="440" fill="url(#dkSky)"/>
+  <!-- greenery -->
+  <g fill="#7c9a6e" opacity="0.85"><circle cx="90" cy="180" r="50"/><circle cx="150" cy="200" r="40"/><circle cx="560" cy="170" r="55"/><circle cx="500" cy="200" r="38"/></g>
+  <!-- deck planks (perspective) -->
+  <polygon points="0,250 640,250 640,440 0,440" fill="url(#dkDeck)"/>
+  <g stroke="#7d4f26" stroke-width="3" opacity="0.55">
+    <line x1="0" y1="290" x2="640" y2="290"/><line x1="0" y1="330" x2="640" y2="330"/><line x1="0" y1="375" x2="640" y2="375"/><line x1="0" y1="420" x2="640" y2="420"/>
+  </g>
+  <!-- railing -->
+  <g stroke="#8a5c30" stroke-width="8" stroke-linecap="round">
+    <line x1="60" y1="250" x2="60" y2="150"/><line x1="200" y1="250" x2="200" y2="150"/><line x1="440" y1="250" x2="440" y2="150"/><line x1="580" y1="250" x2="580" y2="150"/>
+  </g>
+  <rect x="40" y="140" width="560" height="14" rx="6" fill="#a06d39"/>
+  <g stroke="#9a6c3e" stroke-width="4"><line x1="60" y1="210" x2="200" y2="210"/><line x1="440" y1="210" x2="580" y2="210"/></g>
+</svg>

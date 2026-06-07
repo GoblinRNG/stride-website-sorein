@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "rda-construction": {
+      "type": "rda-3d-construction-home",
+      "blocks": {
+        "mat-1": { "type": "material", "settings": { "name": "Solid wood", "description": "Carefully selected timber, worked by hand for strength, warmth and a finish that lasts for decades.", "tag": "Natural · Durable", "swatch_asset": "rda-texture-wood.svg" } },
+        "mat-2": { "type": "material", "settings": { "name": "Precision tools", "description": "Measured twice, cut once. Professional tools and methods for clean, accurate results every time.", "tag": "Accurate · Reliable", "swatch_asset": "rda-texture-metal.svg" } },
+        "mat-3": { "type": "material", "settings": { "name": "Flooring", "description": "Wood and laid flooring fitted to last — level, quiet underfoot and beautifully finished.", "tag": "Warm · Long-lasting", "swatch_asset": "rda-service-flooring.svg" } },
+        "mat-4": { "type": "material", "settings": { "name": "Kitchen carpentry", "description": "Fitted kitchens and cabinetry built and installed to millimetre tolerances.", "tag": "Bespoke · Functional", "swatch_asset": "rda-service-kitchen.svg" } },
+        "mat-5": { "type": "material", "settings": { "name": "Outdoor decking", "description": "Weather-ready decks and outdoor woodwork engineered for Nordic seasons.", "tag": "Outdoor · Robust", "swatch_asset": "rda-service-decking.svg" } },
+        "mat-6": { "type": "material", "settings": { "name": "Interior renovation", "description": "Complete interiors brought together — surfaces, details and comfort in every room.", "tag": "Complete · Comfortable", "swatch_asset": "rda-service-interior.svg" } },
+        "svc-1": { "type": "service", "settings": { "title": "Carpentry", "description": "Skilled carpentry for structural and finish work — framing, joinery and everything in between.", "image_asset": "rda-service-carpentry.svg", "image_alt": "Carpentry workbench with hand tools and timber", "link_text": "Request a quote" } },
+        "svc-2": { "type": "service", "settings": { "title": "Kitchen Renovation", "description": "Custom fitted kitchens designed, built and installed for daily comfort and lasting quality.", "image_asset": "rda-service-kitchen.svg", "image_alt": "Custom fitted kitchen with wood cabinetry", "link_text": "Request a quote" } },
+        "svc-3": { "type": "service", "settings": { "title": "Flooring Installation", "description": "Wood, parquet and laid flooring fitted with precision for a flawless, durable surface.", "image_asset": "rda-service-flooring.svg", "image_alt": "Herringbone wood flooring installation", "link_text": "Request a quote" } },
+        "svc-4": { "type": "service", "settings": { "title": "Decking & Outdoor Woodwork", "description": "Decks, terraces and outdoor structures built to handle Nordic weather year-round.", "image_asset": "rda-service-decking.svg", "image_alt": "Outdoor wooden deck with railing and greenery", "link_text": "Request a quote" } },
+        "svc-5": { "type": "service", "settings": { "title": "Interior Renovation", "description": "Full interior renovations managed by one trusted team from first plan to final clean.", "image_asset": "rda-service-interior.svg", "image_alt": "Finished interior renovation with wood paneling and warm light", "link_text": "Request a quote" } },
+        "svc-6": { "type": "service", "settings": { "title": "Custom Wood Solutions", "description": "Built-in storage, stairs and bespoke joinery made to fit your space exactly.", "image_asset": "rda-service-custom.svg", "image_alt": "Custom built-in wood storage and joinery", "link_text": "Request a quote" } }
+      },
+      "block_order": ["mat-1","mat-2","mat-3","mat-4","mat-5","mat-6","svc-1","svc-2","svc-3","svc-4","svc-5","svc-6"],
+      "settings": {}
+    }
+  },
+  "order": ["rda-construction"]
+}

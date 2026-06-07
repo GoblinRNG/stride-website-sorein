@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" role="img" aria-label="Unfinished renovation room with bare studs and concrete floor">
+  <defs>
+    <linearGradient id="bfWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8d2c6"/><stop offset="1" stop-color="#c2bbac"/></linearGradient>
+    <linearGradient id="bfFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b3ada0"/><stop offset="1" stop-color="#928c80"/></linearGradient>
+  </defs>
+  <rect width="1000" height="700" fill="url(#bfWall)"/>
+  <!-- exposed brick patch -->
+  <g fill="#a07a63" opacity="0.6" stroke="#8a6450" stroke-width="2">
+    <rect x="60" y="80" width="70" height="30"/><rect x="135" y="80" width="70" height="30"/><rect x="95" y="112" width="70" height="30"/><rect x="170" y="112" width="60" height="30"/><rect x="60" y="144" width="70" height="30"/><rect x="135" y="144" width="70" height="30"/>
+  </g>
+  <!-- bare timber studs -->
+  <g fill="#c79b63" stroke="#9a6f3c" stroke-width="2">
+    <rect x="520" y="60" width="26" height="400"/><rect x="640" y="60" width="26" height="400"/><rect x="760" y="60" width="26" height="400"/>
+    <rect x="510" y="60" width="290" height="24"/><rect x="510" y="250" width="290" height="20"/>
+  </g>
+  <!-- concrete floor -->
+  <polygon points="0,460 1000,460 1000,700 0,700" fill="url(#bfFloor)"/>
+  <g stroke="#7e786c" stroke-width="2" opacity="0.5"><line x1="0" y1="560" x2="1000" y2="560"/><line x1="300" y1="460" x2="220" y2="700"/><line x1="700" y1="460" x2="800" y2="700"/></g>
+  <!-- dust / debris -->
+  <g fill="#8a8276" opacity="0.6"><ellipse cx="250" cy="620" rx="90" ry="20"/><ellipse cx="640" cy="650" rx="70" ry="16"/></g>
+  <!-- exposed wiring -->
+  <path d="M820 100 q40 60 10 140 q-30 70 20 130" fill="none" stroke="#b03a2e" stroke-width="4"/>
+  <rect x="800" y="90" width="40" height="30" rx="3" fill="#8a8276"/>
+  <!-- ladder -->
+  <g stroke="#8a8276" stroke-width="8" stroke-linecap="round"><line x1="120" y1="300" x2="150" y2="560"/><line x1="200" y1="300" x2="230" y2="560"/><line x1="135" y1="360" x2="208" y2="360"/><line x1="150" y1="430" x2="220" y2="430"/><line x1="165" y1="500" x2="232" y2="500"/></g>
+  <rect width="1000" height="700" fill="#3a342b" opacity="0.06"/>
+</svg>
