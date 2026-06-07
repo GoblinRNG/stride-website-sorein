@@ -35,6 +35,7 @@ assets — no external CDN dependencies.
 | `assets/rda-texture-concrete.svg` | Subtle concrete background texture (services). |
 | `assets/rda-texture-metal.svg` | Brushed metal texture (tools material swatch). |
 | `assets/rda-logo.svg` | Clean RDA Bygg AB wordmark/monogram. |
+| `assets/rda-noise.svg` | Fine film-grain texture overlaid on dark sections for material realism. |
 
 Files edited: `.eleventyignore` (excludes this `.md` doc from the Stride build).
 
@@ -75,19 +76,36 @@ Leave **Form action URL** blank to use the built-in friendly confirmation
 
 ## Page structure
 
-1. **Hero** — "Crafted Construction. Comfortable Solutions." with a layered,
-   mouse/tilt-reactive 3D scene and trust strip.
-2. **Interactive 3D material showcase** — cards tilt on hover and flip on
-   click/tap/Enter to reveal details.
-3. **Services** — 6 premium cards with depth-hover, image, copy and CTA.
-4. **Scroll-build animation** — blueprint → materials → frame → details →
-   finished result, driven by scroll position.
-5. **Before / After** — draggable, keyboard-accessible comparison slider.
-6. **Process** — 5-step timeline.
-7. **Trust** — 6 reasons + guarantee badges.
-8. **Final CTA + quote form** — "Ready to build something better?"
+1. **Hero** — "Crafted Construction. Comfortable Solutions." with a serif display
+   headline, rating badge, layered mouse/tilt-reactive (eased + idle-float) 3D
+   scene and trust strip.
+2. **Credibility stats band** — 4 animated count-up figures (years, projects,
+   rating, insured).
+3. **Interactive 3D material showcase** — cards tilt + cursor-sheen on hover and
+   flip on click/tap/Enter to reveal details.
+4. **Services** — 6 premium cards with depth-hover, image, copy and CTA.
+5. **Scroll-build animation** — blueprint → materials → frame → details →
+   finished result, driven by scroll, with a live progress bar.
+6. **Before / After** — draggable, keyboard-accessible comparison slider.
+7. **Process** — 5-step timeline.
+8. **Trust** — 6 reasons + guarantee badges.
+9. **Testimonial** — featured customer review.
+10. **Final CTA + quote form** — "Ready to build something better?"
 
 Plus a **mobile sticky CTA** (call + Request a Quote) on small screens.
+
+### Premium design pass (v2)
+- **Typography**: craft serif display face (**Fraunces**, italic accents) paired
+  with **Inter** for UI — distinctive, editorial, not generic/techy.
+- **Materials & depth**: warm material palette (wood/brass/cream/forest green),
+  film-grain overlay on dark sections, layered soft shadows, gradient hairlines,
+  vignettes and lighting/dust detail baked into the SVG scenes for realism.
+- **Motion**: eased (lerped) hero parallax with idle float, cursor-tracking sheen
+  on material cards and primary buttons, staggered scroll reveals, animated stat
+  counters, and a scroll-driven build progress bar — all 200–300ms, GPU-friendly
+  (`transform`/`opacity`), and fully disabled under `prefers-reduced-motion`.
+- **Conversion**: rating badge + stats band + testimonial add credibility; quote
+  form gains a title; generous Scandinavian spacing rhythm and refined mobile layout.
 
 ---
 
