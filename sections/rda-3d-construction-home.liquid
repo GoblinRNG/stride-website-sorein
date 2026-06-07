@@ -1,0 +1,550 @@
+{{ 'rda-3d-construction.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign s = section.settings
+  assign hero_img = s.hero_image_asset | default: 'rda-hero-scene.svg' | asset_url
+  if s.hero_image != blank
+    assign hero_img = s.hero_image | image_url: width: 1400
+  endif
+  assign before_img = s.before_image_asset | default: 'rda-before.svg' | asset_url
+  if s.before_image != blank
+    assign before_img = s.before_image | image_url: width: 1400
+  endif
+  assign after_img = s.after_image_asset | default: 'rda-after.svg' | asset_url
+  if s.after_image != blank
+    assign after_img = s.after_image | image_url: width: 1400
+  endif
+  assign build_img = s.build_image_asset | default: 'rda-after.svg' | asset_url
+  if s.build_image != blank
+    assign build_img = s.build_image | image_url: width: 1200
+  endif
+-%}
+
+<div class="rda-page" data-rda-section="construction" data-section-id="{{ section.id }}">
+
+  <!-- ================= 1. HERO ================= -->
+  <header class="rda-hero rda-section rda-grain">
+    <div class="rda-hero__blueprint" aria-hidden="true"></div>
+    <div class="rda-hero__glow" aria-hidden="true"></div>
+    <div class="rda-wrap rda-hero__inner">
+      <div class="rda-hero__content">
+        {%- if s.hero_rating != blank -%}
+          <span class="rda-hero__badge rda-reveal">
+            <span class="rda-stars" aria-hidden="true">★★★★★</span>
+            <span><b>{{ s.hero_rating | escape }}</b>/5 · {{ s.hero_rating_count | escape }}</span>
+          </span>
+        {%- endif -%}
+        <span class="rda-eyebrow rda-eyebrow--light rda-reveal rda-reveal--d1">{{ s.hero_eyebrow | escape }}</span>
+        <h1 class="rda-hero__headline rda-reveal rda-reveal--d1">
+          {{ s.hero_headline | escape }}
+          {%- if s.hero_headline_accent != blank %}<em>{{ s.hero_headline_accent | escape }}</em>{% endif -%}
+        </h1>
+        <p class="rda-hero__sub rda-reveal rda-reveal--d2">{{ s.hero_sub | escape }}</p>
+        <div class="rda-hero__ctas rda-reveal rda-reveal--d3">
+          {%- if s.hero_cta1_text != blank -%}
+            <a href="{{ s.hero_cta1_url | default: '#rda-quote' }}" class="rda-btn rda-btn--primary rda-btn--lg">
+              {{ s.hero_cta1_text | escape }}
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if s.hero_cta2_text != blank -%}
+            <a href="{{ s.hero_cta2_url | default: '#rda-work' }}" class="rda-btn rda-btn--ghost-light rda-btn--lg">{{ s.hero_cta2_text | escape }}</a>
+          {%- endif -%}
+        </div>
+        <div class="rda-hero__trust rda-stagger rda-reveal rda-reveal--d4">
+          {%- assign trust_items = s.hero_trust | split: ',' -%}
+          {%- for item in trust_items -%}
+            <span class="rda-hero__trust-item">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12l2 2 4-4m5.6-1.6A11.95 11.95 0 0112 2.94 11.95 11.95 0 013.4 6 12 12 0 003 9c0 5.6 3.82 10.3 9 11.62C17.18 19.3 21 14.6 21 9c0-1.04-.13-2.05-.4-3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {{ item | strip | escape }}
+            </span>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="rda-hero__visual rda-reveal rda-reveal--d2">
+        <div class="rda-scene">
+          <div class="rda-scene__frame">
+            <img class="rda-scene__img" data-depth="0.25" src="{{ hero_img }}" alt="{{ s.hero_image_alt | escape }}" width="1200" height="900" fetchpriority="high">
+          </div>
+          <div class="rda-scene__beam" data-depth="1.4" aria-hidden="true"></div>
+          <div class="rda-scene__ruler" data-depth="1.1" aria-hidden="true"></div>
+          <div class="rda-scene__layer rda-scene__card rda-scene__card--1" data-depth="2" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{{ s.hero_chip1 | default: 'Structural woodwork' | escape }}<small>Solid timber framing</small></span>
+          </div>
+          <div class="rda-scene__layer rda-scene__card rda-scene__card--2" data-depth="1.7" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4-9 4-9-4zM3 7v10l9 4 9-4V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{{ s.hero_chip2 | default: 'Premium materials' | escape }}<small>Sourced & checked</small></span>
+          </div>
+          <div class="rda-scene__layer rda-scene__card rda-scene__card--3" data-depth="2.4" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.6-.5L12 2z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{{ s.hero_chip3 | default: 'Swedish quality' | escape }}<small>Built to last</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= CREDIBILITY STATS ================= -->
+  <section class="rda-stats rda-section--tight" aria-label="{{ s.stats_label | default: 'RDA Bygg in numbers' | escape }}">
+    <div class="rda-wrap">
+      <div class="rda-stats__grid rda-stagger rda-reveal">
+        {%- assign dec1 = s.stat1_decimals | default: 0 -%}
+        <div class="rda-stat"><div class="rda-stat__num" data-count="{{ s.stat1_num }}" data-decimals="{{ dec1 }}">{{ s.stat1_num }}<span>{{ s.stat1_suffix | escape }}</span></div><p class="rda-stat__label">{{ s.stat1_label | escape }}</p></div>
+        <div class="rda-stat"><div class="rda-stat__num" data-count="{{ s.stat2_num }}" data-decimals="{{ s.stat2_decimals | default: 0 }}">{{ s.stat2_num }}<span>{{ s.stat2_suffix | escape }}</span></div><p class="rda-stat__label">{{ s.stat2_label | escape }}</p></div>
+        <div class="rda-stat"><div class="rda-stat__num" data-count="{{ s.stat3_num }}" data-decimals="{{ s.stat3_decimals | default: 0 }}">{{ s.stat3_num }}<span>{{ s.stat3_suffix | escape }}</span></div><p class="rda-stat__label">{{ s.stat3_label | escape }}</p></div>
+        <div class="rda-stat"><div class="rda-stat__num" data-count="{{ s.stat4_num }}" data-decimals="{{ s.stat4_decimals | default: 0 }}">{{ s.stat4_num }}<span>{{ s.stat4_suffix | escape }}</span></div><p class="rda-stat__label">{{ s.stat4_label | escape }}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. MATERIAL SHOWCASE ================= -->
+  {%- assign material_blocks = section.blocks | where: 'type', 'material' -%}
+  {%- if material_blocks.size > 0 -%}
+  <section class="rda-materials rda-section rda-grain" aria-labelledby="rda-mat-title">
+    <div class="rda-wrap">
+      <div class="rda-section__head rda-section__head--center rda-reveal">
+        <span class="rda-eyebrow rda-eyebrow--light">{{ s.mat_eyebrow | escape }}</span>
+        <h2 id="rda-mat-title" class="rda-h2">{{ s.mat_heading | escape }}</h2>
+        <p class="rda-lead">{{ s.mat_sub | escape }}</p>
+      </div>
+      <div class="rda-mat-grid rda-stagger rda-reveal">
+        {%- for block in material_blocks -%}
+          {%- liquid
+            assign swatch = block.settings.swatch_asset | default: 'rda-texture-wood.svg' | asset_url
+            if block.settings.swatch != blank
+              assign swatch = block.settings.swatch | image_url: width: 600
+            endif
+          -%}
+          <button type="button" class="rda-mat" {{ block.shopify_attributes }} aria-pressed="false">
+            <div class="rda-mat__face rda-mat__front">
+              <div class="rda-mat__swatch" style="background-image:url('{{ swatch }}')"></div>
+              <div class="rda-mat__overlay"></div>
+              <div class="rda-mat__label">
+                <p class="rda-mat__name">{{ block.settings.name | escape }}</p>
+                <span class="rda-mat__hint">
+                  {{ s.mat_hint | default: 'Tap to explore' | escape }}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="rda-mat__face rda-mat__back">
+              <p class="rda-mat__back-name">{{ block.settings.name | escape }}</p>
+              <p class="rda-mat__back-text">{{ block.settings.description | escape }}</p>
+              {%- if block.settings.tag != blank -%}<span class="rda-mat__back-tag">{{ block.settings.tag | escape }}</span>{%- endif -%}
+            </div>
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
+  <!-- ================= 3. SERVICES ================= -->
+  {%- assign service_blocks = section.blocks | where: 'type', 'service' -%}
+  {%- if service_blocks.size > 0 -%}
+  <section class="rda-services rda-section" id="rda-services" aria-labelledby="rda-svc-title">
+    <div class="rda-services__bg" aria-hidden="true"></div>
+    <div class="rda-wrap">
+      <div class="rda-section__head rda-reveal">
+        <span class="rda-eyebrow">{{ s.svc_eyebrow | escape }}</span>
+        <h2 id="rda-svc-title" class="rda-h2">{{ s.svc_heading | escape }}</h2>
+        <p class="rda-lead">{{ s.svc_sub | escape }}</p>
+      </div>
+      <div class="rda-svc-grid rda-stagger rda-reveal">
+        {%- for block in service_blocks -%}
+          {%- liquid
+            assign svc_img = block.settings.image_asset | default: 'rda-service-carpentry.svg' | asset_url
+            if block.settings.image != blank
+              assign svc_img = block.settings.image | image_url: width: 800
+            endif
+          -%}
+          <article class="rda-svc" {{ block.shopify_attributes }}>
+            <div class="rda-svc__media">
+              <span class="rda-svc__num">{{ forloop.index }}</span>
+              <img src="{{ svc_img }}" alt="{{ block.settings.image_alt | default: block.settings.title | escape }}" width="640" height="440" loading="lazy">
+            </div>
+            <div class="rda-svc__body">
+              <h3 class="rda-svc__title">{{ block.settings.title | escape }}</h3>
+              <p class="rda-svc__desc">{{ block.settings.description | escape }}</p>
+              {%- if block.settings.link_text != blank -%}
+                <a class="rda-svc__link" href="{{ block.settings.link | default: '#rda-quote' }}">
+                  {{ block.settings.link_text | escape }}
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
+  <!-- ================= 4. SCROLL-BUILD ================= -->
+  <section class="rda-build rda-section rda-grain" aria-labelledby="rda-build-title">
+    <div class="rda-wrap rda-build__grid">
+      <div>
+        <div class="rda-section__head rda-reveal">
+          <span class="rda-eyebrow rda-eyebrow--light">{{ s.build_eyebrow | escape }}</span>
+          <h2 id="rda-build-title" class="rda-h2">{{ s.build_heading | escape }}</h2>
+          <p class="rda-lead">{{ s.build_sub | escape }}</p>
+        </div>
+        <ol class="rda-build__steps">
+          {%- assign bsteps = s.build_steps | newline_to_br | split: '<br />' -%}
+          {%- for step in bsteps -%}
+            {%- assign parts = step | strip | split: '|' -%}
+            {%- if parts[0] != blank -%}
+            <li class="rda-build__step{% if forloop.first %} is-active{% endif %}">
+              <span class="rda-build__step-num">{{ forloop.index }}</span>
+              <h3 class="rda-build__step-title">{{ parts[0] | strip | escape }}</h3>
+              <p class="rda-build__step-text">{{ parts[1] | strip | escape }}</p>
+            </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ol>
+      </div>
+      <div class="rda-build__stage rda-reveal" data-step="0" role="img" aria-label="{{ s.build_image_alt | escape }}">
+        <div class="rda-build__bp" aria-hidden="true"></div>
+        <div class="rda-build__piece rda-build__piece--p1" aria-hidden="true"></div>
+        <div class="rda-build__piece rda-build__piece--p2" aria-hidden="true"></div>
+        <div class="rda-build__piece rda-build__piece--p3" aria-hidden="true"></div>
+        <div class="rda-build__piece rda-build__piece--p4" aria-hidden="true"></div>
+        <img class="rda-build__final" src="{{ build_img }}" alt="" width="1000" height="800" loading="lazy">
+        <div class="rda-build__progress" aria-hidden="true"><i></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5. BEFORE / AFTER ================= -->
+  <section class="rda-ba rda-section" id="rda-work" aria-labelledby="rda-ba-title">
+    <div class="rda-wrap">
+      <div class="rda-section__head rda-section__head--center rda-reveal">
+        <span class="rda-eyebrow">{{ s.ba_eyebrow | escape }}</span>
+        <h2 id="rda-ba-title" class="rda-h2">{{ s.ba_heading | escape }}</h2>
+        <p class="rda-lead">{{ s.ba_sub | escape }}</p>
+      </div>
+      <div class="rda-ba__frame rda-reveal">
+        <img class="rda-ba__img rda-ba__before" src="{{ before_img }}" alt="{{ s.before_alt | escape }}" width="1000" height="700" loading="lazy">
+        <img class="rda-ba__img rda-ba__after" src="{{ after_img }}" alt="{{ s.after_alt | escape }}" width="1000" height="700" loading="lazy">
+        <span class="rda-ba__tag rda-ba__tag--before">{{ s.ba_label_before | default: 'Before' | escape }}</span>
+        <span class="rda-ba__tag rda-ba__tag--after">{{ s.ba_label_after | default: 'After' | escape }}</span>
+        <input class="rda-ba__range" type="range" min="0" max="100" value="50" aria-label="{{ s.ba_slider_label | default: 'Drag to compare before and after' | escape }}">
+        <div class="rda-ba__handle" aria-hidden="true">
+          <span class="rda-ba__knob">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 6. PROCESS ================= -->
+  <section class="rda-process rda-section rda-grain" aria-labelledby="rda-proc-title">
+    <div class="rda-wrap">
+      <div class="rda-section__head rda-section__head--center rda-reveal">
+        <span class="rda-eyebrow rda-eyebrow--light">{{ s.proc_eyebrow | escape }}</span>
+        <h2 id="rda-proc-title" class="rda-h2">{{ s.proc_heading | escape }}</h2>
+        <p class="rda-lead">{{ s.proc_sub | escape }}</p>
+      </div>
+      <div class="rda-proc-grid rda-stagger rda-reveal">
+        {%- assign psteps = s.proc_steps | newline_to_br | split: '<br />' -%}
+        {%- for step in psteps -%}
+          {%- assign parts = step | strip | split: '|' -%}
+          {%- if parts[0] != blank -%}
+          <div class="rda-proc">
+            <div class="rda-proc__num">{{ forloop.index }}</div>
+            <h3 class="rda-proc__title">{{ parts[0] | strip | escape }}</h3>
+            <p class="rda-proc__text">{{ parts[1] | strip | escape }}</p>
+          </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 7. TRUST ================= -->
+  <section class="rda-trust rda-section" aria-labelledby="rda-trust-title">
+    <div class="rda-wrap">
+      <div class="rda-section__head rda-section__head--center rda-reveal">
+        <span class="rda-eyebrow">{{ s.trust_eyebrow | escape }}</span>
+        <h2 id="rda-trust-title" class="rda-h2">{{ s.trust_heading | escape }}</h2>
+        <p class="rda-lead">{{ s.trust_sub | escape }}</p>
+      </div>
+      <div class="rda-trust__grid rda-stagger rda-reveal">
+        {%- assign titems = s.trust_items | newline_to_br | split: '<br />' -%}
+        {%- for item in titems -%}
+          {%- assign parts = item | strip | split: '|' -%}
+          {%- if parts[0] != blank -%}
+          <div class="rda-trust__item">
+            <span class="rda-trust__icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v5c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V6l8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              <h3 class="rda-trust__title">{{ parts[0] | strip | escape }}</h3>
+              <p class="rda-trust__text">{{ parts[1] | strip | escape }}</p>
+            </div>
+          </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="rda-trust__badges rda-reveal">
+        {%- assign badges = s.trust_badges | split: ',' -%}
+        {%- for badge in badges -%}
+          <span class="rda-trust__badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5.6-1.6A11.95 11.95 0 0112 2.94 11.95 11.95 0 013.4 6 12 12 0 003 9c0 5.6 3.82 10.3 9 11.62C17.18 19.3 21 14.6 21 9c0-1.04-.13-2.05-.4-3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {{ badge | strip | escape }}
+          </span>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIAL ================= -->
+  {%- if s.quote_text != blank -%}
+  <section class="rda-quote-sec rda-section rda-grain" aria-label="{{ s.quote_eyebrow | default: 'Customer review' | escape }}">
+    <div class="rda-wrap">
+      <div class="rda-quote-wrap rda-reveal">
+        <div class="rda-quote-stars" aria-hidden="true">{% for i in (1..5) %}★{% endfor %}</div>
+        <p class="rda-quote-text">{{ s.quote_text | escape }}</p>
+        <div class="rda-quote-meta">
+          <span class="rda-quote-avatar" aria-hidden="true">{{ s.quote_initials | default: 'RB' | escape }}</span>
+          <span class="rda-quote-who">
+            <span class="rda-quote-name">{{ s.quote_name | escape }}</span>
+            <span class="rda-quote-role">{{ s.quote_role | escape }}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
+  <!-- ================= 8. FINAL CTA + FORM ================= -->
+  <section class="rda-cta rda-section rda-grain" id="rda-quote" aria-labelledby="rda-cta-title">
+    <div class="rda-cta__wood" aria-hidden="true"></div>
+    <div class="rda-wrap rda-cta__grid">
+      <div class="rda-reveal">
+        <span class="rda-eyebrow rda-eyebrow--light">{{ s.cta_eyebrow | escape }}</span>
+        <h2 id="rda-cta-title" class="rda-cta__headline">
+          {{ s.cta_headline | escape }}
+          {%- if s.cta_headline_accent != blank %} <em>{{ s.cta_headline_accent | escape }}</em>{% endif -%}
+        </h2>
+        <p class="rda-cta__text">{{ s.cta_text | escape }}</p>
+        <ul class="rda-cta__points">
+          {%- assign points = s.cta_points | split: ',' -%}
+          {%- for point in points -%}
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {{ point | strip | escape }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <form class="rda-form rda-reveal rda-reveal--d1" data-rda-form{% if s.form_action != blank %} action="{{ s.form_action }}" method="post"{% endif %} novalidate>
+        {%- if s.form_title != blank -%}<p class="rda-form__title">{{ s.form_title | escape }}</p>{%- endif -%}
+        <div class="rda-form__row">
+          <div class="rda-field">
+            <label for="rda-name">{{ s.form_label_name | default: 'Name' | escape }}</label>
+            <input type="text" id="rda-name" name="contact[name]" autocomplete="name" required placeholder="{{ s.form_ph_name | default: 'Your name' | escape }}">
+          </div>
+          <div class="rda-field">
+            <label for="rda-phone">{{ s.form_label_phone | default: 'Phone' | escape }}</label>
+            <input type="tel" id="rda-phone" name="contact[phone]" autocomplete="tel" placeholder="{{ s.form_ph_phone | default: '+46 ...' | escape }}">
+          </div>
+        </div>
+        <div class="rda-field">
+          <label for="rda-email">{{ s.form_label_email | default: 'Email' | escape }}</label>
+          <input type="email" id="rda-email" name="contact[email]" autocomplete="email" required placeholder="{{ s.form_ph_email | default: 'you@example.com' | escape }}">
+        </div>
+        <div class="rda-field">
+          <label for="rda-type">{{ s.form_label_type | default: 'Project type' | escape }}</label>
+          <select id="rda-type" name="contact[project_type]">
+            {%- assign opts = s.form_types | split: ',' -%}
+            {%- for opt in opts -%}<option value="{{ opt | strip | escape }}">{{ opt | strip | escape }}</option>{%- endfor -%}
+          </select>
+        </div>
+        <div class="rda-field">
+          <label for="rda-msg">{{ s.form_label_msg | default: 'Project details' | escape }}</label>
+          <textarea id="rda-msg" name="contact[body]" placeholder="{{ s.form_ph_msg | default: 'Tell us about your project, location and timeline.' | escape }}"></textarea>
+        </div>
+        <button type="submit" class="rda-btn rda-btn--primary rda-btn--lg">
+          {{ s.form_submit | default: 'Request a Quote' | escape }}
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="rda-form__note">{{ s.form_note | default: 'We usually reply within one business day. No obligation.' | escape }}</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Mobile sticky CTA -->
+  <div class="rda-sticky" aria-hidden="false">
+    {%- if s.hero_phone != blank -%}
+      <a class="rda-sticky__call" href="tel:{{ s.hero_phone | strip | replace: ' ', '' }}" aria-label="{{ s.sticky_call_label | default: 'Call us' | escape }}">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    {%- endif -%}
+    <a href="{{ s.hero_cta1_url | default: '#rda-quote' }}" class="rda-btn rda-btn--primary">{{ s.sticky_cta | default: 'Request a Quote' | escape }}</a>
+  </div>
+
+</div>
+
+{{ 'rda-3d-construction.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "RDA 3D Construction",
+  "tag": "section",
+  "class": "rda-3d-construction-section",
+  "settings": [
+    { "type": "header", "content": "1. Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "RDA Bygg AB · Construction & Carpentry" },
+    { "type": "text", "id": "hero_headline", "label": "Headline", "default": "Crafted Construction." },
+    { "type": "text", "id": "hero_headline_accent", "label": "Accent line (serif italic)", "default": "Comfortable Solutions." },
+    { "type": "textarea", "id": "hero_sub", "label": "Subheadline", "default": "Professional carpentry and construction solutions for homes, renovations, and custom woodwork — built with Scandinavian precision and care." },
+    { "type": "text", "id": "hero_rating", "label": "Rating value", "default": "4.9" },
+    { "type": "text", "id": "hero_rating_count", "label": "Rating count", "default": "120+ local reviews" },
+    { "type": "text", "id": "hero_cta1_text", "label": "Primary CTA text", "default": "Request a Quote" },
+    { "type": "url", "id": "hero_cta1_url", "label": "Primary CTA link" },
+    { "type": "text", "id": "hero_cta2_text", "label": "Secondary CTA text", "default": "View Our Work" },
+    { "type": "url", "id": "hero_cta2_url", "label": "Secondary CTA link" },
+    { "type": "text", "id": "hero_trust", "label": "Trust items (comma separated)", "default": "Insured & certified, Fixed written quotes, Clean worksite, Swedish quality" },
+    { "type": "text", "id": "hero_phone", "label": "Phone number (sticky / tel)", "default": "+46 70 000 00 00" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (optional — overrides built-in scene)" },
+    { "type": "text", "id": "hero_image_alt", "label": "Hero image alt text", "default": "Scandinavian carpentry interior with warm wood framing and natural light" },
+    { "type": "text", "id": "hero_chip1", "label": "Floating chip 1", "default": "Structural woodwork" },
+    { "type": "text", "id": "hero_chip2", "label": "Floating chip 2", "default": "Premium materials" },
+    { "type": "text", "id": "hero_chip3", "label": "Floating chip 3", "default": "Swedish quality" },
+
+    { "type": "header", "content": "Credibility stats" },
+    { "type": "number", "id": "stat1_num", "label": "Stat 1 number", "default": 15 },
+    { "type": "text", "id": "stat1_suffix", "label": "Stat 1 suffix", "default": "+" },
+    { "type": "number", "id": "stat1_decimals", "label": "Stat 1 decimals", "default": 0 },
+    { "type": "text", "id": "stat1_label", "label": "Stat 1 label", "default": "Years of craft" },
+    { "type": "number", "id": "stat2_num", "label": "Stat 2 number", "default": 400 },
+    { "type": "text", "id": "stat2_suffix", "label": "Stat 2 suffix", "default": "+" },
+    { "type": "number", "id": "stat2_decimals", "label": "Stat 2 decimals", "default": 0 },
+    { "type": "text", "id": "stat2_label", "label": "Stat 2 label", "default": "Projects delivered" },
+    { "type": "number", "id": "stat3_num", "label": "Stat 3 number", "default": 4.9 },
+    { "type": "text", "id": "stat3_suffix", "label": "Stat 3 suffix", "default": "★" },
+    { "type": "number", "id": "stat3_decimals", "label": "Stat 3 decimals", "default": 1 },
+    { "type": "text", "id": "stat3_label", "label": "Stat 3 label", "default": "Average rating" },
+    { "type": "number", "id": "stat4_num", "label": "Stat 4 number", "default": 100 },
+    { "type": "text", "id": "stat4_suffix", "label": "Stat 4 suffix", "default": "%" },
+    { "type": "number", "id": "stat4_decimals", "label": "Stat 4 decimals", "default": 0 },
+    { "type": "text", "id": "stat4_label", "label": "Stat 4 label", "default": "Insured & guaranteed" },
+
+    { "type": "header", "content": "2. Material showcase" },
+    { "type": "text", "id": "mat_eyebrow", "label": "Eyebrow", "default": "Materials & Craft" },
+    { "type": "text", "id": "mat_heading", "label": "Heading", "default": "Built From Honest Materials" },
+    { "type": "textarea", "id": "mat_sub", "label": "Subheading", "default": "Real wood, precise tools and proven methods. Explore the craft behind every RDA Bygg project." },
+    { "type": "text", "id": "mat_hint", "label": "Card hint text", "default": "Tap to explore" },
+
+    { "type": "header", "content": "3. Services" },
+    { "type": "text", "id": "svc_eyebrow", "label": "Eyebrow", "default": "What We Do" },
+    { "type": "text", "id": "svc_heading", "label": "Heading", "default": "Construction & Carpentry Services" },
+    { "type": "textarea", "id": "svc_sub", "label": "Subheading", "default": "From a single fitted kitchen to a full interior renovation — one reliable team for the whole project." },
+
+    { "type": "header", "content": "4. Scroll-build animation" },
+    { "type": "text", "id": "build_eyebrow", "label": "Eyebrow", "default": "How It Comes Together" },
+    { "type": "text", "id": "build_heading", "label": "Heading", "default": "From Blueprint to Finished Room" },
+    { "type": "textarea", "id": "build_sub", "label": "Subheading", "default": "Watch a project take shape — every stage planned, measured and built to last." },
+    { "type": "textarea", "id": "build_steps", "label": "Steps (one per line — Title | Text)", "default": "Blueprint & plan|We translate your idea into clear, measured drawings.\nMaterials on site|Quality timber and fittings, delivered and checked.\nThe frame goes up|Solid structural woodwork, level and true.\nDetails & finishing|Joinery, surfaces and the details that matter.\nFinished result|A clean, comfortable space ready to enjoy." },
+    { "type": "image_picker", "id": "build_image", "label": "Finished-result image (optional)" },
+    { "type": "text", "id": "build_image_alt", "label": "Finished-result alt text", "default": "Finished premium interior built by RDA Bygg" },
+
+    { "type": "header", "content": "5. Before / After" },
+    { "type": "text", "id": "ba_eyebrow", "label": "Eyebrow", "default": "Real Transformations" },
+    { "type": "text", "id": "ba_heading", "label": "Heading", "default": "Before & After" },
+    { "type": "textarea", "id": "ba_sub", "label": "Subheading", "default": "Drag the slider to see how careful planning and craftsmanship transform a space." },
+    { "type": "image_picker", "id": "before_image", "label": "Before image (optional)" },
+    { "type": "text", "id": "before_alt", "label": "Before alt text", "default": "Unfinished renovation area with bare studs and concrete floor" },
+    { "type": "image_picker", "id": "after_image", "label": "After image (optional)" },
+    { "type": "text", "id": "after_alt", "label": "After alt text", "default": "Finished premium interior with warm wood floor and natural light" },
+    { "type": "text", "id": "ba_label_before", "label": "Before label", "default": "Before" },
+    { "type": "text", "id": "ba_label_after", "label": "After label", "default": "After" },
+
+    { "type": "header", "content": "6. Process" },
+    { "type": "text", "id": "proc_eyebrow", "label": "Eyebrow", "default": "Our Process" },
+    { "type": "text", "id": "proc_heading", "label": "Heading", "default": "Clear Steps, No Surprises" },
+    { "type": "textarea", "id": "proc_sub", "label": "Subheading", "default": "A simple, transparent way of working — so you always know what happens next." },
+    { "type": "textarea", "id": "proc_steps", "label": "Steps (one per line — Title | Text)", "default": "Contact & consultation|Tell us about your project and what you want to achieve.\nSite check & measurements|We visit, measure and assess the conditions on site.\nClear offer & planning|You receive a fixed written quote and a clear plan.\nProfessional construction|Our carpenters build with care, on schedule.\nFinal check & clean delivery|We review the work together and leave it spotless." },
+
+    { "type": "header", "content": "7. Trust" },
+    { "type": "text", "id": "trust_eyebrow", "label": "Eyebrow", "default": "Why RDA Bygg AB" },
+    { "type": "text", "id": "trust_heading", "label": "Heading", "default": "Built On Trust & Craftsmanship" },
+    { "type": "textarea", "id": "trust_sub", "label": "Subheading", "default": "Skilled people, clear communication and a respect for your home from the first visit to the final clean-up." },
+    { "type": "textarea", "id": "trust_items", "label": "Trust items (one per line — Title | Text)", "default": "Skilled carpentry|Experienced craftsmen who take pride in precise, durable work.\nClear communication|You always know the plan, the timeline and the cost.\nProfessional planning|Every project is measured, drawn and scheduled in advance.\nClean, organised worksite|We protect your home and keep the site tidy every day.\nSwedish quality standards|Materials and methods that meet Swedish building practice.\nReliable delivery|We finish what we start, on time and as agreed." },
+    { "type": "text", "id": "trust_badges", "label": "Badges (comma separated)", "default": "Fully insured, F-skatt registered, Written guarantees, ROT-deduction help" },
+
+    { "type": "header", "content": "Testimonial" },
+    { "type": "text", "id": "quote_eyebrow", "label": "Aria label", "default": "Customer review" },
+    { "type": "textarea", "id": "quote_text", "label": "Quote text", "default": "RDA Bygg rebuilt our kitchen and living room. Clear plan, fixed price, spotless work — and the carpentry is simply beautiful. We could not be happier." },
+    { "type": "text", "id": "quote_name", "label": "Customer name", "default": "Anna & Johan Lindqvist" },
+    { "type": "text", "id": "quote_role", "label": "Customer detail", "default": "Full interior renovation · Stockholm" },
+    { "type": "text", "id": "quote_initials", "label": "Avatar initials", "default": "AL" },
+
+    { "type": "header", "content": "8. Final CTA & quote form" },
+    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Let's Build" },
+    { "type": "text", "id": "cta_headline", "label": "Headline", "default": "Ready to build" },
+    { "type": "text", "id": "cta_headline_accent", "label": "Accent (serif italic)", "default": "something better?" },
+    { "type": "textarea", "id": "cta_text", "label": "Text", "default": "Send us your project details and we will help you plan the next step. No obligation, just honest advice from people who build for a living." },
+    { "type": "text", "id": "cta_points", "label": "Points (comma separated)", "default": "Free first consultation, Fixed written quote, Local Swedish team" },
+    { "type": "text", "id": "form_title", "label": "Form title", "default": "Request your free quote" },
+    { "type": "url", "id": "form_action", "label": "Form action URL (leave blank for built-in confirmation)" },
+    { "type": "text", "id": "form_types", "label": "Project types (comma separated)", "default": "Carpentry, Kitchen renovation, Flooring, Decking & outdoor, Interior renovation, Custom wood solution, Other" },
+    { "type": "text", "id": "form_submit", "label": "Submit button text", "default": "Request a Quote" },
+    { "type": "text", "id": "form_note", "label": "Form note", "default": "We usually reply within one business day. No obligation." },
+    { "type": "text", "id": "sticky_cta", "label": "Sticky CTA text (mobile)", "default": "Request a Quote" }
+  ],
+  "blocks": [
+    {
+      "type": "material",
+      "name": "Material card",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Solid wood" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Carefully selected timber, worked by hand for strength, warmth and a finish that lasts for decades." },
+        { "type": "text", "id": "tag", "label": "Tag", "default": "Natural · Durable" },
+        { "type": "image_picker", "id": "swatch", "label": "Swatch image (optional)" },
+        { "type": "text", "id": "swatch_asset", "label": "Built-in swatch file", "default": "rda-texture-wood.svg", "info": "Used when no swatch image is uploaded. Options: rda-texture-wood.svg, rda-texture-metal.svg, rda-service-flooring.svg, rda-service-kitchen.svg, rda-service-decking.svg, rda-service-interior.svg" }
+      ]
+    },
+    {
+      "type": "service",
+      "name": "Service card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Carpentry" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Skilled carpentry for structural and finish work — framing, joinery and everything in between." },
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        { "type": "text", "id": "image_asset", "label": "Built-in image file", "default": "rda-service-carpentry.svg", "info": "Used when no image is uploaded." },
+        { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "Carpentry workbench with hand tools and timber" },
+        { "type": "text", "id": "link_text", "label": "Link text", "default": "Request a quote" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDA 3D Construction",
+      "blocks": [
+        { "type": "material", "settings": { "name": "Solid wood", "description": "Carefully selected timber, worked by hand for strength, warmth and a finish that lasts for decades.", "tag": "Natural · Durable", "swatch_asset": "rda-texture-wood.svg" } },
+        { "type": "material", "settings": { "name": "Precision tools", "description": "Measured twice, cut once. Professional tools and methods for clean, accurate results every time.", "tag": "Accurate · Reliable", "swatch_asset": "rda-texture-metal.svg" } },
+        { "type": "material", "settings": { "name": "Flooring", "description": "Wood and laid flooring fitted to last — level, quiet underfoot and beautifully finished.", "tag": "Warm · Long-lasting", "swatch_asset": "rda-service-flooring.svg" } },
+        { "type": "material", "settings": { "name": "Kitchen carpentry", "description": "Fitted kitchens and cabinetry built and installed to millimetre tolerances.", "tag": "Bespoke · Functional", "swatch_asset": "rda-service-kitchen.svg" } },
+        { "type": "material", "settings": { "name": "Outdoor decking", "description": "Weather-ready decks and outdoor woodwork engineered for Nordic seasons.", "tag": "Outdoor · Robust", "swatch_asset": "rda-service-decking.svg" } },
+        { "type": "material", "settings": { "name": "Interior renovation", "description": "Complete interiors brought together — surfaces, details and comfort in every room.", "tag": "Complete · Comfortable", "swatch_asset": "rda-service-interior.svg" } },
+        { "type": "service", "settings": { "title": "Carpentry", "description": "Skilled carpentry for structural and finish work — framing, joinery and everything in between.", "image_asset": "rda-service-carpentry.svg", "image_alt": "Carpentry workbench with hand tools and timber", "link_text": "Request a quote" } },
+        { "type": "service", "settings": { "title": "Kitchen Renovation", "description": "Custom fitted kitchens designed, built and installed for daily comfort and lasting quality.", "image_asset": "rda-service-kitchen.svg", "image_alt": "Custom fitted kitchen with wood cabinetry", "link_text": "Request a quote" } },
+        { "type": "service", "settings": { "title": "Flooring Installation", "description": "Wood, parquet and laid flooring fitted with precision for a flawless, durable surface.", "image_asset": "rda-service-flooring.svg", "image_alt": "Herringbone wood flooring installation", "link_text": "Request a quote" } },
+        { "type": "service", "settings": { "title": "Decking & Outdoor Woodwork", "description": "Decks, terraces and outdoor structures built to handle Nordic weather year-round.", "image_asset": "rda-service-decking.svg", "image_alt": "Outdoor wooden deck with railing and greenery", "link_text": "Request a quote" } },
+        { "type": "service", "settings": { "title": "Interior Renovation", "description": "Full interior renovations managed by one trusted team from first plan to final clean.", "image_asset": "rda-service-interior.svg", "image_alt": "Finished interior renovation with wood paneling and warm light", "link_text": "Request a quote" } },
+        { "type": "service", "settings": { "title": "Custom Wood Solutions", "description": "Built-in storage, stairs and bespoke joinery made to fit your space exactly.", "image_asset": "rda-service-custom.svg", "image_alt": "Custom built-in wood storage and joinery", "link_text": "Request a quote" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

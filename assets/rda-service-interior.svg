@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" viewBox="0 0 640 440" role="img" aria-label="Finished interior renovation with wood paneling and warm light">
+  <defs>
+    <linearGradient id="inBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3ede2"/><stop offset="1" stop-color="#e6dccb"/></linearGradient>
+    <linearGradient id="inFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c2925a"/><stop offset="1" stop-color="#a06d39"/></linearGradient>
+  </defs>
+  <rect width="640" height="440" fill="url(#inBg)"/>
+  <!-- wood slat feature wall -->
+  <g fill="#bf8a4f">
+    <rect x="60" y="60" width="14" height="240" rx="3"/><rect x="84" y="60" width="14" height="240" rx="3"/><rect x="108" y="60" width="14" height="240" rx="3"/><rect x="132" y="60" width="14" height="240" rx="3"/><rect x="156" y="60" width="14" height="240" rx="3"/><rect x="180" y="60" width="14" height="240" rx="3"/><rect x="204" y="60" width="14" height="240" rx="3"/>
+  </g>
+  <!-- window with light -->
+  <rect x="420" y="70" width="150" height="200" rx="6" fill="#dcebef" stroke="#cdbcaa" stroke-width="8"/>
+  <line x1="495" y1="70" x2="495" y2="270" stroke="#cdbcaa" stroke-width="6"/>
+  <polygon points="420,90 240,300 360,300 470,90" fill="#fff6e3" opacity="0.4"/>
+  <!-- floor -->
+  <polygon points="0,300 640,300 640,440 0,440" fill="url(#inFloor)"/>
+  <g stroke="#7d4f26" stroke-width="2" opacity="0.45"><line x1="0" y1="350" x2="640" y2="350"/><line x1="0" y1="400" x2="640" y2="400"/></g>
+  <!-- sofa -->
+  <rect x="250" y="300" width="200" height="60" rx="12" fill="#6f7a64"/>
+  <rect x="250" y="290" width="200" height="26" rx="10" fill="#7c8870"/>
+  <!-- shelf -->
+  <rect x="60" y="330" width="120" height="10" fill="#8a5c30"/>
+</svg>
