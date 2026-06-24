@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RS3 Interactive Quest Guide</title>
+<style>
+  :root {
+    --bg-dark: #0d0d0d;
+    --bg-panel: #141414;
+    --bg-card: #1a1a1a;
+    --bg-hover: #222;
+    --bg-selected: #1e2a1a;
+    --accent: #8fbc45;
+    --accent-glow: #a8d45a;
+    --gold: #c8a84b;
+    --gold-light: #e8c86a;
+    --red: #c0392b;
+    --blue: #2980b9;
+    --purple: #8e44ad;
+    --border: #2a2a2a;
+    --border-light: #333;
+    --text: #d4d4d4;
+    --text-muted: #777;
+    --text-bright: #f0f0f0;
+    --members: #c8a84b;
+    --free: #5cb85c;
+    --novice: #5cb85c;
+    --intermediate: #f0ad4e;
+    --experienced: #e67e22;
+    --master: #e74c3c;
+    --grandmaster: #9b59b6;
+    --shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1200 50%, #0a0a0a 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% -20%, rgba(200,168,75,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-logo .icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--gold) 0%, #8a6800 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(200,168,75,0.4);
+  }
+  .header-logo h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 20px rgba(200,168,75,0.4);
+  }
+  .header-logo h1 span { color: var(--accent-glow); }
+  .header-stats {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .stat-badge {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat-badge .val { color: var(--gold-light); font-weight: 700; font-size: 15px; }
+  .stat-badge .lbl { color: var(--text-muted); font-size: 11px; }
+
+  /* ── LAYOUT ── */
+  .app-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .sidebar-controls {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .search-wrap {
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 8px 12px 8px 34px;
+    color: var(--text-bright);
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .search-wrap input:focus { border-color: var(--gold); }
+  .search-wrap .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 14px;
+    pointer-events: none;
+  }
+  .filter-row {
+    display: flex;
+    gap: 6px;
+  }
+  .filter-row select {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 6px 8px;
+    color: var(--text);
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+  }
+  .filter-row select:focus { border-color: var(--gold); }
+  .filter-row select option { background: var(--bg-card); }
+
+  .quest-count {
+    padding: 6px 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .quest-count span { color: var(--accent); font-weight: 600; }
+
+  .quest-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+  }
+  .quest-list::-webkit-scrollbar { width: 4px; }
+  .quest-list::-webkit-scrollbar-track { background: transparent; }
+  .quest-list::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+
+  .quest-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all .15s;
+    position: relative;
+  }
+  .quest-item:hover { background: var(--bg-hover); }
+  .quest-item.active {
+    background: var(--bg-selected);
+    border-left-color: var(--accent);
+  }
+  .quest-item.completed .quest-name { color: var(--text-muted); text-decoration: line-through; }
+  .quest-item.completed { opacity: 0.7; }
+
+  .quest-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-light);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+    cursor: pointer;
+    background: transparent;
+  }
+  .quest-item.completed .quest-checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-size: 11px;
+  }
+
+  .quest-info { flex: 1; min-width: 0; }
+  .quest-name {
+    font-size: 13px;
+    color: var(--text-bright);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+  }
+  .quest-meta {
+    display: flex;
+    gap: 5px;
+    margin-top: 3px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .tag.free { background: rgba(92,184,92,0.15); color: var(--free); border: 1px solid rgba(92,184,92,0.3); }
+  .tag.members { background: rgba(200,168,75,0.15); color: var(--members); border: 1px solid rgba(200,168,75,0.3); }
+  .tag.novice { background: rgba(92,184,92,0.1); color: var(--novice); border: 1px solid rgba(92,184,92,0.25); }
+  .tag.intermediate { background: rgba(240,173,78,0.1); color: var(--intermediate); border: 1px solid rgba(240,173,78,0.25); }
+  .tag.experienced { background: rgba(230,126,34,0.1); color: var(--experienced); border: 1px solid rgba(230,126,34,0.25); }
+  .tag.master { background: rgba(231,76,60,0.1); color: var(--master); border: 1px solid rgba(231,76,60,0.25); }
+  .tag.grandmaster { background: rgba(155,89,182,0.1); color: var(--purple); border: 1px solid rgba(155,89,182,0.25); }
+  .tag.length { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border); }
+  .tag.qp { background: rgba(200,168,75,0.08); color: var(--gold); border: 1px solid rgba(200,168,75,0.2); }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    background: var(--bg-dark);
+  }
+  .main::-webkit-scrollbar { width: 6px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+    color: var(--text-muted);
+  }
+  .empty-state .big-icon { font-size: 64px; opacity: 0.3; }
+  .empty-state h2 { font-size: 22px; color: var(--text); }
+  .empty-state p { font-size: 14px; text-align: center; max-width: 360px; line-height: 1.6; }
+
+  /* ── QUEST DETAIL ── */
+  .quest-detail { max-width: 860px; }
+
+  .detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .detail-title h2 {
+    font-size: 26px;
+    color: var(--gold-light);
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: 0 0 30px rgba(200,168,75,0.2);
+  }
+  .detail-title .detail-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .detail-tags .tag { font-size: 12px; padding: 3px 10px; }
+
+  .complete-btn {
+    background: linear-gradient(135deg, var(--accent) 0%, #6a9e30 100%);
+    color: #0a1a00;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+    box-shadow: 0 2px 12px rgba(143,188,69,0.3);
+    flex-shrink: 0;
+  }
+  .complete-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(143,188,69,0.4); }
+  .complete-btn.done {
+    background: linear-gradient(135deg, #555 0%, #333 100%);
+    color: var(--text-muted);
+    box-shadow: none;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .progress-label span:last-child { color: var(--accent); font-weight: 600; }
+  .progress-bar {
+    background: var(--border);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-glow) 100%);
+    border-radius: 4px;
+    transition: width .4s ease;
+    box-shadow: 0 0 8px rgba(143,188,69,0.4);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    transition: background .15s;
+  }
+  .section-header:hover { background: rgba(255,255,255,0.04); }
+  .section-header h3 {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .section-icon { font-size: 16px; }
+  .section-toggle { color: var(--text-muted); font-size: 12px; transition: transform .2s; }
+  .section.collapsed .section-toggle { transform: rotate(-90deg); }
+  .section-body { padding: 14px 16px; }
+  .section.collapsed .section-body { display: none; }
+
+  /* Requirements */
+  .req-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .req-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .req-item .req-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .req-item .req-value { font-size: 13px; color: var(--text-bright); }
+  .req-none { color: var(--text-muted); font-style: italic; font-size: 13px; }
+
+  /* Steps */
+  .steps-list { display: flex; flex-direction: column; gap: 8px; }
+  .step-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .15s;
+    user-select: none;
+  }
+  .step-item:hover { background: rgba(255,255,255,0.05); border-color: var(--border-light); }
+  .step-item.done {
+    background: rgba(143,188,69,0.06);
+    border-color: rgba(143,188,69,0.25);
+  }
+  .step-item.done .step-text { color: var(--text-muted); text-decoration: line-through; }
+  .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--border-light);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all .15s;
+  }
+  .step-item.done .step-num {
+    background: var(--accent);
+    color: #0a1a00;
+  }
+  .step-item.current .step-num {
+    background: var(--gold);
+    color: #1a0d00;
+    box-shadow: 0 0 10px rgba(200,168,75,0.4);
+  }
+  .step-item.current {
+    border-color: rgba(200,168,75,0.3);
+    background: rgba(200,168,75,0.06);
+  }
+  .step-text { font-size: 13px; line-height: 1.55; flex: 1; padding-top: 4px; }
+  .step-note {
+    font-size: 11px;
+    color: var(--gold);
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: rgba(200,168,75,0.08);
+    border-radius: 4px;
+    border-left: 2px solid var(--gold);
+  }
+
+  /* Rewards */
+  .rewards-list { display: flex; flex-direction: column; gap: 6px; }
+  .reward-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(200,168,75,0.04);
+    border: 1px solid rgba(200,168,75,0.15);
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .reward-icon { font-size: 16px; flex-shrink: 0; }
+  .reward-xp { color: var(--gold); font-weight: 600; }
+
+  /* Tips */
+  .tips-list { display: flex; flex-direction: column; gap: 8px; }
+  .tip-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(41,128,185,0.06);
+    border: 1px solid rgba(41,128,185,0.2);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .tip-icon { flex-shrink: 0; font-size: 15px; }
+
+  /* No steps message */
+  .no-steps-msg {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .wiki-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: rgba(41,128,185,0.15);
+    border: 1px solid rgba(41,128,185,0.3);
+    border-radius: 6px;
+    color: #5dade2;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all .15s;
+  }
+  .wiki-link:hover { background: rgba(41,128,185,0.25); color: #7fb3d3; }
+
+  /* ── SERIES BADGE ── */
+  .series-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(142,68,173,0.12);
+    border: 1px solid rgba(142,68,173,0.3);
+    border-radius: 6px;
+    font-size: 12px;
+    color: #bb8fce;
+    margin-bottom: 16px;
+  }
+
+  /* ── RESET / ACTIONS ── */
+  .detail-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .action-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .action-btn:hover { border-color: var(--text-muted); color: var(--text); background: var(--bg-hover); }
+  .action-btn.danger:hover { border-color: var(--red); color: #e74c3c; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #444; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">
+    <div class="icon">⚔️</div>
+    <h1>RS3 <span>Quest</span> Guide</h1>
+  </div>
+  <div class="header-stats">
+    <div class="stat-badge">
+      <span class="val" id="stat-completed">0</span>
+      <span class="lbl">/ <span id="stat-total">0</span> Quests</span>
+    </div>
+    <div class="stat-badge">
+      <span class="val" id="stat-qp">0</span>
+      <span class="lbl">/ 469 QP</span>
+    </div>
+    <div class="stat-badge">
+      <span class="val" id="stat-pct">0%</span>
+      <span class="lbl">Complete</span>
+    </div>
+  </div>
+</header>
+
+<div class="app-body">
+  <div class="sidebar">
+    <div class="sidebar-controls">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search" placeholder="Search quests..." oninput="filterQuests()">
+      </div>
+      <div class="filter-row">
+        <select id="filter-membership" onchange="filterQuests()">
+          <option value="">All Access</option>
+          <option value="Free">Free-to-Play</option>
+          <option value="Members">Members</option>
+        </select>
+        <select id="filter-difficulty" onchange="filterQuests()">
+          <option value="">All Levels</option>
+          <option value="Novice">Novice</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Experienced">Experienced</option>
+          <option value="Master">Master</option>
+          <option value="Grandmaster">Grandmaster</option>
+        </select>
+      </div>
+      <div class="filter-row">
+        <select id="filter-series" onchange="filterQuests()">
+          <option value="">All Series</option>
+        </select>
+        <select id="filter-status" onchange="filterQuests()">
+          <option value="">All Status</option>
+          <option value="todo">Not Started</option>
+          <option value="done">Completed</option>
+        </select>
+      </div>
+    </div>
+    <div class="quest-count">
+      <span>Showing <span id="count-visible">0</span> quests</span>
+      <span id="count-done-label"></span>
+    </div>
+    <div class="quest-list" id="quest-list"></div>
+  </div>
+
+  <div class="main" id="main-content">
+    <div class="empty-state">
+      <div class="big-icon">🗺️</div>
+      <h2>Choose Your Quest</h2>
+      <p>Select a quest from the list to view the full interactive step-by-step guide. Track your progress as you go — it's saved automatically.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  QUEST DATABASE
+// ─────────────────────────────────────────────
+const QUESTS = [
+  {
+    id: "cooks_assistant",
+    name: "Cook's Assistant",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: {
+      skills: [],
+      items: ["Bucket", "Empty pot"],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to the Cook in Lumbridge Castle's ground floor kitchen (south side). He'll explain the Duke's birthday cake needs three ingredients.", note: "The Cook is on the ground floor of Lumbridge Castle." },
+      { text: "Collect a Bucket of Milk: Travel to the cow field east of the River Lum, northeast of the goblins. Use a bucket on the prized dairy cow. (A bucket spawns near the cow if you don't have one.)" },
+      { text: "Collect an Egg: Go to the chicken coop outside the Lumbridge Watermill (east of the river), or Fred the Farmer's farm. Pick up an egg from the ground." },
+      { text: "Collect a Pot of Flour: Pick wheat from the field west of Fred the Farmer's farm. Head to Mill Lane Mill (north-east of the field). Use the wheat on the hopper, operate the controls, then go to the ground floor and use an empty pot on the flour bin." },
+      { text: "Return to the Cook in Lumbridge Castle and give him the bucket of milk, egg, and pot of flour." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "🍳", text: "300 Cooking experience" },
+      { icon: "💰", text: "500 coins" },
+      { icon: "🐟", text: "20 sardines" },
+      { icon: "🔥", text: "Access to Cook-o-matic 25 range (lower burn rate)" }
+    ],
+    tips: [
+      "All three items can be obtained completely free near Lumbridge — no money needed.",
+      "The Cook-o-matic range you unlock burns food less often, useful for early Cooking training."
+    ],
+    wiki: "https://runescape.wiki/w/Cook%27s_Assistant"
+  },
+
+  {
+    id: "sheep_shearer",
+    name: "Sheep Shearer",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: {
+      skills: [],
+      items: [],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to Fred the Farmer in his farmhouse north of Lumbridge Market. Ask him if you can help; he'll request 20 balls of wool." },
+      { text: "Shear Fred's six sheep in the field beside his house by clicking them. Each sheep gives one piece of wool. Wool regrows after a few seconds if you need more." },
+      { text: "Travel to Lumbridge Castle 1st floor and use the spinning wheel south of Duke Horacio's room to spin each wool into a ball of wool. You need 20 balls total.", note: "You can do this in batches if your inventory fills up." },
+      { text: "Return all 20 balls of wool to Fred the Farmer to complete the quest." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "🧶", text: "300 Crafting experience" },
+      { icon: "💰", text: "60 coins immediately + 1,940 coins from talking to Fred afterward (2,000 total)" }
+    ],
+    tips: [
+      "You can buy balls of wool from the Grand Exchange instead of spinning them if you want speed.",
+      "Talk to Fred again after completing for the remaining coin reward."
+    ],
+    wiki: "https://runescape.wiki/w/Sheep_Shearer"
+  },
+
+  {
+    id: "rune_mysteries",
+    name: "Rune Mysteries",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: "Runecrafting",
+    requirements: {
+      skills: [],
+      items: [],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to Ariane at the entrance of Wizards' Tower south of Draynor Village. A cutscene plays — you'll need to lure a magical vortex into a power beam using air spells.", note: "Non-magic armor reduces accuracy against vortices." },
+      { text: "Speak with various wizards in the tower to gather information about the disturbances. Wizard Traiborn mentions creatures coming from the library floor." },
+      { text: "Read the two books in the library, then go to the organ and play it using the specific notes: B×10, A#×7, G#×1, G×1. This opens the basement with a key." },
+      { text: "Use the basement key to enter the ruins below the tower. Meet the rune guardian, who gives you a five-question personality test. This determines your wizard order title." },
+      { text: "Push a statue to create a bridge, contain soul fragments in a circle, then disrupt Sedridor's spell by playing the organ randomly." },
+      { text: "The quest completes after the final cutscene. Collect your rewards." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "✨", text: "250 Magic experience lamp" },
+      { icon: "🔮", text: "250 Runecrafting experience" },
+      { icon: "⚡", text: "Tower mindspike weapon, First tower hat, Air talisman" },
+      { icon: "💎", text: "70 Mind runes" },
+      { icon: "🏅", text: "Four wizard order titles (Blue, Red, Green, or Grey)" }
+    ],
+    tips: [
+      "The personality test can be retaken from Ariane to get different wizard order titles.",
+      "Cutscene skipping is available for most sequences if you've seen them before."
+    ],
+    wiki: "https://runescape.wiki/w/Rune_Mysteries"
+  },
+
+  {
+    id: "imp_catcher",
+    name: "Imp Catcher",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: {
+      skills: [],
+      items: ["Bowl of hot water (for white bead)"],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to Wizard Mizgog on the 1st floor of Wizards' Tower (south of Draynor Village). He asks you to collect four magical beads." },
+      { text: "Get the Phlegmatic (white) bead: Go to the water ruins near Lumbridge Swamp. Give the ill imp a bowl of hot water — he'll produce the bead." },
+      { text: "Get the Choleric (yellow) bead: Head to the fire ruins north of Al Kharid. Defeat the angry imp in combat to obtain the bead." },
+      { text: "Get the Melancholic (black) bead: Travel to the earth ruins northeast of Varrock. Use supportive dialogue choices to cheer up the depressed imp." },
+      { text: "Get the Sanguine (red) bead: Go to the air ruins west of Varrock. Race the hyperactive imp around the altar to win the bead." },
+      { text: "Return all four beads to Wizard Mizgog on the 1st floor of Wizards' Tower." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "✨", text: "875 Magic experience lamp" },
+      { icon: "📿", text: "Amulet of accuracy" },
+      { icon: "🛒", text: "Permanent access to purchase amulets of accuracy from Mizgog for 5,000 coins" }
+    ],
+    tips: [
+      "Each bead has a unique challenge reflecting ancient Greek humoral theory.",
+      "Beads can be re-obtained from each imp if you lose them.",
+      "Make the bowl of hot water by using a bowl on a water source, then heating it."
+    ],
+    wiki: "https://runescape.wiki/w/Imp_Catcher"
+  },
+
+  {
+    id: "the_blood_pact",
+    name: "The Blood Pact",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: "Xenia",
+    requirements: {
+      skills: [],
+      items: [],
+      quests: []
+    },
+    steps: [
+      { text: "Meet Xenia at Lumbridge Cemetery (south of Lumbridge, near the church). She explains that Zamorakian cultists kidnapped Ilona and asks for your help." },
+      { text: "Descend into Lumbridge Catacombs with Xenia. Watch the cutscene introducing the three cultists: Reese (leader), Caitlin, and Kayle." },
+      { text: "Fight Kayle using melee combat. After defeating him you can choose to spare or kill him — this affects later dialogue but not rewards.", note: "Use walls strategically to minimize damage from Kayle." },
+      { text: "Pick up the chargebow Kayle dropped. Use ranged attacks to fight Caitlin, who uses magic. Operate the winch after to proceed. Choose to spare or kill her." },
+      { text: "Descend to face Reese, the leader. Use magic (Air Strike recommended) against him. After you defeat him, he'll commit suicide regardless of your choice." },
+      { text: "Untie Ilona and exit the catacombs. Xenia will reward you at the surface." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "⚔️", text: "100 XP each in Attack, Strength, Defence, Ranged, and Magic" },
+      { icon: "🗡️", text: "Reese's sword, Kayle's chargebow, and Caitlin's staff" },
+      { icon: "🪖", text: "Helmet of Trials (obtainable once you reach 300 total quest points)" },
+      { icon: "🚪", text: "Permanent access to Lumbridge Catacombs" }
+    ],
+    tips: [
+      "Your mercy choices for the cultists affect Ilona's dialogue later but don't change rewards.",
+      "This quest introduces the combat triangle: melee beats ranged, ranged beats magic, magic beats melee.",
+      "Excellent starter quest to unlock combat areas near Lumbridge."
+    ],
+    wiki: "https://runescape.wiki/w/The_Blood_Pact"
+  },
+
+  {
+    id: "demon_slayer",
+    name: "Demon Slayer",
+    membership: "Free",
+    difficulty: "Intermediate",
+    length: "Medium",
+    qp: 3,
+    series: null,
+    requirements: {
+      skills: ["Recommended: 50+ Combat"],
+      items: ["Combat gear and food"],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to Gideon Bede at the Saradominist church north of Varrock Museum to start the quest." },
+      { text: "Descend into the crypt and complete three trials:\n• Mind Trial: Answer five questions about your quest objective.\n• Faith Trial: Navigate an invisible path (3N, 2E, 3N, 2W, 1S, 2W, 4N).\n• Body Trial: Defeat 10 skeletons in waves.", note: "You can hide behind pillars during the skeleton fight to minimize damage." },
+      { text: "Take Silverlight from the altar after passing all three trials." },
+      { text: "Retrieve Gideon's scroll, then head to the Temple south of Aubury's Rune Shop in Varrock." },
+      { text: "Defeat multiple waves of cultist enemies inside the temple to progress through it." },
+      { text: "Fight Delrith using Silverlight or Darklight. Take cover under Gideon's shield when he announces his big attacks. Defeat the demon boss.", note: "Avoid wearing Saradomin items, blue/royal dragonhide, or Armadyl armor — these prevent hitting Delrith." },
+      { text: "Return to Gideon Bede at the church north of Varrock Museum to complete the quest." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "3 Quest Points" },
+      { icon: "💡", text: "3 × 100 XP lamps (choose any combat skill: Attack, Strength, Defence, Constitution, Ranged, Magic, or Necromancy)" },
+      { icon: "🗡️", text: "Silverlight sword (especially effective against demons)" },
+      { icon: "🪄", text: "Avernic wand and Avernic book" },
+      { icon: "🏅", text: "5 kudos at Varrock Museum (Members only, via Historian Minas)" }
+    ],
+    tips: [
+      "Silverlight is a Tier 50 weapon specifically strong against demons.",
+      "If you lose Silverlight before fighting Delrith, talk to Gideon for a replacement.",
+      "Dying in the crypts is a safe death — you won't lose items.",
+      "Darklight (upgraded Silverlight from Shadow of the Storm) is even stronger against demons."
+    ],
+    wiki: "https://runescape.wiki/w/Demon_Slayer"
+  },
+
+  {
+    id: "dragon_slayer",
+    name: "Dragon Slayer",
+    membership: "Free",
+    difficulty: "Experienced",
+    length: "Long",
+    qp: 2,
+    series: null,
+    requirements: {
+      skills: ["33 Quest Points required", "Recommended: 50+ Combat, 37 Prayer"],
+      items: ["Unfired bowl", "Wizard's mind bomb", "Crayfish cage or lobster pot", "Silk", "10,000 coins (or magic runes for Telegrab)", "2,000 coins for ship", "3 planks", "90 steel nails", "Anti-dragon shield (obtained during quest)", "Food and combat gear"],
+      quests: ["33 Quest Points"]
+    },
+    steps: [
+      { text: "Talk to the Guildmaster inside the Champions' Guild south of Varrock. He directs you to Oziach north of Edgeville lodestone." },
+      { text: "Talk to Oziach in his hut north of Edgeville. He'll tell you to slay Elvarg on Crandor Island to prove yourself." },
+      { text: "Obtain the Anti-Dragon Shield: Visit Lumbridge Castle 1st floor and speak with Duke Horacio. Ask about a shield protecting from dragon's breath — he'll provide it.", note: "Do NOT discard this shield — you need it for the final boss fight." },
+      { text: "Get Melzar's Map Piece: Enter Melzar's Maze south of the Crafting Guild. Defeat zombie rats (red key) → ghosts (orange key) → skeletons (yellow key) → zombies (blue key) → Melzar the Mad (magenta key) → lesser demon (green key). Open the chest for the map piece." },
+      { text: "Get Thalzar's Map Piece: Talk to the Oracle on Ice Mountain. Gather unfired bowl + wizard's mind bomb + lobster pot/crayfish cage + silk. Use all four items on the magic door in Dwarven Mines. Open the chest inside." },
+      { text: "Get Lozar's Map Piece: Go to Port Sarim Jail and speak to Wormbrain. Pay him 10,000 coins OR attack him and use Telekinetic Grab/area loot to get the piece. Combine all three pieces into a complete Crandor map." },
+      { text: "Buy the Lady Lumbridge from Klarense at Port Sarim docks for 2,000 coins. Repair the deck with 90 steel nails and 3 planks. Find Ned in Draynor Village and ask him to sail the ship." },
+      { text: "Sail to Crandor and navigate to Elvarg's lair. Equip the Anti-Dragon Shield. Climb over the spike wall to enter.", note: "Stock up on food — Elvarg deals massive damage without the shield." },
+      { text: "Fight Elvarg! Use the Anti-Dragon Shield at all times. Activate Protect from Magic prayer (level 37) if possible. Use melee or autocast magic. After defeating her, cut off her head with a sword." },
+      { text: "Use the secret door inside Elvarg's lair to connect to the Karamja dungeon (shortcut for future). Return to Oziach with Elvarg's head to complete the quest." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "2 Quest Points" },
+      { icon: "💪", text: "18,650 Strength XP lamp (requires 40 Strength)" },
+      { icon: "🛡️", text: "18,650 Defence XP lamp (requires 40 Defence)" },
+      { icon: "⚔️", text: "Rune platebody (can now be worn)" },
+      { icon: "🛡️", text: "Anti-dragon shield" },
+      { icon: "🗺️", text: "Full access to Crandor island" },
+      { icon: "🔑", text: "Maze key (access to Melzar's Maze dungeon)" },
+      { icon: "🎵", text: "Four music tracks unlocked" }
+    ],
+    tips: [
+      "Bring 15+ pieces of food (lobsters or better) for the Elvarg fight.",
+      "The Anti-dragon shield is critical — without it Elvarg's dragonfire hits for up to 1,500 damage.",
+      "If your ship gets damaged, you must repair it again with planks and nails.",
+      "Unlocking the secret door to Karamja after the fight saves travel time on future trips.",
+      "37 Prayer and Protect from Magic significantly reduces Elvarg's magic damage."
+    ],
+    wiki: "https://runescape.wiki/w/Dragon_Slayer"
+  },
+
+  // ── Additional quests (metadata only, wiki links provided) ──
+  {
+    id: "romeo_juliet",
+    name: "Romeo & Juliet",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 5,
+    series: null,
+    requirements: { skills: [], items: ["Cadava berries (obtainable near Varrock)"], quests: [] },
+    steps: [
+      { text: "Talk to Romeo in Varrock square to start the quest." },
+      { text: "Talk to Juliet in her house west of Varrock's west gate. She gives you a message for Romeo." },
+      { text: "Visit Father Lawrence at the Varrock chapel north of the east bank. He sends you to the Apothecary." },
+      { text: "Gather cadava berries from bushes near the East Varrock Mine (pink berries, not red)." },
+      { text: "Return to the Apothecary with the berries — he crafts a cadava potion." },
+      { text: "Deliver the potion to Juliet, triggering a cutscene." },
+      { text: "Tell Romeo to rescue Juliet from the crypt and accompany him. A final cutscene ends the quest." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "5 Quest Points" }
+    ],
+    tips: [
+      "One of the original six quests from RuneScape's launch.",
+      "Highest quest point reward for a novice quest."
+    ],
+    wiki: "https://runescape.wiki/w/Romeo_%26_Juliet"
+  },
+
+  {
+    id: "pirates_treasure",
+    name: "Pirate's Treasure",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 2,
+    series: "Pirate",
+    requirements: { skills: [], items: ["60 coins (for banana and rum)", "Spade"], quests: [] },
+    steps: [
+      { text: "Talk to Redbeard Frank at Port Sarim docks. He asks for a bottle of Karamjan rum." },
+      { text: "Travel to Karamja via the ship from Port Sarim (30 coins). In the bar, buy a banana (1 coin) and talk to the bartender to get rum (note: can't take rum off Karamja directly).", note: "You'll need to hide the rum to get it past customs." },
+      { text: "Talk to Luthas at his banana plantation east of the dock. Offer to pick bananas for pay. Fill the crate with 10 bananas, hiding the rum bottle inside. Talk to Luthas to ship it." },
+      { text: "Sail back to Port Sarim (30 coins). Go to Wydin's food store. Ask to work in the back, then retrieve the rum bottle from the crate." },
+      { text: "Return the rum to Redbeard Frank. He gives you a key to a chest in Varrock's Blue Moon Inn." },
+      { text: "Find the chest in the Blue Moon Inn, Varrock. The note inside leads you to Falador Park. Dig in the flower patch (north-west of the park) with your spade to get the treasure." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "2 Quest Points" },
+      { icon: "💎", text: "Emerald ring" },
+      { icon: "💰", text: "450 coins" }
+    ],
+    tips: [
+      "You must hide the rum inside the banana crate — guards confiscate it otherwise.",
+      "Bring a spade for the final dig in Falador Park."
+    ],
+    wiki: "https://runescape.wiki/w/Pirate%27s_Treasure"
+  },
+
+  {
+    id: "witchs_potion",
+    name: "Witch's Potion",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: { skills: [], items: ["Onion", "Burnt meat", "Eye of newt", "Rat's tail (from rat)"], quests: [] },
+    steps: [
+      { text: "Talk to Hetty the witch in her house in Rimmington (south of Port Sarim). She offers to boost your magic." },
+      { text: "Gather the four ingredients for her potion: a cooked onion (cook an onion), burnt meat (cook until burnt), an eye of newt (from Betty's Magic Emporium in Port Sarim for 3 coins), and a rat's tail (from killing a rat)." },
+      { text: "Give all four ingredients to Hetty. She brews the potion and asks you to drink it." },
+      { text: "Drink Hetty's potion to complete the quest." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "✨", text: "325 Magic experience" }
+    ],
+    tips: [
+      "Eye of newt costs only 3 coins from Betty's shop in Port Sarim.",
+      "Kill a rat nearby Hetty's house for the rat's tail."
+    ],
+    wiki: "https://runescape.wiki/w/Witch%27s_Potion"
+  },
+
+  {
+    id: "restless_ghost",
+    name: "The Restless Ghost",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: { skills: [], items: [], quests: [] },
+    steps: [
+      { text: "Talk to Father Aereck in Lumbridge Church. He asks you to deal with a ghost haunting the graveyard." },
+      { text: "Talk to Father Urhney in the swamps south-west of Lumbridge. He gives you a ghostspeak amulet." },
+      { text: "Equip the ghostspeak amulet and talk to the ghost in the Lumbridge graveyard crypt. The ghost explains his skull was stolen by a wizard." },
+      { text: "Go to the Wizards' Circle south-east of Draynor Village (near the swamp). Enter the altar and take the ghost's skull from the altar." },
+      { text: "Return the skull to the ghost's coffin in the Lumbridge graveyard crypt." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "💀", text: "1,125 Prayer experience" },
+      { icon: "📿", text: "Ghostspeak amulet (allows talking to ghosts)" }
+    ],
+    tips: [
+      "The ghostspeak amulet is useful for many future quests involving ghosts.",
+      "A wizard will attack you when you take the skull — come prepared or run quickly."
+    ],
+    wiki: "https://runescape.wiki/w/The_Restless_Ghost"
+  },
+
+  {
+    id: "prince_ali_rescue",
+    name: "Prince Ali Rescue",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Medium",
+    qp: 3,
+    series: "Desert",
+    requirements: { skills: [], items: ["Multiple crafting materials (see wiki)"], quests: [] },
+    steps: [
+      { text: "Talk to Chancellor Hassan in Al Kharid Palace. He explains that Prince Ali has been kidnapped by Lady Keli." },
+      { text: "Talk to Osman (spymaster) south of the palace. He has a rescue plan requiring you to gather materials." },
+      { text: "Collect all materials: wig (yellow wool + dye), skin paste (ashes + water + flour), rope, bronze bar. Talk to Aggie in Draynor Village to craft items." },
+      { text: "Go to Draynor Village jail and talk to Leela (Osman's daughter) for the final plan." },
+      { text: "Distract Lady Keli by talking to her. Use the bronze bar to make a key impression, then use soft clay to make a key copy." },
+      { text: "Give the disguise items to Prince Ali. Free him by unlocking his cell with the clay key. He'll escape to Al Kharid." },
+      { text: "Return to Chancellor Hassan in Al Kharid Palace for your reward." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "3 Quest Points" },
+      { icon: "💰", text: "700 coins" },
+      { icon: "🚪", text: "Free passage through Al Kharid gate (saves 10 coins per pass)" }
+    ],
+    tips: [
+      "Free passage through Al Kharid gate is very valuable early-game.",
+      "Aggie in Draynor helps craft the disguise items you need."
+    ],
+    wiki: "https://runescape.wiki/w/Prince_Ali_Rescue"
+  },
+
+  {
+    id: "doric_quest",
+    name: "Doric's Quest",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: { skills: [], items: ["6 clay", "4 copper ore", "2 iron ore"], quests: [] },
+    steps: [
+      { text: "Talk to Doric the dwarf north of Falador. He's busy and asks you to fetch him crafting materials." },
+      { text: "Obtain the required items: 6 clay, 4 copper ore, and 2 iron ore. Mine them from nearby rocks or buy from the Grand Exchange." },
+      { text: "Return all materials to Doric to complete the quest." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "⛏️", text: "1,300 Mining experience" },
+      { icon: "💰", text: "180 coins" },
+      { icon: "🔨", text: "Access to Doric's anvil north of Falador" }
+    ],
+    tips: [
+      "All ores can be mined just east of Doric's hut.",
+      "Quick and easy quest for Mining experience."
+    ],
+    wiki: "https://runescape.wiki/w/Doric%27s_Quest"
+  },
+
+  {
+    id: "black_knights_fortress",
+    name: "Black Knights' Fortress",
+    membership: "Free",
+    difficulty: "Intermediate",
+    length: "Short",
+    qp: 3,
+    series: null,
+    requirements: {
+      skills: ["12 Quest Points required"],
+      items: ["Bronze med helm", "Iron chainbody", "Cabbage from Edgeville Monastery"],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to Sir Amik Varze on the 2nd floor of Falador's White Knights' Castle. He asks you to discover the Black Knights' secret weapon.", note: "You need 12 Quest Points to start." },
+      { text: "Gather your disguise: a bronze med helm and iron chainbody (to look like a Black Knight). Do NOT bring a Falador shield." },
+      { text: "Travel to the Black Knights' Fortress north of Falador. Equip your disguise and use the secret door (push it) to enter." },
+      { text: "Navigate through the fortress. Overhear the witch's conversation through a spy hole — the secret weapon is a super cabbage." },
+      { text: "Get a cabbage from the Edgeville Monastery (not just any cabbage — specifically from the monastery patch)." },
+      { text: "Return to the fortress and drop the cabbage through the hole in the cauldron ceiling to poison the super growing potion." },
+      { text: "Return to Sir Amik Varze in Falador Castle for your reward." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "3 Quest Points" },
+      { icon: "💰", text: "2,500 coins" }
+    ],
+    tips: [
+      "Wear ONLY the bronze med helm and iron chainbody — other armor gets you kicked out.",
+      "The Edgeville Monastery cabbage is specifically required, not any cabbage patch."
+    ],
+    wiki: "https://runescape.wiki/w/Black_Knights%27_Fortress"
+  },
+
+  {
+    id: "goblin_diplomacy",
+    name: "Goblin Diplomacy",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 5,
+    series: "Goblin",
+    requirements: { skills: [], items: ["3 goblin mails (2 colors: blue and orange dye, or brown)"], quests: [] },
+    steps: [
+      { text: "Talk to General Bentnoze and General Wartface in the Goblin Village north of Falador. They argue about the color of their armor." },
+      { text: "Talk to both generals to understand they want orange, blue, or brown mail — they can't agree." },
+      { text: "Get 3 goblin mails (dropped by goblins or found in the village). Dye them orange (red+yellow dye) and blue, or leave one plain (brown).", note: "Dyes are made from flowers and bought from Aggie in Draynor Village." },
+      { text: "Show the generals each colored armor option in turn. They'll reject orange and blue." },
+      { text: "Show them the plain brown/original goblin mail — they both agree on this. Quest complete!" }
+    ],
+    rewards: [
+      { icon: "⭐", text: "5 Quest Points" },
+      { icon: "✨", text: "200 Crafting experience" }
+    ],
+    tips: [
+      "One of the highest QP rewards for the amount of work required.",
+      "Aggie in Draynor sells dyes and can make them for you."
+    ],
+    wiki: "https://runescape.wiki/w/Goblin_Diplomacy"
+  },
+
+  {
+    id: "dragon_slayer_2",
+    name: "Dragon Slayer II",
+    membership: "Members",
+    difficulty: "Grandmaster",
+    length: "Very Long",
+    qp: 5,
+    series: "Myth's Guild",
+    requirements: {
+      skills: ["200 Quest Points", "60 Agility", "60 Magic", "60 Smithing", "50 Construction", "50 Hitpoints"],
+      items: ["Dragonfire shield or anti-dragon shield", "Full Bandos or similar melee set", "High-level food", "Antifire potions"],
+      quests: ["Dragon Slayer", "A Tail of Two Cats", "Animal Magnetism", "Ghosts Ahoy", "Legends' Quest", "Dream Mentor"]
+    },
+    steps: [
+      { text: "Talk to Robert the Strong in the Myth's Guild (after completing Dragon Slayer). Travel to Fossil Island and investigate the dragon shrine." },
+      { text: "Research dragon history by reading journals and speaking to NPCs across the island. Collect evidence of ancient dragonkin." },
+      { text: "Travel to the dragonkin's ancient fortress. Complete multiple combat and puzzle challenges inside." },
+      { text: "Defeat Vorkath, a powerful undead dragon, in a challenging boss encounter.", note: "Vorkath requires careful preparation — bring antifire potions and a dragonfire shield." },
+      { text: "Discover the truth about the dragon's origin and the Dragonkin curse. Complete the storyline." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "5 Quest Points" },
+      { icon: "🐉", text: "Ability to create the best-in-slot Dragonfire shield variants" },
+      { icon: "💀", text: "Access to Vorkath as a farmable boss (best range training in game)" },
+      { icon: "✨", text: "Massive XP lamps across combat skills" }
+    ],
+    tips: [
+      "Vorkath is one of the best money-making bosses — this quest unlocks a major endgame activity.",
+      "Prepare extensively with best available gear and potions for Vorkath."
+    ],
+    wiki: "https://runescape.wiki/w/Dragon_Slayer_II"
+  },
+
+  {
+    id: "beneath_cursed_tides",
+    name: "Beneath Cursed Tides",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: { skills: [], items: [], quests: ["Cook's Assistant", "Sheep Shearer"] },
+    steps: [
+      { text: "Speak to Wizard Hev near the boat south of Draynor Village. She asks for help investigating the sunken Tutorial Island." },
+      { text: "Dive underwater to explore the sunken Tutorial Island. Complete various tasks to free trapped souls." },
+      { text: "Help Chef Ava by gathering ingredients underwater for a special dish." },
+      { text: "Help Bob the Axe Merchant by collecting runes and spells." },
+      { text: "Defeat the final boss creature keeping the island submerged. Escape before the island fully collapses." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "✨", text: "XP lamps for various skills" },
+      { icon: "📿", text: "Amulet of Eternal Glory (cosmetic override)" }
+    ],
+    tips: [
+      "Fun nostalgia quest revisiting Tutorial Island for veterans.",
+      "Requires completing Cook's Assistant and Sheep Shearer first."
+    ],
+    wiki: "https://runescape.wiki/w/Beneath_Cursed_Tides"
+  },
+
+  {
+    id: "shield_of_arrav",
+    name: "Shield of Arrav",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Medium",
+    qp: 1,
+    series: null,
+    requirements: { skills: [], items: [], quests: [] },
+    steps: [
+      { text: "Read the book 'Shield of Arrav' in Varrock library (ground floor, east). Then talk to Curator Haig Halen in the Varrock Museum." },
+      { text: "Talk to Charlie the Tramp in south Varrock. He sends you to the Phoenix Gang's hideout south of Varrock." },
+      { text: "Talk to Straven in the Phoenix Gang hideout. He gives you a key to the Black Arm Gang's hideout." },
+      { text: "Alternatively, join the Black Arm Gang via Katrine north of Varrock. This quest is easier done with a partner (one in each gang).", note: "This quest can be completed solo in RS3 — no partner needed." },
+      { text: "Obtain your half of the shield from whichever gang's chest you have access to." },
+      { text: "Combine both halves and return the complete Shield of Arrav to King Roald in Varrock Castle." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "💰", text: "600 coins and 600 Thieving experience" }
+    ],
+    tips: [
+      "In RS3, you can complete this quest solo without needing another player.",
+      "Both shield halves can be obtained from the same account via a special mechanic."
+    ],
+    wiki: "https://runescape.wiki/w/Shield_of_Arrav"
+  },
+
+  {
+    id: "ernest_the_chicken",
+    name: "Ernest the Chicken",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 4,
+    series: null,
+    requirements: { skills: [], items: [], quests: [] },
+    steps: [
+      { text: "Talk to Veronica outside Draynor Manor. Her boyfriend Ernest went in and hasn't come out." },
+      { text: "Enter Draynor Manor and explore. Find Professor Oddenstein on the top floor — he accidentally turned Ernest into a chicken." },
+      { text: "The professor needs parts to fix his machine: a pressure gauge, rubber tube, and oil can. All are scattered around the manor." },
+      { text: "Solve the maze of lever puzzles in the basement to access various rooms and collect each part.", note: "Draw a map of the lever positions to avoid getting confused." },
+      { text: "Return all three parts to Professor Oddenstein. He fixes the machine and restores Ernest to human form." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "4 Quest Points" },
+      { icon: "🪶", text: "300 feathers" }
+    ],
+    tips: [
+      "The lever puzzle in the basement can be tricky — take note of which levers you pull.",
+      "Good quest for high QP reward with no requirements."
+    ],
+    wiki: "https://runescape.wiki/w/Ernest_the_Chicken"
+  },
+
+  {
+    id: "vampyre_slayer",
+    name: "Vampyre Slayer",
+    membership: "Free",
+    difficulty: "Intermediate",
+    length: "Short",
+    qp: 3,
+    series: "Myreque",
+    requirements: {
+      skills: ["Recommended: 30+ Attack, ability to kill a level 34 vampyre"],
+      items: ["Garlic", "Stake and hammer (obtained during quest)"],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to Morgan in Draynor Village. A vampyre called Count Draynor is terrorizing the village." },
+      { text: "Talk to Dr. Harlow in the Blue Moon Inn, Varrock. He tells you how to defeat the count — buy him a beer first (2 coins)." },
+      { text: "Get garlic (spawn in a house in Draynor Village) and a stake from Dr. Harlow (after buying him a beer). Get a hammer from anywhere (general stores sell them)." },
+      { text: "Enter Draynor Manor via the front door or windows. Go to the basement." },
+      { text: "Fight Count Draynor in his coffin room. He can drain your Prayer. Use the stake + hammer on his coffin while he's weakened to finish him.", note: "You must stake him in his coffin to kill him — regular combat alone won't finish the fight." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "3 Quest Points" },
+      { icon: "⚔️", text: "4,825 Attack experience" }
+    ],
+    tips: [
+      "Count Draynor drains Prayer — bring prayer potions if relying on protection prayers.",
+      "Make sure you have the stake AND a hammer — you need both to finish him off."
+    ],
+    wiki: "https://runescape.wiki/w/Vampyre_Slayer"
+  },
+
+  {
+    id: "misthalin_mystery",
+    name: "Misthalin Mystery",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 1,
+    series: null,
+    requirements: { skills: [], items: [], quests: [] },
+    steps: [
+      { text: "Talk to Abigale east of the Lumbridge Swamp. She and her partner Hewey found an old manor and entered. Hewey is now missing." },
+      { text: "Enter Sinclair Manor. Investigate rooms for clues about what happened to the guests." },
+      { text: "Collect candlesticks and solve puzzles inside the manor to progress through each room." },
+      { text: "Uncover the identity of the killer and confront them in the final room." },
+      { text: "Escape the manor and return to Abigale to complete the quest." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "✨", text: "600 experience in two skills of your choice" },
+      { icon: "🕯️", text: "Candle (cosmetic item)" }
+    ],
+    tips: [
+      "A fun short mystery quest with no requirements — great for new players.",
+      "Keep track of clues as you find them to solve the mystery."
+    ],
+    wiki: "https://runescape.wiki/w/Misthalin_Mystery"
+  },
+
+  {
+    id: "gunnar_ground",
+    name: "Gunnar's Ground",
+    membership: "Free",
+    difficulty: "Novice",
+    length: "Short",
+    qp: 5,
+    series: null,
+    requirements: { skills: [], items: [], quests: [] },
+    steps: [
+      { text: "Talk to Chieftain Brundt in Rellekka (or to Gunnar near the barbarian village). There's a land dispute between humans and barbarians." },
+      { text: "Speak to all NPCs involved to understand the conflict: Lorena, Gudrun, and the Chieftain." },
+      { text: "Help Gunnar write a poem to express his feelings for Gudrun and resolve the dispute diplomatically." },
+      { text: "Present the poem to both sides. The quest resolves with a peaceful agreement." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "5 Quest Points" },
+      { icon: "💰", text: "Coins and XP reward" }
+    ],
+    tips: [
+      "Very quick quest for 5 Quest Points — great for early QP grinding.",
+      "No combat or skill requirements."
+    ],
+    wiki: "https://runescape.wiki/w/Gunnar%27s_Ground"
+  },
+
+  {
+    id: "waterfall_quest",
+    name: "Waterfall Quest",
+    membership: "Members",
+    difficulty: "Intermediate",
+    length: "Medium",
+    qp: 1,
+    series: "Elf",
+    requirements: {
+      skills: ["Recommended: Ability to survive combat in deep wilderness"],
+      items: ["Rope", "Glarial's pebble (obtained in quest)", "Air, water, earth runes (6 each)", "6 air runes, 6 water runes, 6 earth runes"],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to Almera in her house near the waterfall north of Baxtorian Falls. Her son Hudon is at the waterfall." },
+      { text: "Use the log raft to reach the island in the river. Take the book from the island." },
+      { text: "Talk to Hadley in the pub in Taverley. He tells you about Glarial's tomb." },
+      { text: "Find Golrie in a dungeon under the Gnome Stronghold Tree Gnome Village maze. Get Glarial's pebble from him." },
+      { text: "Use Glarial's pebble to enter Glarial's Tomb in Hemenster (graveyard). Get Glarial's amulet and urn from inside.", note: "Do NOT bring combat equipment or runes into the tomb — they're not allowed." },
+      { text: "Collect the six air, water, and earth runes. Use a rope on the dead tree at the top of the waterfall to swing over." },
+      { text: "Enter the waterfall cave. Use Glarial's amulet to open the door. Set runes on the altars, then use Glarial's urn on the chalice of eternity." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "1 Quest Point" },
+      { icon: "⚔️", text: "13,750 Attack experience" },
+      { icon: "💪", text: "13,750 Strength experience" },
+      { icon: "💰", text: "2,000 coins" },
+      { icon: "💎", text: "2 diamonds, 2 gold bars" }
+    ],
+    tips: [
+      "The XP rewards are massive for low-level accounts — often done for a quick combat boost.",
+      "Do not bring runes into Glarial's Tomb or you'll be rejected at the entrance.",
+      "Considered one of the best early members quests for Attack and Strength experience."
+    ],
+    wiki: "https://runescape.wiki/w/Waterfall_Quest"
+  },
+
+  {
+    id: "lost_city",
+    name: "Lost City",
+    membership: "Members",
+    difficulty: "Experienced",
+    length: "Short",
+    qp: 3,
+    series: "Fairy Tale",
+    requirements: {
+      skills: ["31 Crafting", "36 Woodcutting"],
+      items: ["Combat gear for a level 101 boss", "Knife or chisel"],
+      quests: []
+    },
+    steps: [
+      { text: "Talk to a man near the Lumbridge Swamp camp (south of Lumbridge). He and his friends are looking for Zanaris." },
+      { text: "Chop a dead tree in Lumbridge Swamp, revealing a Leprechaun. He tells you how to reach Zanaris — with a dramen staff." },
+      { text: "Travel to Entrana (bank your weapons and armor — they're not allowed). Navigate to the dungeon beneath the monastery." },
+      { text: "Cut a dramen tree branch in the dungeon. A Tree Spirit (level 101) will attack — fight it off.", note: "You can't bring weapons to Entrana, but you can make a weapon from the tree branches inside." },
+      { text: "Use a knife or chisel to carve the branch into a dramen staff." },
+      { text: "Go to the shed in Lumbridge Swamp and equip the dramen staff. Enter the shed door to reach Zanaris." }
+    ],
+    rewards: [
+      { icon: "⭐", text: "3 Quest Points" },
+      { icon: "🧚", text: "Access to Zanaris (Fairy land) — required for Fairy Ring network" },
+      { icon: "💎", text: "Ability to wield dragon weapons (dragon longsword and dagger)" }
+    ],
+    tips: [
+      "Fairy Rings (unlocked via Zanaris) are one of the best travel networks in the game.",
+      "Make a makeshift weapon from dramen branches inside Entrana to fight the Tree Spirit.",
+      "Dragon weapons require completion of this quest to wield."
+    ],
+    wiki: "https://runescape.wiki/w/Lost_City"
+  }
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let state = JSON.parse(localStorage.getItem('rs3_quest_state') || '{"completed":{},"steps":{}}');
+let activeQuestId = null;
+let filteredQuests = [...QUESTS];
+
+function saveState() {
+  localStorage.setItem('rs3_quest_state', JSON.stringify(state));
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+function init() {
+  populateSeriesFilter();
+  renderQuestList();
+  updateHeaderStats();
+}
+
+function populateSeriesFilter() {
+  const series = [...new Set(QUESTS.map(q => q.series).filter(Boolean))].sort();
+  const sel = document.getElementById('filter-series');
+  series.forEach(s => {
+    const o = document.createElement('option');
+    o.value = s; o.textContent = s;
+    sel.appendChild(o);
+  });
+}
+
+// ─────────────────────────────────────────────
+//  FILTERING
+// ─────────────────────────────────────────────
+function filterQuests() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const mem = document.getElementById('filter-membership').value;
+  const diff = document.getElementById('filter-difficulty').value;
+  const series = document.getElementById('filter-series').value;
+  const status = document.getElementById('filter-status').value;
+
+  filteredQuests = QUESTS.filter(quest => {
+    if (q && !quest.name.toLowerCase().includes(q)) return false;
+    if (mem && quest.membership !== mem) return false;
+    if (diff && quest.difficulty !== diff) return false;
+    if (series && quest.series !== series) return false;
+    const isDone = !!state.completed[quest.id];
+    if (status === 'done' && !isDone) return false;
+    if (status === 'todo' && isDone) return false;
+    return true;
+  });
+
+  renderQuestList();
+}
+
+// ─────────────────────────────────────────────
+//  RENDER QUEST LIST
+// ─────────────────────────────────────────────
+function renderQuestList() {
+  const list = document.getElementById('quest-list');
+  list.innerHTML = '';
+
+  filteredQuests.forEach(quest => {
+    const done = !!state.completed[quest.id];
+    const item = document.createElement('div');
+    item.className = 'quest-item' + (done ? ' completed' : '') + (quest.id === activeQuestId ? ' active' : '');
+    item.dataset.id = quest.id;
+
+    const diffClass = quest.difficulty.toLowerCase().replace(/ /g,'-');
+
+    item.innerHTML = `
+      <div class="quest-checkbox" onclick="toggleComplete(event,'${quest.id}')">${done ? '✓' : ''}</div>
+      <div class="quest-info">
+        <div class="quest-name">${quest.name}</div>
+        <div class="quest-meta">
+          <span class="tag ${quest.membership === 'Free' ? 'free' : 'members'}">${quest.membership === 'Free' ? 'F2P' : 'P2P'}</span>
+          <span class="tag ${diffClass}">${quest.difficulty}</span>
+          <span class="tag qp">${quest.qp} QP</span>
+          ${quest.series ? `<span class="tag length">${quest.series}</span>` : ''}
+        </div>
+      </div>
+    `;
+
+    item.addEventListener('click', (e) => {
+      if (!e.target.closest('.quest-checkbox')) openQuest(quest.id);
+    });
+
+    list.appendChild(item);
+  });
+
+  const visible = filteredQuests.length;
+  const done = QUESTS.filter(q => state.completed[q.id]).length;
+  document.getElementById('count-visible').textContent = visible;
+  document.getElementById('count-done-label').textContent = `${done} done`;
+}
+
+// ─────────────────────────────────────────────
+//  OPEN QUEST
+// ─────────────────────────────────────────────
+function openQuest(id) {
+  activeQuestId = id;
+  const quest = QUESTS.find(q => q.id === id);
+  if (!quest) return;
+
+  // Update sidebar selection
+  document.querySelectorAll('.quest-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === id);
+  });
+
+  const stepsDone = state.steps[id] || {};
+  const totalSteps = quest.steps.length;
+  const doneCount = Object.values(stepsDone).filter(Boolean).length;
+  const pct = totalSteps > 0 ? Math.round((doneCount / totalSteps) * 100) : 0;
+  const questDone = !!state.completed[id];
+
+  const diffClass = quest.difficulty.toLowerCase().replace(/ /g,'-');
+
+  // Build requirements HTML
+  let reqHtml = '<div class="req-grid">';
+  if (quest.requirements.skills.length) {
+    quest.requirements.skills.forEach(s => {
+      reqHtml += `<div class="req-item"><div class="req-label">Skill</div><div class="req-value">⚔️ ${s}</div></div>`;
+    });
+  }
+  if (quest.requirements.quests.length) {
+    quest.requirements.quests.forEach(q => {
+      reqHtml += `<div class="req-item"><div class="req-label">Quest</div><div class="req-value">📜 ${q}</div></div>`;
+    });
+  }
+  if (quest.requirements.items.length) {
+    quest.requirements.items.forEach(i => {
+      reqHtml += `<div class="req-item"><div class="req-label">Item</div><div class="req-value">🎒 ${i}</div></div>`;
+    });
+  }
+  if (!quest.requirements.skills.length && !quest.requirements.quests.length && !quest.requirements.items.length) {
+    reqHtml += '<p class="req-none">No requirements — anyone can start this quest!</p>';
+  }
+  reqHtml += '</div>';
+
+  // Build steps HTML
+  let stepsHtml = '';
+  if (quest.steps.length > 0) {
+    stepsHtml = '<div class="steps-list">';
+    quest.steps.forEach((step, i) => {
+      const isDone = !!stepsDone[i];
+      const isCurrent = !isDone && i === Object.values(stepsDone).filter(Boolean).length;
+      stepsHtml += `
+        <div class="step-item ${isDone ? 'done' : ''} ${isCurrent ? 'current' : ''}" onclick="toggleStep('${id}', ${i})">
+          <div class="step-num">${isDone ? '✓' : i + 1}</div>
+          <div>
+            <div class="step-text">${step.text.replace(/\n/g,'<br>')}</div>
+            ${step.note ? `<div class="step-note">💡 ${step.note}</div>` : ''}
+          </div>
+        </div>
+      `;
+    });
+    stepsHtml += '</div>';
+  } else {
+    stepsHtml = `
+      <div class="no-steps-msg">
+        <p>Detailed walkthrough coming soon!</p>
+        <a class="wiki-link" href="${quest.wiki}" target="_blank">📖 View Full Guide on RuneScape Wiki</a>
+      </div>
+    `;
+  }
+
+  // Build rewards HTML
+  const rewardsHtml = '<div class="rewards-list">' +
+    quest.rewards.map(r => `
+      <div class="reward-item">
+        <span class="reward-icon">${r.icon}</span>
+        <span>${r.text}</span>
+      </div>
+    `).join('') + '</div>';
+
+  // Build tips HTML
+  const tipsHtml = quest.tips && quest.tips.length
+    ? '<div class="tips-list">' + quest.tips.map(t => `
+        <div class="tip-item">
+          <span class="tip-icon">💡</span>
+          <span>${t}</span>
+        </div>
+      `).join('') + '</div>'
+    : '<p style="color:var(--text-muted);font-size:13px">No tips available.</p>';
+
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="quest-detail">
+      <div class="detail-header">
+        <div class="detail-title">
+          <h2>${quest.name}</h2>
+          <div class="detail-tags">
+            <span class="tag ${quest.membership === 'Free' ? 'free' : 'members'}">${quest.membership === 'Free' ? 'Free-to-Play' : 'Members Only'}</span>
+            <span class="tag ${diffClass}">${quest.difficulty}</span>
+            <span class="tag length">${quest.length}</span>
+            <span class="tag qp">${quest.qp} Quest Point${quest.qp > 1 ? 's' : ''}</span>
+          </div>
+        </div>
+        <button class="complete-btn ${questDone ? 'done' : ''}" onclick="toggleComplete(event, '${id}')">
+          ${questDone ? '✓ Completed' : 'Mark Complete'}
+        </button>
+      </div>
+
+      ${quest.series ? `<div class="series-badge">📚 Part of the <strong>${quest.series}</strong> quest series</div>` : ''}
+
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Step Progress</span>
+          <span>${doneCount} / ${totalSteps} steps — ${pct}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width: ${pct}%"></div>
+        </div>
+      </div>
+
+      <div class="section" id="sect-req">
+        <div class="section-header" onclick="toggleSection('sect-req')">
+          <span class="section-icon">📋</span>
+          <h3>Requirements</h3>
+          <span class="section-toggle">▾</span>
+        </div>
+        <div class="section-body">${reqHtml}</div>
+      </div>
+
+      <div class="section" id="sect-steps">
+        <div class="section-header" onclick="toggleSection('sect-steps')">
+          <span class="section-icon">🗺️</span>
+          <h3>Walkthrough</h3>
+          <span class="section-toggle">▾</span>
+        </div>
+        <div class="section-body">${stepsHtml}</div>
+      </div>
+
+      <div class="section" id="sect-rewards">
+        <div class="section-header" onclick="toggleSection('sect-rewards')">
+          <span class="section-icon">🏆</span>
+          <h3>Rewards</h3>
+          <span class="section-toggle">▾</span>
+        </div>
+        <div class="section-body">${rewardsHtml}</div>
+      </div>
+
+      <div class="section collapsed" id="sect-tips">
+        <div class="section-header" onclick="toggleSection('sect-tips')">
+          <span class="section-icon">💡</span>
+          <h3>Tips & Notes</h3>
+          <span class="section-toggle">▾</span>
+        </div>
+        <div class="section-body">${tipsHtml}</div>
+      </div>
+
+      <div class="detail-actions">
+        <a class="action-btn" href="${quest.wiki}" target="_blank">📖 Open RS3 Wiki</a>
+        <button class="action-btn" onclick="resetSteps('${id}')">↺ Reset Steps</button>
+        <button class="action-btn danger" onclick="clearQuestData('${id}')">🗑 Clear Progress</button>
+      </div>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────
+//  INTERACTIONS
+// ─────────────────────────────────────────────
+function toggleStep(questId, stepIndex) {
+  if (!state.steps[questId]) state.steps[questId] = {};
+  state.steps[questId][stepIndex] = !state.steps[questId][stepIndex];
+  saveState();
+  openQuest(questId);
+}
+
+function toggleComplete(e, questId) {
+  e.stopPropagation();
+  state.completed[questId] = !state.completed[questId];
+  if (state.completed[questId] && state.steps[questId] !== undefined) {
+    const quest = QUESTS.find(q => q.id === questId);
+    if (quest) {
+      quest.steps.forEach((_, i) => { state.steps[questId][i] = true; });
+    }
+  }
+  saveState();
+  renderQuestList();
+  updateHeaderStats();
+  if (activeQuestId === questId) openQuest(questId);
+}
+
+function resetSteps(questId) {
+  state.steps[questId] = {};
+  saveState();
+  openQuest(questId);
+}
+
+function clearQuestData(questId) {
+  delete state.steps[questId];
+  delete state.completed[questId];
+  saveState();
+  renderQuestList();
+  updateHeaderStats();
+  openQuest(questId);
+}
+
+function toggleSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('collapsed');
+}
+
+function updateHeaderStats() {
+  const total = QUESTS.length;
+  const done = QUESTS.filter(q => state.completed[q.id]).length;
+  const qp = QUESTS.filter(q => state.completed[q.id]).reduce((s, q) => s + q.qp, 0);
+  const pct = Math.round((done / total) * 100);
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-completed').textContent = done;
+  document.getElementById('stat-qp').textContent = qp;
+  document.getElementById('stat-pct').textContent = pct + '%';
+}
+
+// ─────────────────────────────────────────────
+//  START
+// ─────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
